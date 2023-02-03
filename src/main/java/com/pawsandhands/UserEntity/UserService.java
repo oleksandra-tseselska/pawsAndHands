@@ -1,5 +1,7 @@
-package com.pawsandhands;
+package com.pawsandhands.UserEntity;
 
+import com.pawsandhands.UserEntity.User;
+import com.pawsandhands.UserEntity.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

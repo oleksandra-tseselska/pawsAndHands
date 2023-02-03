@@ -1,4 +1,4 @@
-package com.pawsandhands;
+package com.pawsandhands.UserEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
