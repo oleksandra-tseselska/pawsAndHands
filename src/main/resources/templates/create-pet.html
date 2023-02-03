@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Pet Profile</title>
+  <link href="../static/styles.css" rel="stylesheet">
+</head>
+<body>
+<div th:insert="fragments/header.html :: header"></div>
+<form action="/createPet" method="post" id="createPet">
+
+  <!--
+  родитель1, родитель2, текстовые поля для ввода полного имени? поиск?
+  сиблинги, дети со ссылками
+  фото ссылкой
+  выставки, в которых участвовал (выбрать из существующих на сайте?) отметить как “победитель” + добавить титул?
+  прививки
+  вес, рост
+  цвет шерсти
+  цвет глаз-->
+
+  <div>
+    <label for="types">Pet Type</label>
+    <select name="type" id="types" required autofocus size="2" form="createPet">
+      <option value="dog">Dog</option>
+      <option value="cat">Cat</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Sex</label>
+    <input type="radio" id="Female" name="sex" value="Female">
+    <label for="Female">Female</label>
+    <input type="radio" id="Male" name="sex" value="Male">
+    <label for="Male">Male</label>
+  </div>
+
+  <div>
+    <label>Breed</label>
+    <input type="text" name="breed" required>
+  </div>
+
+  <div>
+    <label>Birthdate</label>
+    <input type="date" name="birthdate" min="1990-01-01"><br>
+  </div>
+
+  <div>
+    <label>Full Official Name (kennel name)</label>
+    <input type="text" name="fullName">
+  </div>
+
+  <div>
+    <label>Nickname</label>
+    <input type="text" name="nickname" required>
+  </div>
+
+  <div>
+    <input type="checkbox" name="date" id="date">
+    <label for="date">Looking for a date</label>
+  </div>
+
+  <div>
+    <input type="checkbox" name="newHome" id="newHome">
+    <label for="newHome">Looking for a new home</label>
+  </div>
+
+  <div>
+    <input type="checkbox" name="died" id="died">
+    <label for="died">This is a memorial page, date of the death: </label>
+    <input type="date" name="deathdate" max="2023-02-28"><br>
+  </div>
+
+  <div>
+    <label>Country</label>
+    <input type="text" name="country" required>
+  </div>
+
+  <div>
+    <label>City</label>
+    <input type="text" name="city">
+  </div>
+
+  <div>
+    <label>Parent1</label>
+    <input type="text" name="parent1">
+  </div>
+
+  <div>
+    <label>Parent2</label>
+    <input type="text" name="parent2">
+  </div>
+
+
+  <div>
+    <!-- Rounded switch -->
+    <label class="switch">
+      <input type="checkbox">
+      <label for="died">This is a memorial page, date of the death: </label>
+      <span class="slider round"></span>
+    </label>
+
+  </div>
+
+  <div>
+    <button type="submit">Create Profile</button>
+    <button type="reset">Reset</button>
+  </div>
+
+
+
+</form>
+
+
+</body>
+</html>
