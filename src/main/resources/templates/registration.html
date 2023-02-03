@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Registration form</title>
+
+  <style>
+    body {
+      background-image: url("/catdog.jpeg");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<section style="margin-left: 30px; margin-right: 10px">
+  <div style=" float: right; padding-bottom: 12px; border-radius: 5%; background-color: white; margin-right: 30px; width: 25%">
+
+    <h2 style="margin-left: 45px">Registration form:</h2>
+
+
+    <form action="/registrationApproval" method="post" style="align-content: center; margin-top: 20px">   <!-- User class object -->
+
+      <label style="margin-left:35px; font-size: 15px">Please select your status:</label>
+      <br>
+      <select style="margin-top:10px; margin-left: 35px; padding: 3px 5px" name="status">                   <!-- Field of User class object where input will be saved -->
+        <option value="Pet owner">Pet owner</option>
+        <option value="Service provider">Service provider</option>
+        <option value="Pet owner and service provider">Pet owner and service provider</option>
+        <option value="User with no pets">User with no pets</option>
+      </select>
+
+      <br>
+
+      <input style="margin-top:20px; margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="name" placeholder="Name" required>          <!-- Field of User class object where input will be saved -->
+
+      <br><br>
+
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="surname" placeholder="Surname" required>
+
+      <br><br>
+
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="email" name="email" placeholder="E-mail" required>
+
+      <br><br>
+
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="breeder_licence" placeholder="Breeder licence No">
+
+      <br><br>
+
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="country" placeholder="Country" required>
+
+      <br><br>
+
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="city" placeholder="City" required>
+
+      <br><br>
+
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="tel" name="telephone" placeholder="Telephone" required>
+
+      <br><br>
+
+      <!--  Pattern:  at least one lowercase letter, at least one uppercase letter, at least one numeric value,
+            at least one special symbol(!@#$%^&*=+-_), total length should be >= 8 and <= 16  -->
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="password" oninvalid="alert('Password should contain at least one lowercase letter, at least one ' +
+     'uppercase letter, at least one numeric value,at least one special symbol(!@#$%^&*=+-_), total length should' +
+      ' be from 8 till 16 symbols')" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$" placeholder="Password">
+
+      <br><br>
+
+      <label  style="margin-left:45px; font-size: 15px">Profile image:</label>
+
+      <br>
+
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="file" accept="image/*" name="photo">
+
+      <br>
+
+      <button type="submit" style="padding: 5px 40px; margin-top:15px; border-color: initial; background-color:darkgreen;color: white; margin-left: 80px">Register</button>
+    </form>
+
+  </div>
+</section>
+</body>
+</html>
