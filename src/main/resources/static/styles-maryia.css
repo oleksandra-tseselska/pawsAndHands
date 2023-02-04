@@ -2,6 +2,9 @@
     height: 75px;
 }
 
+.dropdown-toggle .rounded-circle img {
+    width: 50px;
+}
 
 
 .blank{
