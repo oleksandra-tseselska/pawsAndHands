@@ -53,6 +53,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String showUsers(Model model){
+        System.out.println(this.userService.findAll());
 
         try{
             model.addAttribute("usersList", this.userService.findAll());

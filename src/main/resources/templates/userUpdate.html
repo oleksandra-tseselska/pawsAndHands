@@ -15,13 +15,13 @@
       <div class="row">
         <div class="col-1"> </div>
         <div class="col-3">
-          <img style="width: inherit" th:src="${userData.profilePictureUrl}">
+          <img style="width: inherit" th:src="${userData.photo}">
         </div>
         <div class="col-8">
               <div class="row">
                 <div class="col-4">
                   <input style="display: none" th:value="${userData.id}" name="userId">
-                  <input th:value="${userData.firstName}" name="firstName">
+                  <input th:value="${userData.name}" name="firstName">
                 </div>
                 <div class="col-4">
                   <input th:value="${userData.password}" name="password">
