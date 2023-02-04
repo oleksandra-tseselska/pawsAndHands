@@ -4,7 +4,7 @@ header {
     background-color: yellow;
 }
 
-header > img {
+header img {
     margin: auto 0px auto 52px;
     height: 100px;
 }
