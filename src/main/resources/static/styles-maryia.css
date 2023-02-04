@@ -1,13 +1,8 @@
-header {
-    width: 1326px;
-    height:110px;
-    background-color: black;
+.navbar-brand img {
+    height: 75px;
 }
 
-header img {
-    margin: auto 0px auto 52px;
-    height: 100px;
-}
+
 
 .blank{
     margin: 0px;
