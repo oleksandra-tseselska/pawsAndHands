@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
   <th:block th:include="fragments/head.html :: head"> </th:block>
@@ -8,49 +8,84 @@
 
 <body>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
   <div th:insert="fragments/header.html :: header"></div>
 
-  <div class="container">
 
+
+  <div class="container">
     <div class="row">
       <div class="col-lg-3"></div>
 
       <div class="col-lg-6">
-          <h1 class="text-center">Create profile for your pet</h1>
+        <h1 class="text-center">Create profile for your pet</h1>
 
-        <form action="/createPet" method="post" id="createPet">
+        <form action="/createPet" method="post" id="createPet" >
 
-<!--          CAT OR DOG RADIOBUTTON -->
+
             <div class="mb-3">
-                <label for="types" class="form-label">Who do you want to add profile for?</label><br>
-                <div class="btn-group" role="group" id="types">
-                  <input type="radio" class="btn-check" name="type" id="dog" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="dog">Dog</label>
-
-                  <input type="radio" class="btn-check" name="type" id="cat" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="cat">Cat</label>
-                </div>
+                <label for="nickname" class="form-label">How do you call your pet on a daily basis?</label>
+                <input type="text" class="form-control" id="nickname" name="nickname" minlength="3" value="" required on>
             </div>
 
             <div class="mb-3">
-                <label for="sex" class="form-label">Is it a good boy or a girl?</label><br>
+                <label for="sex" class="form-label">Is it a good boy or a good girl?</label><br>
                 <div class="btn-group" role="group" id="sex">
-                  <input type="radio" class="btn-check" name="sex" id="female" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="female">Girl</label>
+                    <input type="radio" class="btn-check form-control" name="sex" id="female" autocomplete="off" required>
+                    <label class="btn btn-outline-primary" for="female">Good boy</label>
 
-                  <input type="radio" class="btn-check" name="sex" id="male" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="male">Boy</label>
+                    <input type="radio" class="btn-check form-control" name="sex" id="male" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="male">Good girl</label>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label for="breed" class="form-label">Specify breed</label>
-                <input type="text" class="form-control" id="breed" name="breed" maxlength="60" required>
+                <label for="types" class="form-label">Is it a cat or a dog?</label><br>
+                <div class="btn-group" role="group" id="types">
+                    <input type="radio" class="btn-check" name="type" id="cat" autocomplete="off" required>
+                        <label class="btn btn-outline-primary" for="cat">Cat</label>
+
+                    <input type="radio" class="btn-check" name="type" id="dog" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="dog">Dog</label>
+                </div>
             </div>
+
+
+
+            <div class="collapse" id="dogsSelect">
+                <div class="card card-body">
+                    <label class="form-label" for="dog-breeds">Select a breed</label>
+                    <div th:insert="fragments/dog-breeds.html :: dog-breeds" id="dog-breeds"></div>
+                </div>
+            </div>
+            <br>
+
+            <div class="collapse" id="catsSelect">
+                <div class="card card-body">
+                <label class="form-label" for="cats-breeds">Select a breed</label>
+                    <div th:insert="fragments/cats-breeds.html :: cats-breeds" id="cats-breeds"></div>
+                </div>
+            </div>
+            <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <div class="mb-3">
                 <label for="birthdate" class="form-label">Birthdate</label>
-                <input type="date" class="form-control" id="birthdate" name="birthdate" min="1990-01-01" required>
+                <input type="date" class="form-control" id="birthdate" name="birthdate" min="1990-01-01" aria-describedby="birthdateHelp" required>
+                <div id="birthdateHelp" class="form-text">Leave</div>
             </div>
 
             <div class="mb-3">
@@ -58,10 +93,7 @@
                 <input type="text" class="form-control" id="fullName" name="fullName" minlength="3">
             </div>
 
-            <div class="mb-3">
-                <label for="nickname" class="form-label">Nickname</label>
-                <input type="text" class="form-control" id="nickname" name="nickname" minlength="3" required>
-            </div>
+
 
             <div class="mb-3 form-check">
                 <input class="form-check-input" type="checkbox" value="true" id="lookingForDate" name="lookingForDate">
