@@ -51,7 +51,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/users")
+    @GetMapping("/all-users")
     public String showUsers(Model model){
         System.out.println(this.userService.findAll());
 
@@ -61,7 +61,7 @@ public class UserController {
             return "redirect:users?message=search_filed&error=" + e.getMessage();
         }
 
-        return "users";
+        return "all-users";
     }
 
     @GetMapping("/userUpdate/{userId}")
