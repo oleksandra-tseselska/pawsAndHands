@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome page</title>
+    <link href="../static/styles.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
 
 
     <style>
@@ -16,6 +20,17 @@
 
 </head>
 <body>
+<header th:fragment="header">
+    <h1>Paws & Hands Social Network</h1>
+    <nav>
+        <ul>
+            <li><a href="/">Main</a></li>
+            <li><a href="/create-pet">Create Pet</a></li>
+            <li><a href="/all-pets">See All Pets</a></li>
+        </ul>
+
+    </nav>
+</header>
 
 <div style="padding-bottom: 20px; border-radius: 5%; background-color: white; float: right; width: 25%; margin-top: 35px; margin-right: 45px">
 
