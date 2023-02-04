@@ -5,52 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Users</title>
 <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet" type="text/css">-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link href="styles-sasha.css" rel="stylesheet" />
+    <link href="css/styles-icomoon.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="css/styles-sasha.css" rel="stylesheet" />
 </head>
 <body>
   <header th:insert="~{fragments/header.html :: header}"></header>
 
   <main>
-      <section class="container text-center">
-        <div class="row">
-            <div class="col-1"> </div>
-            <div class="col-11">
-
-                <ul th:if="${!usersList.isEmpty()}">
-                    <li th:each="userItem: ${usersList}">
-                        <div class="row">
-                            <div class="col-2">
-                                <img style="width: inherit" th:src="${userItem.photo}">
-                            </div>
-                            <div class="col-2">
-                            <label th:text="${userItem.name}"></label>
-                            </div>
-                            <div class="col-2">
-                                <label th:text="${userItem.password}"></label>
-                            </div>
-                            <div class="col-2">
-                                <label th:text="${userItem.createdAt}"></label>
-                            </div>
-                            <div class="col-2">
-                                <label th:text="${userItem.updatedAt}"></label>
-                            </div>
-                            <div class="col-2">
-                                <a th:href="'userUpdate/'+${userItem.id}">Update</a>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-8">col-8</div>
-            <div class="col-4">col-4</div>
-        </div>
+      <section>
+<!--         Two decisions:
+        1. masonry  style="padding-left: 0; data-masonry='{"percentPosition": true}'
+        2. fix img height
+-->
+        <ul  class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4" style="padding-left: 0" data-masonry='{"percentPosition": true}' th:if="${!usersList.isEmpty()}">
+            <li class="col" th:each="userItem: ${usersList}">
+                <div style="text-align: center" class="card">
+                    <img th:src="${userItem.photo}" class="card-img-top">
+                    <div class="card-body">
+                        <a href="#" class="card-link"> <!--         go into profile               -->
+                            <span class="card-title" th:text="${userItem.name}"></span>
+                            <span class="card-title" th:text="${userItem.surname}"></span>
+                        </a>
+                        <p class="card-subtitle mb-2 text-muted" th:text="${userItem.status}"></p>
+                    </div>
+                    <p>List of pets</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">An item</li>
+                        <li class="list-group-item">A second item</li>
+                        <li class="list-group-item">A third item</li>
+                    </ul>
+                    <ul class="card-body social-list">
+                        <li class="card-link" style="display: flex">
+                            <a
+                                    class="social-list-link"
+                                    href="https://uk-ua.facebook.com/"
+                                    target="_blank"
+                                    aria-label="facebook"
+                            >
+                          <span class="social-item-icon">
+                            <span class="icon-facebook"></span>
+                          </span>
+                            </a>
+                        </li>
+                        <li class="card-link">
+                            <a
+                                    class="social-list-link"
+                                    href="https://twitter.com/"
+                                    target="_blank"
+                                    aria-label="twitter"
+                            >
+                          <span class="social-item-icon">
+                            <span class="icon-twitter"></span>
+                          </span>
+                            </a>
+                        </li>
+                        <li class="card-link">
+                            <a
+                                    class="social-list-link"
+                                    href="https://instagram.com/"
+                                    target="_blank"
+                                    aria-label="instagram"
+                            >
+                          <span class="social-item-icon">
+                            <span class="icon-instagram"></span>
+                          </span>
+                            </a>
+                        </li>
+                        <li class="card-link">
+                            <a
+                                    class="list-link"
+                                    href="https://www.youtube.com/"
+                                    target="_blank"
+                                    aria-label="youtube"
+                            >
+                          <span class="social-item-icon">
+                            <span class="icon-youtube"></span>
+                          </span>
+                            </a>
+                        </li>
+                        <li class="card-link">
+                            <a
+                                    class="social-list-link"
+                                    href="https://www.pinterest.com/"
+                                    target="_blank"
+                                    aria-label="pinterest"
+                            >
+                          <span class="social-item-icon">
+                            <span class="icon-pinterest"></span>
+                          </span>
+                            </a>
+                        </li>
+<!--                        <a href="#" class="card-link"></a>-->
+<!--                        <a href="#" class="card-link"></a>-->
+                    </ul>
+                </div>
+            </li>
+        </ul>
     </section>
   </main>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
 </body>
 </html>
