@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <!--    this block has all needed initial bootstrap and google fonts imports-->
-    <th:block th:include="fragments/head.html :: head"></th:block>
+    <th:block th:insert="~{fragments/head.html :: head}"></th:block>
 
 <!--    add all your additional styles files add below this line-->
     <link href="css/all-users.css" rel="stylesheet"/>
@@ -13,22 +13,27 @@
 </head>
 <body>
 <!-- this is fragment for header to display -->
-<div th:insert="fragments/header.html :: header"></div>
+<div th:insert="~{fragments/header.html :: header}"></div>
 
 
 
   <main>
       <section>
 <!--         Two decisions:
-        1. masonry: add first <ul> style="padding-left: 0; data-masonry='{"percentPosition": true}'
-        2. block: add into css img height-max
+        1. masonry: add first <ul> style="padding-left: 0;" data-masonry='{"percentPosition": true}'
+           + <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+        2. css .all-user-img add to <img>
 -->
-        <ul  class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4" style="padding-left: 0" data-masonry='{"percentPosition": true}' th:if="${!usersList.isEmpty()}">
+        <ul  class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4" style="padding-left: 0;"  data-masonry='{"percentPosition": true,  "itemSelector": ".col" }' th:if="${!usersList.isEmpty()}">
             <li class="col" th:each="userItem: ${usersList}">
                 <div style="text-align: center" class="card">
                     <img th:src="${userItem.photo}" class="card-img-top">
                     <div class="card-body">
-                        <a href="#" class="card-link"> <!--         go into profile               -->
+                        <a
+                                th:href="'viewUserInfo/'+${userItem.getId()}"
+                                class="card-link"
+                                target="_blank"
+                        > <!--         go into profile               -->
                             <span class="card-title" th:text="${userItem.name}"></span>
                             <span class="card-title" th:text="${userItem.surname}"></span>
                         </a>
@@ -111,6 +116,7 @@
   </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
 </body>
 </html>

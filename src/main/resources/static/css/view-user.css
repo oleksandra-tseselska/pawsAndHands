@@ -1,0 +1,32 @@
+.view-user-img{
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    object-position: 50% 30%;
+    /* sticky */
+    /*position: -webkit-sticky;*/
+    /*position: sticky;*/
+    /*top: 0;*/
+}
+@media (min-width: 425px) {
+    .view-user-img {
+        min-height: 440px;
+        max-height: 450px;
+        object-fit: cover;
+    }
+}
+@media (min-width: 768px) {
+    .view-user-img {
+        width: 100%;
+        height: 100%;
+    }
+}
+.list-group {
+    text-align: center;
+}
+@media (min-width: 768px) {
+    .list-group {
+        margin-left: 25%;
+        text-align: start;
+    }
+}

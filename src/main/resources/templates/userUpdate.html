@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>User Update</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  <link href="css/styles.css" rel="stylesheet" />
+  <!--    this block has all needed initial bootstrap and google fonts imports-->
+  <th:block th:insert="~{fragments/head.html :: head}"></th:block>
+<!--  <link rel="stylesheet" href="/header.css">-->
+  <title>User Update</title>
 </head>
 <body>
-<header th:insert="~{fragments/header.html :: header}"></header>
+<!-- this is fragment for header to display -->
+<div th:insert="~{fragments/header.html :: header}"></div>
 
 <main>
   <section class="container text-center">
@@ -46,6 +47,6 @@
     </form>
   </section>
 </main>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

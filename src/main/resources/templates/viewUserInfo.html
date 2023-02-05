@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--    this block has all needed initial bootstrap and google fonts imports-->
+    <th:block th:insert="~{fragments/head.html :: head}"></th:block>
+    <link rel="stylesheet" href="/css/view-user.css">
+    <title></title>
+</head>
+<body>
+<!-- this is fragment for header to display -->
+<div th:insert="~{fragments/header.html :: header}"></div>
+
+<main>
+    <section class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <img class="view-user-img" th:src="${userData.photo}">
+<!--                img of pets  -->
+            </div>
+            <div class="col-md-8">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <label th:text="${userData?.name}+' '+${userData?.surname}"></label>
+                    </li>
+                    <li class="list-group-item">
+                        <label th:text="${userData?.status}"></label>
+                    </li>
+                    <li class="list-group-item">
+                        <label th:text="${userData?.country}+' '+${userData?.city}"></label>
+                    </li>
+<!--                    create switcher user wont show it or not-->
+                    <li class="list-group-item">
+                        <label th:text="${userData?.telephone}"></label>
+                    </li>
+<!--                    add pets  -->
+                </ul>
+            </div>
+        </div>
+    </section>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

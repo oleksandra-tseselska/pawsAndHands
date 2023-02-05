@@ -53,7 +53,6 @@ public class UserController {
 
     @GetMapping("/all-users")
     public String showUsers(Model model){
-        System.out.println(this.userService.findAll());
 
         try{
             model.addAttribute("usersList", this.userService.findAll());
@@ -63,6 +62,22 @@ public class UserController {
 
         return "all-users";
     }
+
+    @GetMapping("/viewUserInfo/{userId}")
+    public String viewUserInfo(@PathVariable Integer userId,
+                             Model model)
+    {
+        User user = userService.findById(userId);
+
+        try{
+            model.addAttribute("userData", userService.findById(userId));
+        }catch (Exception e){
+            return "redirect:user?message=search_filed&error=" + e.getMessage();
+        }
+
+        return "viewUserInfo";
+    }
+
 
     @GetMapping("/userUpdate/{userId}")
     public String updateUser(@PathVariable Integer userId,
@@ -79,25 +94,25 @@ public class UserController {
         return "userUpdate";
     }
 
-//    @PostMapping("/userUpdateBtn")
-//    public String updateUserData (@RequestParam(name = "userId", required = false) Integer userId,
-//                                  @RequestParam(name = "firstName", required = false) String firstName,
-//                                  @RequestParam(name = "password", required = false) String password){
-//
-//        User user = userService.findById(userId);
-//        System.out.println(userId);
-//        System.out.println(firstName);
-//        System.out.println(password);
-//        System.out.println(user.toString());
-//
-//        if(!user.getName().equals(firstName)){
-//
-//        }
-//        if(!user.getPassword().equals(password)){
-//
-//        }
-//
-//        return "redirect:users";
-//    }
+    @PostMapping("/userUpdateBtn")
+    public String updateUserData (@RequestParam(name = "userId", required = false) Integer userId,
+                                  @RequestParam(name = "firstName", required = false) String firstName,
+                                  @RequestParam(name = "password", required = false) String password){
+
+        User user = userService.findById(userId);
+        System.out.println(userId);
+        System.out.println(firstName);
+        System.out.println(password);
+        System.out.println(user.toString());
+
+        if(!user.getName().equals(firstName)){
+
+        }
+        if(!user.getPassword().equals(password)){
+
+        }
+
+        return "redirect:users";
+    }
 
 }
