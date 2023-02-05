@@ -1,11 +1,7 @@
-<!--   insert this code to the page where footer should be added
+<!--   insert this code to the page
  <div th:insert="fragments/countries.html :: countries"></div>
 -->
-
-
-<div th:fragment="countries">
-    <select>
-    <option value="  " selected>Select a country</option>
+<select th:fragment="countries" class="form-select" id="countries" name="country" aria-label="countries dropdown" required>
     <option value="--">Not Specified</option>
     <option value="AF">Afghanistan</option>
     <option value="AL">Albania</option>
@@ -246,5 +242,5 @@
     <option value="YU">Yugoslavia</option>
     <option value="ZM">Zambia</option>
     <option value="ZW">Zimbabwe</option>
+
 </select>
-</div>
