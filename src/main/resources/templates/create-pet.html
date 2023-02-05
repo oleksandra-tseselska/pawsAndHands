@@ -1,16 +1,18 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-
+<!doctype html>
+<html lang="en">
 <head>
-  <th:block th:include="fragments/head.html :: head"> </th:block>
-  <link href="styles-maryia.css" rel="stylesheet">
+    <!--    this block has all needed initial bootstrap and google fonts imports-->
+    <th:block th:include="fragments/head.html :: head"> </th:block>
+
+    <!--    add all your additional styles files add below this line-->
+    <link href="styles-maryia.css" rel="stylesheet">
+
+    <!--    customize title of your page-->
+    <title>Paws&Hands - Create pet profile</title>
 </head>
-
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-
-  <div th:insert="fragments/header.html :: header"></div>
-
+<!-- this is fragment for header to display -->
+<div th:insert="fragments/header.html :: header"></div>
 
 
   <div class="container">
@@ -25,7 +27,7 @@
 
             <div class="mb-3">
                 <label for="nickname" class="form-label">How do you call your pet on a daily basis?</label>
-                <input type="text" class="form-control" id="nickname" name="nickname" minlength="3" value="" required on>
+                <input type="text" class="form-control" id="nickname" name="nickname" minlength="3" value="" required>
             </div>
 
             <div class="mb-3">
@@ -208,7 +210,7 @@
     </div>
   </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </body>
 

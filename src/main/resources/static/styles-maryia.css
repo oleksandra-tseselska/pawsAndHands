@@ -1,31 +1,5 @@
 
 
-
-/*HEADER*/
-
-.navbar-brand img {
-    height: 75px;
-}
-
-.profile-picture {
-    height: 50px;
-}
-
-.dropdown-menu[data-bs-popper] {
-    left: -80px;
-}
-
-.align-nav-element {
-    margin-top: 15px;
-
-}
-
-.navbar {
-    margin-bottom: 20px;
-    font-family: 'DM Sans', sans-serif;
-    text-decoration: none;
-}
-
 /*CREATE-PET*/
 
 

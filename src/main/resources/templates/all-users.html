@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!--    this block has all needed initial bootstrap and google fonts imports-->
     <th:block th:include="fragments/head.html :: head"></th:block>
-    <link href="styles-maryia.css" rel="stylesheet">
+
+<!--    add all your additional styles files add below this line-->
     <link href="css/all-users.css" rel="stylesheet"/>
     <link href="css/styles-icomoon.css" rel="stylesheet"/>
+
+    <title>All users</title>
+
 </head>
 <body>
-    <div th:insert="fragments/header.html :: header"></div>
+<!-- this is fragment for header to display -->
+<div th:insert="fragments/header.html :: header"></div>
+
+
 
   <main>
       <section>
@@ -101,6 +109,8 @@
         </ul>
     </section>
   </main>
-  <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 </body>
 </html>

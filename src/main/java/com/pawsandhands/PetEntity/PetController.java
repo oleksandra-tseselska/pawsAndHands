@@ -18,6 +18,11 @@ public class PetController {
             return "create-pet"; //will find register in the Template folder. When we want to display the page
         }
 
+    @GetMapping("/about-us")
+    public String showAboutUsPage(){
+        return "about-us"; //will find register in the Template folder. When we want to display the page
+    }
+
 //        @PostMapping("/createPet")
 //        public String handlePetCreation(Pet pet){
 //            try{
