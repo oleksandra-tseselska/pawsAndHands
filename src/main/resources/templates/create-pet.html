@@ -12,7 +12,7 @@
 </head>
 <body>
 <!-- this is fragment for header to display -->
-<div th:insert="fragments/header.html :: header"></div>
+<div th:insert="~{fragments/header.html :: header}"></div>
 
 
   <div class="container">
@@ -20,10 +20,20 @@
       <div class="col-lg-3"></div>
 
       <div class="col-lg-6">
-        <h1 class="text-center">Create profile for your pet</h1>
+
+
+
+        <h1 class="text-center">Create profile for your pet
+          <p th:if="${message}">
+          <span th:if="${message == 'pet_profile_creation_failed'}">
+          <label th:if="${error}" th:text="${error}"></label>
+          </span>
+              <span th:if="${message == 'signup_success'}">
+              Congrats!!! you have successfully added a pet</span>
+          </p></h1>
         <br>
 
-        <form action="/createPet" method="post" id="createPet" >
+        <form action="/create-pet" method="post" id="create-pet" >
 
             <div class="mb-3">
                 <label for="nickname" class="form-label">How do you call your pet on a daily basis?</label>

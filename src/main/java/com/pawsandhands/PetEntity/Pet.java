@@ -16,7 +16,7 @@ import java.util.Set;
 @Entity //represeting the db table in the db
 public class Pet {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nickname;
     private String sex;
@@ -27,7 +27,7 @@ public class Pet {
     private String city;
     private boolean lookingForDate;
     private boolean newHome;
-    private String died;
+    private boolean died;
     private String deathdate;
     private String fullName;
     private int weight;

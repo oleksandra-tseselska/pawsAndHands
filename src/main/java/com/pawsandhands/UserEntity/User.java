@@ -1,9 +1,7 @@
 package com.pawsandhands.UserEntity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.pawsandhands.PetEntity.Pet;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,4 +40,11 @@ public class User {
     private Timestamp createdAt;        //automatically puts data
     @UpdateTimestamp
     private Timestamp updatedAt;        //automatically puts data
+
+    @ManyToMany
+    @JoinTable(
+        name = "pets_owners",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "pet_id"))
+    private Set<Pet> ownedPets;
 }
