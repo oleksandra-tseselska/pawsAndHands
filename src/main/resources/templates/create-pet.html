@@ -164,8 +164,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="medical" class="form-label">Specify medical issues with the pet, vaccines taken for the puppies etc</label>
-                                <textarea type="text" class="form-control" id="medical" name="medical"></textarea>
+                                <label for="medicalInfo" class="form-label">Specify medical issues with the pet, vaccines taken for the puppies etc</label>
+                                <textarea type="text" class="form-control" id="medicalInfo" name="medicalInfo"></textarea>
                             </div>
 
 
@@ -176,6 +176,14 @@
                 </div>
             </div>
             <br>
+
+            <div class="col">
+                <p th:if="${message}">
+                  <span th:if="${message == 'pet_profile_creation_failed'}">
+                  <label th:if="${error}" th:text="${error}"></label>
+                  </span>
+                </p>
+            </div>
 
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
