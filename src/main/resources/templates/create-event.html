@@ -31,8 +31,18 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="eventDate" class="form-label">Date</label>
-                    <input type="date" class="form-control" id="eventDate" name="eventDate" min="2022-02-05" required>
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="date" name="date" min="2022-02-05" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="country">Country</label>
+                    <div th:insert="fragments/countries.html :: countries" id="country" ></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="city" class="form-label">City</label>
+                    <input type="text" class="form-control" id="city" name="city" required>
                 </div>
 
                 <div class="mb-3">
@@ -45,10 +55,9 @@
                     <input type="text" class="form-control" id="sponsors" name="sponsors">
                 </div>
 
-
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <input type="text" class="form-control" id="description" name="description" required>
+                    <textarea class="form-control" id="description" name="description" rows="4" cols="50"></textarea>
                 </div>
 
                 <div class="mb-3">
