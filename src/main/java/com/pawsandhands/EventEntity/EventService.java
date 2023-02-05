@@ -16,7 +16,8 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
-    public void createEvent(Event event){
+    public void createEvent(Event event, User user){
+        event.setCreatedBy(user.getId());                     //TO CHECK WHEN USER WILL BE LOGGED IN
         this.eventRepository.save(event);
     }
 

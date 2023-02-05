@@ -23,10 +23,17 @@ public class EventController {
 
 
     //To change return location
+    @GetMapping("/createEvent")
+    public String showEventApproval(){
+        return "create-event";
+    }
+
+
+    //To change return location
     @PostMapping("/createEvent")
-    public String handleEventCreation(Event event) throws Exception {
+    public String handleEventCreation(Event event, User user) throws Exception {
         try {
-            this.eventService.createEvent(event);
+            this.eventService.createEvent(event, user);
         }catch (Exception e){
             return "redirect:create-event" + e.getMessage();
         }
