@@ -12,7 +12,7 @@
 </head>
 <body>
 <!-- this is fragment for header to display -->
-<div th:insert="fragments/header.html :: header"></div>
+<div th:insert="~{fragments/header.html :: header}"></div>
 
 
   <div class="container">
@@ -20,10 +20,14 @@
       <div class="col-lg-3"></div>
 
       <div class="col-lg-6">
-        <h1 class="text-center">Create profile for your pet</h1>
+
+
+
+        <h1 class="text-center">Create profile for your pet
+          </h1>
         <br>
 
-        <form action="/createPet" method="post" id="createPet" >
+        <form action="/create-pet" method="post" id="create-pet" >
 
             <div class="mb-3">
                 <label for="nickname" class="form-label">How do you call your pet on a daily basis?</label>
@@ -121,7 +125,7 @@
                                     <input type="number" class="form-control" id="weight" name="weight">
                                 </div>
                                 <div class="col mb-3">
-                                    <label for="height" class="form-label">Height (), cm</label>
+                                    <label for="height" class="form-label">Height, cm</label>
                                     <input type="number" class="form-control" id="height" name="height" aria-describedby="heightHelp">
                                 </div>
                                 <div id="heightHelp" class="form-text">Place your measuring tape at the base
@@ -133,11 +137,11 @@
                             <div class="row">
                                 <div class="col mb-3">
                                     <label for="furColor" class="form-label">Primary fur color</label>
-                                    <input type="color" class="form-control" id="furColor" name="furColor">
+                                    <input type="text" class="form-control" id="furColor" name="furColor">
                                 </div>
                                 <div class="col mb-3">
                                     <label for="eyeColor" class="form-label">Primary eye color</label>
-                                    <input type="color" class="form-control" id="eyeColor" name="eyeColor">
+                                    <input type="text" class="form-control" id="eyeColor" name="eyeColor">
                                 </div>
                             </div>
 
