@@ -30,8 +30,8 @@ public class Pet {
     private boolean died;
     private String deathdate;
     private String fullName;
-    private int weight;
-    private int height;
+    private Integer weight;
+    private Integer height;
     private String furColor;
     private String eyeColor;
     private String mother;

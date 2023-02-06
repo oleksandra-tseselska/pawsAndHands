@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 @Repository
 public interface PetRepository extends CrudRepository<Pet, Long> {
-    Pet findByTypeSexOrderByNickname(String type, String sex);
+    Pet findByTypeOrderByNickname(String type);
 
 @Override
 ArrayList<Pet> findAll();

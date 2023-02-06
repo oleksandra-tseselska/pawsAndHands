@@ -24,7 +24,8 @@ public class PetController {
         try{
             this.petService.createPet(pet);
             System.out.println(pet);
-            model.addAttribute("message", "signup_success");
+
+
         }
         catch(Exception e){
             model.addAttribute("message", "pet_profile_creation_failed");
@@ -33,7 +34,17 @@ public class PetController {
             return "create-pet";
 
         }
-        return "redirect:/create-pet?message=signup_success"; //when we want to send user to another endpoint
+//        return "redirect:/create-pet?message=signup_success"; //when we want to send user to another endpoint
+        model.addAttribute("message", "signup_success");
+        model.addAttribute("petId", pet.getId());
+        model.addAttribute("petName", pet.getNickname());
+
+        return "create-pet-success";
+    }
+
+    @GetMapping("/create-pet-success")
+    public String showCreatePetSuccessPage(){
+        return "create-pet-success"; //will find register in the Template folder. When we want to display the page
     }
 
 
