@@ -25,10 +25,6 @@ public class UserController {
         return "profile-page";
     }
 
-//    @PostMapping ("/profile-page")                               //To add e-mail and password check
-//    public String showProfilePage(){
-//        return "redirect:profile-page";
-//    }
 
     @GetMapping("/registration")                        //OK
     public String showRegistrationForm(){
@@ -68,6 +64,23 @@ public class UserController {
             return "redirect:profile-page";
         }catch(Exception e){
             return "redirect:registration-approval?message=login_failed&error=" + e.getMessage();
+
+        }
+    }
+
+    @GetMapping("/logInStartPage")                        //NEW
+    public String showLoggedInMode(){
+        return "profile-page";
+    }
+
+    @PostMapping ("/logInStartPage")                               //NEW
+    public String handleUserLogin2(User user){
+
+        try{
+            User loggedInUser = userService.verifyUser(user);
+            return "redirect:profile-page";
+        }catch(Exception e){
+            return "redirect:/?message=login_failed&error=" + e.getMessage();
 
         }
 
