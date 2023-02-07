@@ -22,11 +22,11 @@
     <h2 style="margin-left: 45px">Registration form:</h2>
 
 
-    <form action="/registrationApproval" method="post" style="align-content: center; margin-top: 20px">   <!-- User class object -->
+    <form action="/register" method="post" style="align-content: center; margin-top: 20px">   <!-- User class object -->
 
       <label style="margin-left:35px; font-size: 15px">Please select your status:</label>
       <br>
-      <select style="margin-top:10px; margin-left: 35px; padding: 3px 5px" name="status">                   <!-- Field of User class object where input will be saved -->
+      <select style="margin-top:10px; margin-left: 35px; padding: 3px 5px" name="status" th:value="${user?.getStatus()}">                   <!-- Field of User class object where input will be saved -->
         <option value="Pet owner">Pet owner</option>
         <option value="Service provider">Service provider</option>
         <option value="Pet owner and service provider">Pet owner and service provider</option>
@@ -35,31 +35,31 @@
 
       <br>
 
-      <input style="margin-top:20px; margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="name" placeholder="Name" required>          <!-- Field of User class object where input will be saved -->
+      <input style="margin-top:20px; margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="name" placeholder="Name" required th:value="${user?.getName()}">          <!-- Field of User class object where input will be saved -->
 
       <br><br>
 
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="surname" placeholder="Surname" required>
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="surname" placeholder="Surname" required th:value="${user?.getSurname()}">
 
       <br><br>
 
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="email" name="email" placeholder="E-mail" required>
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="email" name="email" placeholder="E-mail" required th:value="${user?.getEmail()}">
 
       <br><br>
 
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="breeder_licence" placeholder="Breeder licence No">
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="breeder_licence" placeholder="Breeder licence No" th:value="${user?.getBreeder_licence()}">
 
       <br><br>
 
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="country" placeholder="Country" required>
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="country" placeholder="Country" required th:value="${user?.getCountry()}">
 
       <br><br>
 
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="city" placeholder="City" required>
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="city" placeholder="City" required th:value="${user?.getCity()}">
 
       <br><br>
 
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="tel" name="telephone" placeholder="Telephone" required>
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="tel" name="telephone" placeholder="Telephone" required th:value="${user?.getTelephone()}">
 
       <br><br>
 
@@ -67,7 +67,7 @@
             at least one special symbol(!@#$%^&*=+-_), total length should be >= 8 and <= 16  -->
       <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="password" oninvalid="alert('Password should contain at least one lowercase letter, at least one ' +
      'uppercase letter, at least one numeric value,at least one special symbol(!@#$%^&*=+-_), total length should' +
-      ' be from 8 till 16 symbols')" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$" placeholder="Password">
+      ' be from 8 till 16 symbols')" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$" placeholder="Password" th:value="${user?.getPassword()}">
 
       <br><br>
 
@@ -75,7 +75,7 @@
 
       <br>
 
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="file" accept="image/*" name="photo">
+      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="file" accept="image/*" name="photo" th:value="${user?.getPhoto()}">
 
       <br>
 

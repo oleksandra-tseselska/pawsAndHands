@@ -8,10 +8,13 @@ import java.util.ArrayList;
 
 @Repository
 public interface UserRepository extends CrudRepository <User,Long> {
-    User findById(Integer id);
+    User findById(Integer id);  //Below is method with type Long, not Int
 
     @Override
     ArrayList<User> findAll();
 
-    User findByEmail(String email);     //SQL query to find user by e-mail
+    User findUserByEmailAndPassword(String email, String password); //For login purposes, searching in User table
+
+    User findUserById(Long userId);
+
 }
