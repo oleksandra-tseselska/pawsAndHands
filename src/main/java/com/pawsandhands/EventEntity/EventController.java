@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -45,12 +46,28 @@ public class EventController {
     @GetMapping("/all-events")
     public String showAllEvents(Model model){
         try {
-            model.addAttribute("eventList", this.eventService.findAll());
+//            model.addAttribute("eventList", this.eventService.findAll());
+            model.addAttribute("eventList", this.eventService.findAllByDateIsAfterOrderByDate());
         }catch (Exception e){
             return "redirect:all-events" + e.getMessage();
         }
 
         return "all-events";
+    }
+
+    @GetMapping("/view-event/{eventId}")
+    public String viewEventInfo(@PathVariable Integer eventId,
+                               Model model)
+    {
+        Event event = eventService.findById(eventId);
+
+        try{
+            model.addAttribute("eventData", eventService.findById(eventId));
+        }catch (Exception e){
+            return "redirect:all-events?message=search_filed&error=" + e.getMessage();
+        }
+
+        return "view-event";
     }
 
 
