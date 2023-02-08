@@ -21,6 +21,27 @@ public class UserService {
         this.userRepository.save(user);
     }
 
+    public User verifyUser (User userLoginRequest) throws Exception {
+
+        //Checking for a user in DB (email + password)
+        User foundUser = this.userRepository.findUserByEmailAndPassword(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+
+        //If we don't find => we throw exception
+        if(foundUser == null){
+            throw new Exception("Username or password is incorrect");
+        }
+
+        //If we find it=> we return user info
+        return foundUser;
+    }
+
+    public void findUserById(Long userId) throws Exception{
+        this.userRepository.findById(userId).orElseThrow();   //if user is not found =>exception is thrown
+    }
+
+
+
+
     public ArrayList<User> findAll() {
         return userRepository.findAll();
     }

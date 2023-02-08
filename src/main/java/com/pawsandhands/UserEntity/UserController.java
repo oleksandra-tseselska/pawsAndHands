@@ -19,37 +19,73 @@ public class UserController {
         this.userService=userService;
     }
 
+
     @GetMapping ("/profile-page")                               //To add e-mail and password check
     public String showPage(){
         return "profile-page";
     }
-    @PostMapping ("/profile-page")                               //To add e-mail and password check
-    public String showProfilePage(){
-        return "redirect:profile-page";
-    }
 
-    @GetMapping("/registration")
+
+    @GetMapping("/registration")                        //OK
     public String showRegistrationForm(){
         return "registration";
     }
 
-    @GetMapping("/registrationApproval")
-    public String showRegistrationApproval(){
-        return "registration-approval";
-    }
 
-    @PostMapping("/registrationApproval")
-    public String handleUserRegistration(User user) throws Exception {
+    @PostMapping("/register")
+    public String handleUserRegistration(User user, Model model) throws Exception {  //OK 2
         try {
             this.userService.createUser(user);
         }catch (Exception e){
-            return "redirect:registration" + e.getMessage();
+            model.addAttribute("message", "signup_failed");
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("user", user);
+            return "registration";
+        }
+        return ("redirect:registration-approval?message=signup_success");
+    }
+
+    @GetMapping("/registration-approval")                                      //OK 3
+    public String showRegistrationApprovalLoginPage(
+            @RequestParam(name = "message", required = false) String message,
+            Model model
+    ){
+        model.addAttribute("message", message);
+        return "registration-approval";
+    }
+
+
+    @PostMapping ("/registration-approval")                               //OK 4
+    public String handleUserLogin(User user){
+
+        try{
+            User loggedInUser = userService.verifyUser(user);
+//            return "redirect:profile-page/" + loggedInUser.getId(); //we can also to redirect to profile, but differently (cookies)
+            return "redirect:profile-page";
+        }catch(Exception e){
+            return "redirect:registration-approval?message=login_failed&error=" + e.getMessage();
+
+        }
+    }
+
+    @GetMapping("/logInStartPage")                        //NEW
+    public String showLoggedInMode(){
+        return "profile-page";
+    }
+
+    @PostMapping ("/logInStartPage")                               //NEW
+    public String handleUserLogin2(User user){
+
+        try{
+            User loggedInUser = userService.verifyUser(user);
+            return "redirect:profile-page";
+        }catch(Exception e){
+            return "redirect:/?message=login_failed&error=" + e.getMessage();
+
         }
 
-        //Does not work: registration-approval?message=signupsuccess
-        return ("registration-approval");
-
     }
+
 
     @GetMapping("/all-users")
     public String showUsers(Model model){
@@ -62,6 +98,8 @@ public class UserController {
 
         return "all-users";
     }
+
+
 
     @GetMapping("/viewUserInfo/{userId}")
     public String viewUserInfo(@PathVariable Integer userId,
