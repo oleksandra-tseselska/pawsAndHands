@@ -18,7 +18,8 @@
 @media (min-width: 768px) {
     .view-user-img {
         /* I need some time to figure out how to do it better */
-        border-radius: 50%;
+        /*border-radius: 50%;*/
+        border-radius: 10px;
         width: 100%;
         height: 100%;
     }

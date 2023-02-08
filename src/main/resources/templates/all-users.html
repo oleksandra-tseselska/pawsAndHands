@@ -13,21 +13,30 @@
 </head>
 <body>
 <!-- this is fragment for header to display -->
-<div th:insert="~{fragments/header.html :: header}"></div>
+<header th:insert="~{fragments/header.html :: header}"></header>
 
 
 
-  <main>
+  <main class="ps-2 pe-2">
       <section>
-<!--         Two decisions:
+<!--         Three decisions:
         1. masonry: add first <ul> style="padding-left: 0;" data-masonry='{"percentPosition": true}'
            + <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-        2. css .all-user-img add to <img>
+        2. css .all-user-img add to <img> ?
+        3. add to class col "d-flex align-items-stretch"
 -->
-        <ul  class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4" style="padding-left: 0;"  data-masonry='{"percentPosition": true,  "itemSelector": ".col" }' th:if="${!usersList.isEmpty()}">
+        <ul  class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4 ps-0"
+             data-masonry='{"percentPosition": true,  "itemSelector": ".col" }'
+             th:if="${!usersList.isEmpty()}"
+        >
             <li class="col" th:each="userItem: ${usersList}">
-                <div style="text-align: center" class="card">
-                    <img th:src="${userItem.photo}" class="card-img-top">
+                <div class="card text-center">
+                    <img
+                            th:src="${userItem.photo}"
+                            class="card-img-top"
+                            loading="lazy"
+                            alt="Profile photo"
+                    >
                     <div class="card-body">
                         <a
                                 th:href="'viewUserInfo/'+${userItem.getId()}"
@@ -114,6 +123,7 @@
         </ul>
     </section>
   </main>
+  <footer th:insert="~{fragments/footer.html :: footer}"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>

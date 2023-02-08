@@ -3,6 +3,7 @@ package com.pawsandhands.EventEntity;
 import com.pawsandhands.UserEntity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -39,6 +40,17 @@ public class EventController {
         }
         return ("create-event");
 
+    }
+
+    @GetMapping("/all-events")
+    public String showAllEvents(Model model){
+        try {
+            model.addAttribute("eventList", this.eventService.findAll());
+        }catch (Exception e){
+            return "redirect:all-events" + e.getMessage();
+        }
+
+        return "all-events";
     }
 
 
