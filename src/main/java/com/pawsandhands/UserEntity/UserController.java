@@ -1,12 +1,11 @@
 package com.pawsandhands.UserEntity;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
@@ -20,9 +19,17 @@ public class UserController {
     }
 
 
-    @GetMapping ("/profile-page")                               //To add e-mail and password check
-    public String showPage(){
-        return "profile-page";
+    @GetMapping ("/profile-page/{userId}")                               //To add e-mail and password check
+    public String showPage(@PathVariable Long userId, Model model,
+                           @CookieValue(value = "userId") String userIdFromCookie){
+        try{
+            System.out.println(userIdFromCookie);
+            model.addAttribute("user", userService.findUserById(Long.valueOf(userIdFromCookie)));
+            return "profile-page";
+
+        }catch (Exception e){
+            return "redirect:/?message=user_not_found";
+        }
     }
 
 
@@ -56,29 +63,41 @@ public class UserController {
 
 
     @PostMapping ("/registration-approval")                               //OK 4
-    public String handleUserLogin(User user){
+    public String handleUserLogin(User user, HttpServletResponse response){
 
         try{
             User loggedInUser = userService.verifyUser(user);
-//            return "redirect:profile-page/" + loggedInUser.getId(); //we can also to redirect to profile, but differently (cookies)
-            return "redirect:profile-page";
+
+            Cookie cookie = new Cookie("userId", loggedInUser.getId().toString());
+            response.addCookie(cookie);
+            response.addCookie(new Cookie("userIsLoggedIn", "true"));
+
+            return "redirect:profile-page/" + loggedInUser.getId();
+
         }catch(Exception e){
             return "redirect:registration-approval?message=login_failed&error=" + e.getMessage();
 
         }
     }
 
+
     @GetMapping("/logInStartPage")                        //NEW
     public String showLoggedInMode(){
         return "profile-page";
     }
 
-    @PostMapping ("/logInStartPage")                               //NEW
-    public String handleUserLogin2(User user){
+    @PostMapping ("/logInStartPage")                                           //NEW
+    public String handleUserLogin2(User user, HttpServletResponse response){
 
         try{
             User loggedInUser = userService.verifyUser(user);
-            return "redirect:profile-page";
+
+            Cookie cookie = new Cookie("userId", loggedInUser.getId().toString());
+            response.addCookie(cookie);
+            response.addCookie(new Cookie("userIsLoggedIn", "true"));
+
+            return "redirect:profile-page/" + loggedInUser.getId();
+
         }catch(Exception e){
             return "redirect:/?message=login_failed&error=" + e.getMessage();
 

@@ -20,7 +20,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)              //auto_increment for primary key
-    private long id;
+    private Long id;
     private String name;
     private String surname;
     @Column(unique = true)

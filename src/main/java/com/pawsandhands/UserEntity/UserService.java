@@ -35,10 +35,10 @@ public class UserService {
         return foundUser;
     }
 
-    public void findUserById(Long userId) throws Exception{
-        this.userRepository.findById(userId).orElseThrow();   //if user is not found =>exception is thrown
-    }
 
+    public User findUserById(Long userId) throws Exception {
+        return this.userRepository.findById(userId).orElseThrow();
+    }
 
 
 
