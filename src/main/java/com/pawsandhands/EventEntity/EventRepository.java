@@ -4,6 +4,7 @@ import com.pawsandhands.UserEntity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public interface EventRepository extends CrudRepository<Event,Long> {
     Event findById(Integer eventId);
 
     ArrayList<Event> findAll();
-    ArrayList<Event> findAllByDateIsAfterOrderByDate(String date);
+    ArrayList<Event> findAllByOrderByDate();
 
 //    ArrayList<Event> findFirst3ByDateIsAfterOrderByDate(String date);
 }

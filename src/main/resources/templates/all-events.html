@@ -7,27 +7,21 @@
 <body>
 <header th:insert="~{fragments/header.html :: header}"></header>
 <main>
-    <section>
+    <section class="container">
             <div class="row pt-5">
                 <div class="col-12">
-                    <h3 class="text-uppercase border-bottom mb-4 text-center">Upcoming events</h3>
+                    <h3 class="text-uppercase mb-4 text-center">Upcoming events</h3>
                 </div>
             </div>
-            <ul class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 ps-2 pe-2">
+<!--        Use row-cols-sm-2 if ypu have more than 3 cars-->
+            <ul class="row row-cols-1 row-cols-lg-3 g-4 ps-2 pe-2">
                 <!--ADD CLASSES HERE d-flex align-items-stretch-->
                 <li th:each="eventItem: ${eventList}" class="col d-flex align-items-stretch">
-                    <article class="card">
-                        <img
-                                src="https://www.pravmir.ru/wp-content/uploads/2021/06/2-7-936x560.jpg"
-                                class="card-img-top"
-                                loading="lazy"
-                                alt="Card Image">
-                        <div class="card-body d-flex flex-column">
-                            <h5 th:text="${eventItem.name}" class="card-title"></h5>
-                            <p th:text="${eventItem.date}" class="align-self-end"></p>
-                            <p th:text="${eventItem.description}" class="card-text mb-4"></p>
-                            <a th:href="'view-event/'+${eventItem.getId()}" class="btn btn-primary text-white mt-auto align-self-end">See more</a>
-                        </div>
+                    <article class="card-body d-flex flex-column border rounded p-0">
+                        <p th:text="${eventItem.date}" class="align-self-end p-2"></p>
+                        <h5 th:text="${eventItem.name}" class="card-title border-bottom p-2 text-center"></h5>
+                        <p th:text="${eventItem.description}" class="card-text mb-4 p-2" style="text-align: justify"></p>
+                        <a th:href="'view-event/'+${eventItem.getId()}" class="btn btn-primary text-white mt-auto align-self-end m-2">See more</a>
                     </article>
                 </li>
             </ul>

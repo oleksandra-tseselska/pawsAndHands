@@ -4,6 +4,7 @@ import com.pawsandhands.UserEntity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    public ArrayList<Event> findAllByDateIsAfterOrderByDate(String date) {
-        return eventRepository.findAllByDateIsAfterOrderByDate(date);
+    public ArrayList<Event> findAllByOrderByDate() {
+        return eventRepository.findAllByOrderByDate();
     }
 
     public Event findById(Integer eventId){ return eventRepository.findById(eventId);}
