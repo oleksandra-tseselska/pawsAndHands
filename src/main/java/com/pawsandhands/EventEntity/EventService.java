@@ -27,8 +27,8 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    public ArrayList<Event> findAllByDateIsAfterOrderByDate() {
-        return eventRepository.findAllByDateIsAfterOrderByDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+    public ArrayList<Event> findAllByDateIsAfterOrderByDate(String date) {
+        return eventRepository.findAllByDateIsAfterOrderByDate(date);
     }
 
     public Event findById(Integer eventId){ return eventRepository.findById(eventId);}

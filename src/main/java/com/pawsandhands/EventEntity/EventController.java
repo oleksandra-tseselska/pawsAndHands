@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Controller
 public class EventController {
 
@@ -45,9 +48,12 @@ public class EventController {
 
     @GetMapping("/all-events")
     public String showAllEvents(Model model){
+        String dateNow = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         try {
-//            model.addAttribute("eventList", this.eventService.findAll());
-            model.addAttribute("eventList", this.eventService.findAllByDateIsAfterOrderByDate());
+            model.addAttribute(
+                    "eventList",
+                    this.eventService.findAllByDateIsAfterOrderByDate(dateNow)
+            );
         }catch (Exception e){
             return "redirect:all-events" + e.getMessage();
         }
@@ -59,7 +65,6 @@ public class EventController {
     public String viewEventInfo(@PathVariable Integer eventId,
                                Model model)
     {
-        Event event = eventService.findById(eventId);
 
         try{
             model.addAttribute("eventData", eventService.findById(eventId));
