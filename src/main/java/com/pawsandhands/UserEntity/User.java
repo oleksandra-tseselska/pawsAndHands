@@ -35,8 +35,6 @@ public class User {
     @Lob                               //annotation for BLOB format in DB; B64image Spring - saving like String
     private byte[] photo;
 
-//     private String photo;
-
     @CreationTimestamp
     private Timestamp createdAt;        //automatically puts data
     @UpdateTimestamp

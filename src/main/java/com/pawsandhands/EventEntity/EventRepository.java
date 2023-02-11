@@ -16,6 +16,8 @@ public interface EventRepository extends CrudRepository<Event,Long> {
 
     Event findById(Integer eventId);
 
+    ArrayList<Event> findEventByUser(User user);        //For My Events section
+
     ArrayList<Event> findAll();
     ArrayList<Event> findAllByOrderByDate();
 

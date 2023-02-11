@@ -71,6 +71,28 @@ public class EventController {
         return "all-events";
     }
 
+
+
+    //For My Events page
+
+    @GetMapping("/my-events")
+    public String showMyEvents(Model model, @CookieValue(value = "userId") String userIdFromCookie){
+        try {
+            System.out.println(userIdFromCookie);
+            User userWhoCreatedEvents = userService.findUserById(Long.valueOf(userIdFromCookie));
+
+            ArrayList<Event> myEvents = this.eventService.findEventsByUser(userWhoCreatedEvents);
+            model.addAttribute("myEventsList", myEvents);
+            return "my-events";
+
+        }catch (Exception e){
+            return "redirect:all-events" + e.getMessage();          //Endpoint can be changed !!!
+        }
+    }
+
+
+
+
     @GetMapping("/view-event/{eventId}")
     public String viewEventInfo(@PathVariable Integer eventId,
                                 Model model)
