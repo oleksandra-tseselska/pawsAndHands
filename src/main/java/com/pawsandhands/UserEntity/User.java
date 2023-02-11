@@ -32,10 +32,10 @@ public class User {
     private String telephone;
     private String password;
     //boolean isAdmin;
-//    @Lob                               //annotation for BLOB format in DB; B64image Spring - saving like String
-//    private Byte[] photo;
+    @Lob                               //annotation for BLOB format in DB; B64image Spring - saving like String
+    private byte[] photo;
 
-     private String photo;
+//     private String photo;
 
     @CreationTimestamp
     private Timestamp createdAt;        //automatically puts data
