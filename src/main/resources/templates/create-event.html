@@ -24,6 +24,9 @@
 
             <form action="/createEvent" method="post" id="createEvent">
 
+                <div class="mb-3">
+                    <input th:text="${userID}" type="hidden" id="userID" name="userID" required>
+                </div>
 
                 <div class="mb-3">
                     <label for="name" class="form-label">Event name</label>
