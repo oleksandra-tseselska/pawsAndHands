@@ -38,7 +38,7 @@ public class EventController {
 
     //To change return location
     @PostMapping("/createEvent")
-    public String handleEventCreation(Event event, User user, @CookieValue(value = "userId") String userIdFromCookie) throws Exception {
+    public String handleEventCreation(Event event, @CookieValue(value = "userId") String userIdFromCookie) throws Exception {
         try {
             System.out.println(userIdFromCookie);
             User eventUser = userService.findUserById(Long.valueOf(userIdFromCookie));
