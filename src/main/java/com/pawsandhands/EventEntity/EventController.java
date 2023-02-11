@@ -3,6 +3,8 @@ package com.pawsandhands.EventEntity;
 import com.pawsandhands.UserEntity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -31,9 +33,10 @@ public class EventController {
 
     //To change return location
     @PostMapping("/createEvent")
-    public String handleEventCreation(Event event, User user) throws Exception {
+    public String handleEventCreation(Event event, @CookieValue(value = "userId") String userIdFromCookie) throws Exception {
         try {
-            this.eventService.createEvent(event, user);
+            System.out.println(userIdFromCookie);
+            this.eventService.createEvent(event);
         }catch (Exception e){
             return "redirect:create-event" + e.getMessage();
         }

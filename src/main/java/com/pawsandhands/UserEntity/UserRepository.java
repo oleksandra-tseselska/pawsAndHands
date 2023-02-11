@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 @Repository
 public interface UserRepository extends CrudRepository <User,Long> {
+
     User findById(Integer id);  //Below is method with type Long, not Int
 
     @Override
