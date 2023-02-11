@@ -86,7 +86,7 @@ public class EventController {
             return "my-events";
 
         }catch (Exception e){
-            return "redirect:all-events" + e.getMessage();          //Endpoint can be changed !!!
+            return "redirect:create-event" + e.getMessage();          //Endpoint can be changed !!!
         }
     }
 
