@@ -1,11 +1,14 @@
 package com.pawsandhands.UserEntity;
 
+import com.pawsandhands.EventEntity.Event;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @Controller
 public class UserController {
@@ -24,14 +27,27 @@ public class UserController {
                            @CookieValue(value = "userId") String userIdFromCookie){
         try{
             System.out.println(userIdFromCookie);
-            model.addAttribute("user", userService.findUserById(Long.valueOf(userIdFromCookie)));
-            return "profile-page";
+            model.addAttribute("userData", userService.findUserById(Long.valueOf(userIdFromCookie)));
+//            return "profile-page";
+                return "viewUserInfo";
 
         }catch (Exception e){
             return "redirect:/?message=user_not_found";
         }
     }
 
+    @GetMapping("/profile")
+    public String showMyEvents(Model model, @CookieValue(value = "userId") String userIdFromCookie){
+        try {
+            User userData = this.userService.findUserById(Long.valueOf(userIdFromCookie));
+            model.addAttribute("userData", userData);
+
+            return "viewUserInfo";
+
+        }catch (Exception e){
+            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+        }
+    }
 
     @GetMapping("/registration")                        //OK
     public String showRegistrationForm(){
