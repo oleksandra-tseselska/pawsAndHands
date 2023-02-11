@@ -21,9 +21,10 @@
                     <p th:text="${myEventItem.getDate()}" class="align-self-end p-2"></p>
                     <h5 th:text="${myEventItem.getName()}" class="card-title border-bottom p-2 text-center"></h5>
                     <p th:text="${myEventItem.getDescription()}" class="card-text mb-4 p-2" style="text-align: justify"></p>
-
-                    <a th:href="'update-event/'" class="btn btn-primary text-white mt-auto align-self-end m-2">Update event</a>
-                    <a th:href="'view-event/'+${myEventItem.getId()}" class="btn btn-primary text-white mt-auto align-self-end m-2"> See my event</a>
+                    <div class="d-flex mt-auto justify-content-around">
+                        <a th:href="'view-event/'+${myEventItem.getId()}" class="btn btn-primary text-white m-2"> See my event</a>
+                        <a th:href="'update-event/'" class="btn btn-primary text-white m-2">Update event</a>
+                    </div>
                 </article>
             </li>
         </ul>
