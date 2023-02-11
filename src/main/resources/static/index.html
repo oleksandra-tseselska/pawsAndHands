@@ -2,18 +2,23 @@
 <html lang="en" >
 
 <head>
-    <meta charset="UTF-8">
-    <title>Welcome page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- CSS for header to look good -->
+    <!-- 05.02.23 add "/" before header it make css more stable, previous version <link rel="stylesheet" href="header.css">-->
+    <link href="/header.css" rel="stylesheet">
+    <!-- Google Fonts styles-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/loginstyle.css">
-
-
     <style>
         body {
             background: url("/catdog.jpeg") no-repeat;
             background-size: cover;
+            /*z-index: -1;*/
         }
     </style>
 
@@ -33,24 +38,46 @@
     </nav>
 </header>
 
+<main>
+    <section class="container">
+        <div class="row justify-content-end">
+            <div class="col col-md-5 col-lg-4 card p-4">
+                <form action="/logInStartPage" method="post" class="row justify-content-end">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                        <input type="email" placeholder="E-mail" name="email" class="form-control" id="exampleFormControlInput1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Password</label>
+                        <input type="password" placeholder="Password" name="password" class="form-control" id="exampleFormControlTextarea1">
+                    </div>
+                    <button type="submit" class="btn btn-success mb-2 me-2" style="max-width: 165px;" >Login</button>
+                </form>
+                <form action="/registration" method="get" class="d-flex align-self-end">
+                    <button type="submit" class="btn btn-primary">Create new account</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+<!--    <div style="padding-bottom: 20px; border-radius: 5%; background-color: white; float: right; width: 25%; margin-top: 10px; margin-right: 45px">-->
 
-    <div style="padding-bottom: 20px; border-radius: 5%; background-color: white; float: right; width: 25%; margin-top: 10px; margin-right: 45px">
-
-        <form action="/logInStartPage" method="post" style="align-content: center; margin-top: 40px" >
+<!--        <form action="/logInStartPage" method="post" style="align-content: center; margin-top: 40px" >-->
 
 
-            <input style="margin-left: 42px; padding: 6px 10px" size="25px" type="email" placeholder="E-mail" name="email">
-            <br><br>
+<!--            <input style="margin-left: 42px; padding: 6px 10px" size="25px" type="email" placeholder="E-mail" name="email">-->
+<!--            <br><br>-->
 
-            <input style="margin-left: 42px; padding: 6px 10px" size="25px" type="password" placeholder="Password" name="password">
-            <br><br><br>
-            <button type="submit" style="margin-left: 65px; border-color: darkslateblue; background-color:darkslateblue;color: white; padding: 5px 70px">Login</button>
-        </form>
+<!--            <input style="margin-left: 42px; padding: 6px 10px" size="25px" type="password" placeholder="Password" name="password">-->
+<!--            <br><br><br>-->
+<!--            <button type="submit" style="margin-left: 65px; border-color: darkslateblue; background-color:darkslateblue;color: white; padding: 5px 70px">Login</button>-->
+<!--        </form>-->
 
-        <form action="/registration" method="get">
-            <button type="submit" style="margin-left: 65px; border-color: green; background-color:green;color: white; margin-top: 10px; padding: 5px 28px">Create new account</button>
-        </form>
+<!--        <form action="/registration" method="get">-->
+<!--            <button type="submit" style="margin-left: 65px; border-color: green; background-color:green;color: white; margin-top: 10px; padding: 5px 28px">Create new account</button>-->
+<!--        </form>-->
 
-    </div>
+<!--    </div>-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
