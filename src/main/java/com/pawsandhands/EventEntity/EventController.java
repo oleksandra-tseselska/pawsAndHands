@@ -76,7 +76,6 @@ public class EventController {
     }
 
 
-
     //For My Events page
 
     @GetMapping("/my-events")
