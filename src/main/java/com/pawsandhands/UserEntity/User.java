@@ -2,24 +2,24 @@ package com.pawsandhands.UserEntity;
 
 import com.pawsandhands.PetEntity.Pet;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-
+@Getter
+@Setter
 @Entity
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)              //auto_increment for primary key
+    @GeneratedValue(strategy = GenerationType.AUTO) //auto_increment for primary key
+    @Column(name = "userId")
     private Long id;
     private String name;
     private String surname;
@@ -43,7 +43,31 @@ public class User {
     @ManyToMany
     @JoinTable(
         name = "pets_owners",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "pet_id"))
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"),
+        inverseJoinColumns = @JoinColumn(name = "pet_id", referencedColumnName = "petId"))
     private Set<Pet> ownedPets;
+
+    public int getNumberOfPets(){
+        return getOwnedPets().size();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", status='" + status + '\'' +
+                ", breeder_licence='" + breeder_licence + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", password='" + password + '\'' +
+                ", photo=" + Arrays.toString(photo) +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", number of ownedPets=" + getNumberOfPets() +
+                '}';
+    }
 }

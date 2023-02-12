@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <!--    this block has all needed initial bootstrap and google fonts imports-->
-    <th:block th:include="fragments/head.html :: head"> </th:block>
+    <th:block th:include="~{fragments/head.html :: head}"> </th:block>
 
     <!--    add all your additional styles files add below this line-->
     <link href="styles-maryia.css" rel="stylesheet">
@@ -37,27 +37,27 @@
             <div class="mb-3">
                 <label for="sex" class="form-label">Is it a good boy or a good girl?</label><br>
                 <div class="btn-group" role="group" id="sex">
-                    <input type="radio" class="btn-check form-control" name="sex" id="female" autocomplete="off" required>
-                    <label class="btn btn-outline-primary" for="female">Good boy</label>
+                    <input type="radio" class="btn-check form-control" value="male" name="sex" id="male" autocomplete="off" required>
+                    <label class="btn btn-outline-primary" for="male">Good boy</label>
 
-                    <input type="radio" class="btn-check form-control" name="sex" id="male" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="male">Good girl</label>
+                    <input type="radio" class="btn-check form-control" value="female" name="sex" id="female" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="female">Good girl</label>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label for="types" class="form-label">Is it a cat or a dog?</label><br>
                 <div class="btn-group" role="group" id="types">
-                    <input type="radio" class="btn-check" name="type" id="cat" autocomplete="off" required>
+                    <input type="radio" class="btn-check" name="type" id="cat" value="cat" autocomplete="off" required>
                         <label class="btn btn-outline-primary" for="cat">Cat</label>
 
-                    <input type="radio" class="btn-check" name="type" id="dog" autocomplete="off">
+                    <input type="radio" class="btn-check" name="type" id="dog" value="dog" autocomplete="off">
                         <label class="btn btn-outline-primary" for="dog">Dog</label>
                 </div>
             </div>
 
             <label class="form-label" for="breeds">Select breed</label>
-            <div th:insert="fragments/breeds.html :: breeds" id="breeds"></div>
+            <div th:insert="~{fragments/breeds.html :: breeds}" id="breeds"></div>
             <br>
 
             <div class="mb-3">
@@ -67,7 +67,7 @@
 
             <div class="mb-3">
                 <label class="form-label" for="countries">Choose a country of permanent living</label>
-                <div th:insert="fragments/countries.html :: countries" id="countries"></div>
+                <div th:insert="~{fragments/countries.html :: countries}" id="countries"></div>
             </div>
 
             <div class="mb-3">
@@ -131,7 +131,7 @@
                                 <div id="heightHelp" class="form-text">Place your measuring tape at the base
                                     of one of your dog's front paws. Extend the tape to the top of your dog's head
                                     and note the measurement. Do this either while your dog is sitting or standing.</div>
-                                <br>
+                                <br><br>
                             </div>
 
                             <div class="row">
@@ -159,18 +159,20 @@
 
                             <div class="mb-3">
                                 <label for="childs" class="form-label">Specify children your pet may have</label>
-                                <textarea type="text" class="form-control" id="childs" name="childs"></textarea>
+                                <textarea class="form-control" id="childs" name="childs"></textarea>
                             </div>
 
                             <div class="mb-3">
                                 <label for="events" class="form-label">Specify the events where pet participated and its titles</label>
-                                <textarea type="text" class="form-control" id="events" name="events"></textarea>
+                                <textarea class="form-control" id="events" name="events"></textarea>
                             </div>
 
                             <div class="mb-3">
                                 <label for="medicalInfo" class="form-label">Specify medical issues with the pet, vaccines taken for the puppies etc</label>
-                                <textarea type="text" class="form-control" id="medicalInfo" name="medicalInfo"></textarea>
+                                <textarea class="form-control" id="medicalInfo" name="medicalInfo"></textarea>
                             </div>
+
+                            <input type="hidden" name="ownerId" th:value="${user.getId()}">
 
 
 
@@ -218,7 +220,7 @@
 </body>
 
 <footer>
-    <div th:insert="fragments/footer.html :: footer"></div>
+    <div th:insert="~{fragments/footer.html :: footer}"></div>
 </footer>
 
 </html>

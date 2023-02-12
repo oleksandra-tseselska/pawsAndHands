@@ -10,7 +10,12 @@ public interface PetRepository extends CrudRepository<Pet, Long> {
 @Override
 ArrayList<Pet> findAll();
 
-@Override
 Optional<Pet> findById(Long aLong);
+
+Pet findPetById(Long id);
+
+ArrayList<Pet> findAllByOrderByNickname();
+
+
 }
 

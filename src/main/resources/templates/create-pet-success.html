@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <!--    this block has all needed initial bootstrap and google fonts imports-->
-  <th:block th:include="fragments/head.html :: head"> </th:block>
+  <th:block th:include="~{fragments/head.html :: head}"> </th:block>
 
   <!--    add all your additional styles files add below this line-->
 
@@ -11,7 +11,7 @@
 </head>
 <body>
 <!-- this is fragment for header to display -->
-<div th:insert="fragments/header.html :: header"></div>
+<div th:insert="~{fragments/header.html :: header}"></div>
 
 <!-- insert all your code below this line -->
 <div class="container">
@@ -46,6 +46,6 @@
 
 
 <footer>
-  <div th:insert="fragments/footer.html :: footer"></div>
+  <div th:insert="~{fragments/footer.html :: footer}"></div>
 </footer>
 </html>
