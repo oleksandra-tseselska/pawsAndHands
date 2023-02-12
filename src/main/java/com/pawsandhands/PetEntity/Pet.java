@@ -55,27 +55,35 @@ public class Pet {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    public String petAge(String birthdate) throws ParseException {
+    public String petAge(Pet pet) throws ParseException {
+        String birthdate = pet.getBirthdate();
         DateTimeFormatter f = new DateTimeFormatterBuilder().parseCaseInsensitive()
                 .append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
-        try {
-            LocalDate datetime = LocalDate.parse(birthdate, f);
-            System.out.println(datetime); // 2019-12-22
-            int years = Math.toIntExact(datetime.until(LocalDate.now(), YEARS));
-            if (years > 1) {
-                return years + " years old";
-            } else {
-                int months = Math.toIntExact(datetime.until(LocalDate.now(), MONTHS));
-                if (months > 1) {
-                    return months + " months old";
-                } else {
-                    int weeks = Math.toIntExact(datetime.until(LocalDate.now(), WEEKS));
-                    return weeks + " weeks old";
-                }
-            }
-        } catch (DateTimeParseException e) {
-            return null;
-            // Exception handling message/mechanism/logging as per company standard
+        LocalDate endOflIfe = LocalDate.now();
+
+        if (pet.isDied() && !pet.getDeathdate().isBlank()) {
+            endOflIfe = LocalDate.parse(pet.getDeathdate(), f);
         }
+
+        try {
+            LocalDate birthdateParsed = LocalDate.parse(birthdate, f);
+//            System.out.println(birthdateParsed); // 2019-12-22
+
+                int years = Math.toIntExact(birthdateParsed.until(endOflIfe, YEARS));
+                if (years > 1) {
+                    return years + " years old";
+                } else {
+                    int months = Math.toIntExact(birthdateParsed.until(endOflIfe, MONTHS));
+                    if (months > 1) {
+                        return months + " months old";
+                    } else {
+                        int weeks = Math.toIntExact(birthdateParsed.until(endOflIfe, WEEKS));
+                        return weeks + " weeks old";
+                    }
+                }
+            } catch(DateTimeParseException e){
+                return null;
+                // Exception handling message/mechanism/logging as per company standard
+            }
     }
 }

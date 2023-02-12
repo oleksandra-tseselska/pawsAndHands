@@ -2,7 +2,6 @@
 <html lang="en" >
 
 <head>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
@@ -14,50 +13,63 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+    <title>Paws & Hands Social Network</title>
     <style>
         body {
             background: url("/catdog.jpeg") no-repeat;
             background-size: cover;
             /*z-index: -1;*/
         }
+
     </style>
 
 </head>
-<body class="clearfix" >
+<body>
 <header>
-    <h1>Paws & Hands Social Network</h1>
-    <nav>
-        <ul>
-            <li><a href="/">Main</a></li>
-            <li><a href="/create-pet">Create Pet</a></li>
-            <li><a href="/all-pets">See All Pets</a></li>
-            <li><a href="/edit-profile">Edit profile</a></li>
-            <li><a href="/all-users">Users</a></li>
-        </ul>
+<!--    <h1>Paws & Hands Social Network</h1>-->
+<!--    <nav>-->
+<!--        <ul>-->
+<!--            <li><a href="/">Main</a></li>-->
+<!--            <li><a href="/create-pet">Create Pet</a></li>-->
+<!--            <li><a href="/all-pets">See All Pets</a></li>-->
+<!--            <li><a href="/edit-profile">Edit profile</a></li>-->
+<!--            <li><a href="/all-users">Users</a></li>-->
+<!--        </ul>-->
 
-    </nav>
+<!--    </nav>-->
 </header>
 
 <main>
     <section class="container">
+        <div class="row" style="height: 7rem;"></div>
+
         <div class="row justify-content-end">
             <div class="col col-md-5 col-lg-4 card p-4">
-                <form action="/logInStartPage" method="post" class="row justify-content-end">
+                <form action="/logInStartPage" method="post">
+
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                        <input type="email" placeholder="E-mail" name="email" class="form-control" id="exampleFormControlInput1">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" placeholder="Email" name="email" class="form-control" id="email">
                     </div>
+
                     <div class="mb-3">
-                        <label for="exampleFormControlTextarea1" class="form-label">Password</label>
-                        <input type="password" placeholder="Password" name="password" class="form-control" id="exampleFormControlTextarea1">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" placeholder="Password" name="password" class="form-control" id="password">
                     </div>
-                    <button type="submit" class="btn btn-success mb-2 me-2" style="max-width: 165px;" >Login</button>
+
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success" type="submit">Login</button>
+                    </div>
+
                 </form>
-                <form action="/registration" method="get" class="d-flex align-self-end">
-                    <button type="submit" class="btn btn-primary">Create new account</button>
+
+                <form action="/registration" method="get" class="d-grid gap-2 mt-2">
+                    <button class="btn btn-outline-primary" type="submit">Create new account</button>
                 </form>
-            </div>
+
         </div>
+        </div>
+
     </section>
 </main>
 <!--    <div style="padding-bottom: 20px; border-radius: 5%; background-color: white; float: right; width: 25%; margin-top: 10px; margin-right: 45px">-->

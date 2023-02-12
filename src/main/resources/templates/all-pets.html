@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <!--    this block has all needed initial bootstrap and google fonts imports-->
-    <th:block th:include="~{fragments/head.html :: head}"> </th:block>
+    <th:block th:insert="~{fragments/head.html :: head}"> </th:block>
 
 <!--    add all your additional styles files add below this line-->
 
@@ -14,65 +14,62 @@
 <div th:insert="~{fragments/header.html :: header}"></div>
 
 <!-- insert all your code below this line -->
-
-<section>
+<div class="container my-4">
 
     <div th:if="${petList.isEmpty()}">
-
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <h1>There is no pets at the moment</h1>
+            </div>
+            <div class="col-2"></div>
+        </div>
     </div>
 
-    <div th:if="!${petList.isEmpty()}" class="d-flex gap-3 justify-content-evenly align-items-start">
-        <div class="card" style="width: 18rem;" th:each="pet : ${petList}">
-<!--            <div class="card-header" >-->
-            <div th:if="${pet.getType().equals('dog')}">
-                <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger" th:text="${pet.type.toLowerCase()}">
-                    <span class="visually-hidden">unread messages</span>
-                </span>
+    <div class="row">
+    <h1>All pets</h1>
+    <div th:if="!${petList.isEmpty()}" class="d-flex flex-wrap gap-3 justify-content-start align-items-start">
+        <div class="card" style="width: 15rem;" th:each="pet : ${petList}">
+            <a th:href="@{'/pet-profile/' + ${pet.getId()}}" class="text-decoration-none text-dark">
 
+            <div th:if="${pet.getType().equals('dog')}">
+                <span class="badge position-absolute top-0 end-0 bg-success">dog</span>
             </div>
 
             <div th:if="${pet.getType().equals('cat')}">
-
-
+                <span class="badge position-absolute top-0 end-0 bg-primary">cat</span>
             </div>
 
+            <span class="badge position-absolute bg-warning text-dark" th:if="${pet.isLookingForDate()}">ready for a date</span>
+            <span th:if="${pet.isDied()}" class="badge position-absolute top-50 end-0 bg-dark text-white">memorial page</span>
+            <span class="badge position-absolute top-50 end-0 bg-info text-dark" th:if="${(pet.isNewHome()) && !(pet.isDied())}">looking for a new home</span>
 
-
-<!--            Where property is one of:-->
-
-<!--            top - for the vertical top position-->
-<!--            start - for the horizontal left position (in LTR)-->
-<!--            bottom - for the vertical bottom position-->
-<!--            end - for the horizontal right position (in LTR)-->
-<!--            Where position is one of:-->
-
-<!--            0 - for 0 edge position-->
-<!--            50 - for 50% edge position-->
-<!--            100 - for 100% edge position-->
-
-                <span class="badge bg-warning text-dark">Warning</span>
-                <span class="badge bg-info text-dark">Info</span>
-
-<!--            </div>-->
             <img src="/logo.png" class="card-img-top" alt="profile-picture]">
+
             <div class="card-body">
-                <h5 class="card-title" th:text="${pet.nickname}"></h5>
-                <p class="card-text">
+                <h5 class="card-title text-truncate">
+                    <span th:if="${pet.getSex().toLowerCase().equals('female')}" th:text="Ms. "></span>
+                    <span th:if="${pet.getSex().toLowerCase().equals('male')}" th:text="Mr. "></span>
+                    <span th:text="${pet.nickname}"></span>
+                </h5>
+                <p class="card-text text-truncate">
                     <span th:text="${pet.breed} + ', '"> </span>
-<!--                    <span th:text="${pet.petAge()}"></span>-->
+                    <span th:text="${pet.petAge(pet)}"></span>
+                    <br>
+                    <span th:if="${!(pet.getCity().isEmpty()) && !(pet.getCountry().equals('--'))}" th:text="${pet.getCity()} + ', ' + ${pet.getCountry()}"></span>
+                    <br th:if="${(pet.getCity().isEmpty()) || (pet.getCountry().equals('--'))}">
+
                 </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
+            </a>
 
         </div>
 
 
 
     </div>
-
-
-</section>
-
+    </div>
+</div>
 
 
 <!--Script for Bootstrap to work well, should be placed at the end of the Body tag-->
