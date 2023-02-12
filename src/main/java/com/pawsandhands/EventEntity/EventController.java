@@ -29,6 +29,10 @@ public class EventController {
         this.userService = userService;
     }
 
+    @GetMapping("/discounts")
+    public String showDiscounts() {
+        return "discounts";
+    }
     @GetMapping("/create-event")
     public String showCreateEventPage() {
         return "create-event";
