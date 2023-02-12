@@ -87,15 +87,28 @@ public class PetController {
     @GetMapping("pet-profile/{petId}")
     public String displayPetProfile(
             @PathVariable Long petId,
-            Model model
+            Model model,
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
     ) {
         try {
             model.addAttribute("pet", petService.findPetById(petId));
+            model.addAttribute("petOwners", petService.findPetById(petId).getPetOwners());
+
+            for(User u : petService.findPetById(petId).getPetOwners()){
+                if(userIdFromCookie.equals(Long.toString(u.getId()))){
+                    model.addAttribute("currentUserIsPetOwner", true);
+                }
+            }
+
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return "pet-profile";
     }
+
+
 
     @GetMapping("all-pets")
     public String showAllPetsPage(

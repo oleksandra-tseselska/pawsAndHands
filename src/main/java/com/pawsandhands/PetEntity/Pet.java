@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.FormatStyle;
 import java.util.Set;
 import static java.time.temporal.ChronoUnit.*;
 
@@ -85,5 +86,14 @@ public class Pet {
                 return null;
                 // Exception handling message/mechanism/logging as per company standard
             }
+    }
+
+    public String dateFormatter(String date) throws ParseException {
+        DateTimeFormatter f = new DateTimeFormatterBuilder().parseCaseInsensitive()
+                .append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
+        LocalDate dateParsed = LocalDate.parse(date, f);
+
+        return dateParsed.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG));
+
     }
 }

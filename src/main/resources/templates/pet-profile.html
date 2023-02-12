@@ -8,7 +8,7 @@
 
 
   <!--    customize title of your page-->
-<!--  <title th:text="${pet.getNickname()} + ' page'"></title>-->
+  <title th:text="${pet.getNickname()} + ' page'"></title>
 </head>
 <body>
 <!-- this is fragment for header to display -->
@@ -20,56 +20,258 @@
     <div class="col-3">
     </div>
 
+<!--    PICTURE SECTION -->
+
     <div class="col-2">
       <img src="../logo.png" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;">
     </div>
 
-    <div class="col-4">
-      <h2 class="text-capitalize"> <span class="text-truncate text-lowercase" th:text="${pet.getNickname()}"> </span></h2>
+
+    <div class="col-5">
+      <div class="row">
+
+        <!--    NAMES SECTION -->
+
+        <h2 class="text-capitalize"> <span class="text-truncate" th:text="${pet.getNickname().toLowerCase()}"> </span></h2>
+        <h5 class="text-capitalize text-truncate text-muted" th:if="${!(pet.getFullName().isBlank())}" th:text="'Full official name: ' + ${pet.getFullName().toLowerCase()}"></h5>
+
         <h3 class="badge rounded-pill bg-success" th:text="${pet.getType().toLowerCase()}"></h3>
+      </div>
+
+<!--      STATUSES SECTION -->
+
+      <div class="row">
+        <div class="col">
+          <span class="badge bg-warning text-dark" th:if="${pet.isLookingForDate()}">ready for a date</span>
+        </div>
+
+        <div class="col">
+          <span class="badge bg-dark text-white" th:if="${pet.isDied()}" >memorial page</span>
+        </div>
+
+        <div class="col">
+          <span class="badge bg-info text-dark" th:if="${(pet.isNewHome())}">looking for a new home</span>
+        </div>
+
+        <br><br>
+
+      </div>
+
+<!--      PRIMARY INFO SECTION -->
+
+      <div class="row" th:if="${!pet.getBirthdate().isBlank()}">
+        <div class="col-3">
+          <span class="text-muted">Birthday:</span>
+        </div>
+        <div class="col">
+          <span th:text="${pet.dateFormatter(pet.getBirthdate())}"></span>
+          <span th:if="${!pet.isDied()}" th:text="'(' + ${pet.petAge(pet)} + ')'"></span>
+        </div>
+      </div>
+
+      <div class="row" th:if="${pet.isDied() && !(pet.getDeathdate().isBlank())}">
+        <div class="col-3">
+          <span class="text-muted">Death-day:</span>
+        </div>
+        <div class="col">
+          <span th:text="${pet.dateFormatter(pet.getDeathdate())} + ' at '"></span>
+          <span th:text="${pet.petAge(pet)}"></span>
+        </div>
+      </div>
+
+      <div class="row" th:if="${pet.isDied() && (pet.getDeathdate().isBlank())}">
+        <div class="col-3">
+          <span class="text-muted">Death-day:</span>
+        </div>
+        <div class="col">
+          <span>Not known</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3">
+          <span class="text-muted">Sex:</span>
+        </div>
+        <div class="col text-capitalize">
+          <span th:text="${pet.getSex()}"></span>
+        </div>
+      </div>
+
+      <div class="row" th:if="${!(pet.getBreed().equals('--'))}">
+        <div class="col-3">
+          <span class="text-muted">Breed:</span>
+        </div>
+        <div class="col">
+          <span th:text="${pet.getBreed()}"></span>
+        </div>
+      </div>
+
+      <div class="row" th:if="${!(pet.getCity().isBlank()) && !(pet.getCountry().equals('--'))}">
+        <div class="col-3">
+          <span class="text-muted">Hometown:</span>
+        </div>
+        <div class="col">
+          <span th:if="${!(pet.getCity().isBlank())}" th:text="${pet.getCity()} + ', '"></span>
+          <span th:if="${!(pet.getCountry().equals('--'))}" th:text="${pet.getCountry()}"></span>
+        </div>
+      </div>
+
+<!--      OWNERS SECTION -->
+
+      <div class="row align-items-center mt-4">
+        <div class="col-2"><hr></div>
+        <div class="col-2">
+          <span class="text-muted">owners</span>
+        </div>
+        <div class="col">
+          <hr>
+        </div>
+      </div>
+
+      <div class="row" th:if="!${petOwners.isEmpty()}" th:each="user : ${petOwners}">
+        <div class="col-3">
+          <span class="text-muted">Owner:</span>
+        </div>
+        <div class="col">
+          <a th:href="@{'/viewUserInfo/' + ${user.getId()}}" th:text="${user.getName()} + ' ' + ${user.getSurname()}"></a>
+        </div>
+      </div>
 
 
+<!--      FAMILY SECTION -->
 
-      <span th:text="${pet.getSex().toLowerCase()} + ' '"></span>
-      <span th:text="${pet.getBreed()} + ', '"></span>
-      <span th:text="${pet.petAge(pet)}"></span>
+      <div class="row align-items-center mt-4" th:if="${!(pet.getMother().isBlank()) && !(pet.getFather().isBlank()) && !(pet.getChilds().isBlank())}">
+        <div class="col-2"><hr></div>
+        <div class="col-2">
+          <span class="text-muted">family</span>
+        </div>
+        <div class="col">
+          <hr>
+        </div>
+      </div>
+
+      <div class="row" th:if="${!(pet.getMother().isBlank())}">
+        <div class="col-3">
+          <span class="text-muted">Mother:</span>
+        </div>
+        <div class="col">
+          <a th:href="@{'/pet-profile/' + ${pet.getMother()}}">Mother</a>
+        </div>
+      </div>
+
+      <div class="row" th:if="${!(pet.getFather().isBlank())}">
+        <div class="col-3">
+          <span class="text-muted">Father:</span>
+        </div>
+        <div class="col">
+          <a th:href="@{'/pet-profile/' + ${pet.getFather()}}">Father</a>
+        </div>
+      </div>
+
+      <div class="row" th:if="${!(pet.getChilds().isBlank())}">
+        <div class="col-3">
+          <span class="text-muted">Children:</span>
+        </div>
+        <div class="col">
+          <span th:text="${pet.getChilds()}"></span>
+        </div>
+      </div>
+
+<!--      APPEARANCE SECTION-->
+
+      <div class="row align-items-center mt-4" th:if="${!(pet.getEyeColor().isBlank()) && !(pet.getFurColor().isBlank()) && (pet.getHeight()>0) && (pet.getWeight() > 0)}">
+        <div class="col-2"><hr></div>
+        <div class="col-3">
+          <span class="text-muted">appearance</span>
+        </div>
+        <div class="col">
+          <hr>
+        </div>
+      </div>
+
+      <div class="row" th:if="${!(pet.getEyeColor().isBlank())}">
+        <div class="col-3">
+          <span class="text-muted">Eye color:</span>
+        </div>
+        <div class="col">
+          <span th:text="${pet.getEyeColor()}"></span>
+        </div>
+      </div>
+
+      <div class="row" th:if="${!(pet.getFurColor().isBlank())}">
+        <div class="col-3">
+          <span class="text-muted">Fur color:</span>
+        </div>
+        <div class="col">
+          <span th:text="${pet.getFurColor()}"></span>
+        </div>
+      </div>
+
+      <div class="row" th:if="${(pet.getHeight() > 0)}">
+        <div class="col-3">
+          <span class="text-muted">Height:</span>
+        </div>
+        <div class="col">
+          <span th:text="${pet.getHeight()}"></span>
+        </div>
+      </div>
+
+      <div class="row" th:if="${(pet.getWeight() > 0)}">
+        <div class="col-3">
+          <span class="text-muted">Weight:</span>
+        </div>
+        <div class="col">
+          <span th:text="${pet.getWeight()}"></span>
+        </div>
+      </div>
 
 
+<!--      EVENTS SECTION -->
 
+      <div class="row align-items-center mt-4" th:if="${!(pet.getEvents().isBlank())}">
+        <div class="col-2"><hr></div>
+        <div class="col-2">
+          <span class="text-muted">events</span>
+        </div>
+        <div class="col">
+          <hr>
+        </div>
+      </div>
 
-      <span th:text="'Lives in ' + ${pet.getCity()} + ', '"></span>
-      <span th:text="${pet.getCountry()}"></span>
+      <div class="row" th:if="${!(pet.getEvents().isBlank())}">
+        <div class="col-3">
+          <span class="text-muted">Events:</span>
+        </div>
+        <div class="col">
+          <span th:text="${pet.getEvents()}"></span>
+        </div>
+      </div>
 
-      <p th:text="${pet.getDeathdate()}"></p>
-      <p th:text="${pet.getEvents()}"></p>
-      <p th:text="${pet.getEyeColor()}"></p>
-      <p th:text="${pet.getFather()}"></p>
-      <p th:text="${pet.getFullName()}"></p>
-      <p th:text="${pet.getFurColor()}"></p>
-      <p th:text="${pet.getMedicalInfo()}"></p>
-      <p th:text="${pet.getChilds()}"></p>
+<!--      MEDICAL INFO SECTION -->
 
-      <p th:text="${pet.getMother()}"></p>
-      <p th:text="${pet.getHeight()}"></p>
-      <p th:text="${pet.getWeight()}"></p>
+      <div class="row align-items-center mt-4" th:if="${!(pet.getMedicalInfo().isBlank())}">
+        <div class="col-2"><hr></div>
+        <div class="col-4">
+          <span class="text-muted">medical information</span>
+        </div>
+        <div class="col">
+          <hr>
+        </div>
+      </div>
 
-
-<!--      <section th:each="e : ${pet.getPetOwners()}">-->
-<!--        <a th:href="'/profile-page/' + ${e}"><span th:text="${getUserById(e).getName()}"></span><span th:text="${getUserById(e).getSurname()}"></span></a>-->
-<!--      </section>-->
-
-
-
-
-
-
-
-
-
+      <div class="row" th:if="${!(pet.getMedicalInfo().isBlank())}">
+        <div class="col-3">
+          <span class="text-muted">Medical info:</span>
+        </div>
+        <div class="col">
+          <span th:text="${pet.getMedicalInfo()}"></span>
+        </div>
+      </div>
 
     </div>
 
-    <div class="col-3">
+    <div class="col-2">
+      <a type="button" th:if="${currentUserIsPetOwner}" th:href="@{'/pet-profile/' + ${pet.getId()} + '/edit'}" class="btn btn-outline-primary">Edit pet profile</a>
     </div>
   </div>
 </div>

@@ -58,15 +58,10 @@
                     <br>
                     <span th:if="${!(pet.getCity().isEmpty()) && !(pet.getCountry().equals('--'))}" th:text="${pet.getCity()} + ', ' + ${pet.getCountry()}"></span>
                     <br th:if="${(pet.getCity().isEmpty()) || (pet.getCountry().equals('--'))}">
-
                 </p>
             </div>
             </a>
-
         </div>
-
-
-
     </div>
     </div>
 </div>
