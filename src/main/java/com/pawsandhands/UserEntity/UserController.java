@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @Controller
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
     private UserRepository repo;
 
     @Autowired
@@ -37,7 +37,13 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String showMyEvents(Model model, @CookieValue(value = "userId") String userIdFromCookie){
+    public String showMyEvents(Model model,
+           @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+           @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
         try {
             User userData = this.userService.findUserById(Long.valueOf(userIdFromCookie));
             model.addAttribute("userData", userData);
@@ -73,6 +79,9 @@ public class UserController {
             @RequestParam(name = "message", required = false) String message,
             Model model
     ){
+        if(message == null){
+            return "redirect:registration";
+        }
         model.addAttribute("message", message);
         return "registration-approval";
     }
@@ -123,14 +132,18 @@ public class UserController {
 
 
     @GetMapping("/all-users")
-    public String showUsers(Model model){
-
+    public String showUsers(Model model,
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
         try{
             model.addAttribute("usersList", this.userService.findAll());
         }catch (Exception e){
             return "redirect:users?message=search_filed&error=" + e.getMessage();
         }
-
         return "all-users";
     }
 

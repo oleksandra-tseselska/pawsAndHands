@@ -19,7 +19,7 @@
     <div class="col">
     </div>
     <div class="col text-center">
-      <div class="shadow-lg p-3 mb-5  rounded alert-success text-center">
+      <div class="shadow p-3 mb-5  rounded alert-success text-center">
           Profile for <span th:text="${petName}"></span> was successfully created! <br><br>
 
           <a type="button" th:href="@{'/pet-profile/' + ${petId}}" class="btn btn-outline-success">Open pet profile</a>
@@ -32,8 +32,8 @@
   <div class="row">
     <div class="col"></div>
     <div class="col text-center">
-      <a type="button" href="/create-pet" class="btn btn-outline-primary btn-lg">Create another one</a>
-      <a type="button" href="/profile-page" class="btn btn-outline-secondary btn-lg">Go to My Profile</a>
+      <a type="button" href="/create-pet" class="btn btn-outline-primary btn">Create another one</a>
+      <a type="button" href="/profile-page" class="btn btn-outline-secondary btn">Go to My Profile</a>
     </div>
     <div class="col"></div>
 

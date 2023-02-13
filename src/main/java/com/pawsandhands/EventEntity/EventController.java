@@ -30,25 +30,39 @@ public class EventController {
     }
 
     @GetMapping("/discounts")
-    public String showDiscounts() {
+    public String showDiscounts(
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
         return "discounts";
     }
     @GetMapping("/create-event")
-    public String showCreateEventPage() {
+    public String showCreateEventPage(
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
         return "create-event";
     }
 
 
     //To change return location
-    @GetMapping("/createEvent")
-    public String showEventApproval() {
-        return "create-event";
-    }
+//    @GetMapping("/createEvent")
+//    public String showEventApproval() {
+//        return "create-event";
+//    }
 
 
     //To change return location
     @PostMapping("/createEvent")
-    public String handleEventCreation(Event event, @CookieValue(value = "userId") String userIdFromCookie) throws Exception {
+    public String handleEventCreation(Event event,
+          @CookieValue(value = "userId") String userIdFromCookie
+    ) throws Exception {
         try {
             System.out.println(userIdFromCookie);
             User eventUser = userService.findUserById(Long.valueOf(userIdFromCookie));
@@ -79,7 +93,13 @@ public class EventController {
     //For My Events page
 
     @GetMapping("/my-events")
-    public String showMyEvents(Model model, @CookieValue(value = "userId") String userIdFromCookie){
+    public String showMyEvents(Model model,
+           @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+           @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
         try {
             System.out.println(userIdFromCookie);
             User userWhoCreatedEvents = userService.findUserById(Long.valueOf(userIdFromCookie));
@@ -89,7 +109,7 @@ public class EventController {
             return "my-events";
 
         }catch (Exception e){
-            return "redirect:create-event" + e.getMessage();          //Endpoint can be changed !!!
+            return "redirect:create-event/?message=" + e.getMessage();          //Endpoint can be changed !!!
         }
     }
 

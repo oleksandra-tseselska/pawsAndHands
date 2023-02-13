@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!--    this block has all needed initial bootstrap and google fonts imports-->
@@ -41,6 +41,8 @@
 
                     <span class="badge position-absolute bg-warning text-dark" th:if="${pet.isReserved()}">Reserved</span>
                     <span class="badge position-absolute bg-warning text-dark" th:unless="${pet.isReserved()}">Available</span>
+
+
 
                     <img src="/logo.png" class="card-img-top" alt="profile-picture]">
 

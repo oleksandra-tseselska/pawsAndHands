@@ -8,13 +8,26 @@
 <header th:insert="~{fragments/header.html :: header}"></header>
 <main>
     <section class="container">
-        <div class="row pt-5">
+        <div th:if="${myEventsList.isEmpty()}">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <h1>You have no events at the moment</h1>
+                    <h3>Do you feel like creating one?</h3>
+                    <a type="button" href="/create-event" class="btn btn-success">Create Event</a>
+                </div>
+                <div class="col-2"></div>
+            </div>
+        </div>
+
+
+        <div class="row pt-5" th:if="${!(myEventsList.isEmpty())}">
             <div class="col-12">
                 <h3 class="text-uppercase mb-4 text-center">Events created by me</h3>
             </div>
         </div>
         <!--        Use row-cols-sm-2 if ypu have more than 3 cars-->
-        <ul class="row row-cols-1 row-cols-lg-3 g-4 ps-2 pe-2">
+        <ul class="row row-cols-1 row-cols-lg-3 g-4 ps-2 pe-2" th:if="${!(myEventsList.isEmpty())}">
             <!--ADD CLASSES HERE d-flex align-items-stretch-->
             <li th:each="myEventItem: ${myEventsList}" class="col d-flex align-items-stretch">
                 <article class="card-body d-flex flex-column border rounded p-0">

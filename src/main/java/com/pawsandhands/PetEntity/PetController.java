@@ -80,7 +80,13 @@ public class PetController {
     }
 
     @GetMapping("/create-pet-success")
-    public String showCreatePetSuccessPage(){
+    public String showCreatePetSuccessPage(
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
         return "create-pet-success"; //will find register in the Template folder. When we want to display the page
     }
 

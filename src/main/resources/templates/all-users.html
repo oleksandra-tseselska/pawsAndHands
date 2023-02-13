@@ -25,6 +25,16 @@
         2. css .all-user-img add to <img> ?
         3. add to class col "d-flex align-items-stretch"
 -->
+          <div th:if="${usersList.isEmpty()}">
+              <div class="row">
+                  <div class="col-2"></div>
+                  <div class="col-8">
+                      <h1>There are no users at the moment</h1>
+                  </div>
+                  <div class="col-2"></div>
+              </div>
+          </div>
+
         <ul  class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4 ps-0"
              data-masonry='{"percentPosition": true,  "itemSelector": ".col" }'
              th:if="${!usersList.isEmpty()}"

@@ -8,13 +8,23 @@
 <header th:insert="~{fragments/header.html :: header}"></header>
 <main>
     <section class="container">
-            <div class="row pt-5">
+            <div th:if="${eventList.isEmpty()}">
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <h1>There are no events at the moment</h1>
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+            </div>
+
+            <div class="row pt-5" th:if="${!(eventList.isEmpty())}">
                 <div class="col-12">
                     <h3 class="text-uppercase mb-4 text-center">Upcoming events</h3>
                 </div>
             </div>
 <!--        Use row-cols-sm-2 if ypu have more than 3 cars-->
-            <ul class="row row-cols-1 row-cols-lg-3 g-4 ps-2 pe-2">
+            <ul class="row row-cols-1 row-cols-lg-3 g-4 ps-2 pe-2" th:if="${!(eventList.isEmpty())}">
                 <!--ADD CLASSES HERE d-flex align-items-stretch-->
                 <li th:each="eventItem: ${eventList}" class="col d-flex align-items-stretch">
                     <article class="card-body d-flex flex-column border rounded p-0">
