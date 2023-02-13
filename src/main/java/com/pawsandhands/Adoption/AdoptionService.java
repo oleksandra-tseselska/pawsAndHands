@@ -1,6 +1,5 @@
 package com.pawsandhands.Adoption;
 
-import com.pawsandhands.EventEntity.Event;
 import com.pawsandhands.UserEntity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,10 @@ public class AdoptionService {
     @Autowired
     public AdoptionService(AdoptionRepository adoptionRepository) {
         this.adoptionRepository = adoptionRepository;
+    }
+
+    public void createPetForAdoption(Adoption petForAdoption){
+        this.adoptionRepository.save(petForAdoption);
     }
 
     public ArrayList<Adoption> findAllPetsForAdoption(){
@@ -33,5 +36,9 @@ public class AdoptionService {
         return adoptionRepository.findAdoptionsByUser(user);
     }
 
+    public Adoption findAdoptedPetById(Long adoptionPetId){
+        return adoptionRepository.findAdoptionsById(adoptionPetId);
+
+    }
 
 }

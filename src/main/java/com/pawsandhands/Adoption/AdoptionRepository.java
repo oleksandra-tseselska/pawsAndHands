@@ -18,4 +18,10 @@ public interface AdoptionRepository extends CrudRepository<Adoption,Long> {
 
     ArrayList<Adoption> findAdoptionsByUser(User user); //To find all pets who are already reserved by selected user
 
+    User findUserById(Long userId);
+
+    Adoption findAdoptionsById(Long adoptionPetId);
+
+
+
 }
