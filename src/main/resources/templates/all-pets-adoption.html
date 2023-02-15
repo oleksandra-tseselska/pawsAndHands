@@ -53,11 +53,15 @@
                         <p class="card-text text-truncate">
                             Age: <span th:text="${pet.getAge()}"> </span>
                             <br>
+                            Sex: <span th:text="${pet.getSex()}"></span>
+                            <br>
                             Shelter: <span th:text="${pet.getShelter()}"></span>
                             <br>
-                        <p class="card-text">
-                            Description: <span th:text="${pet.getDescription()}"></span>
+
+                        <p class="card-text" style="min-height: 100px; max-height: 100px; overflow: hidden;">
+                            Description: <span th:text="${#strings.abbreviate(pet.description,150)}"></span>
                         </p>
+
                         <form action="/reserve" method="post">
                             <input type="hidden" th:value="${pet.getId()}" id="petId" name="petId">
                             <button type="submit" class="btn btn-primary">Reserve</button>
