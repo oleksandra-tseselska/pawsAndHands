@@ -10,6 +10,20 @@ li{
 a{
     text-decoration: none;
 }
+.user-link{
+    background-color: #0D6EFC;
+    opacity: 90%;
+    color: #FAFAFA;
+    transition-property: background-color, color;
+    transition-duration: 0.4s;
+}
+.user-link:hover{
+    background-color: #FFF;
+    color: #000;
+}
+.user-paw:hover{
+    background-color: #F7F8F9;
+}
 /*.all-user-img{*/
 /*    max-height: 400px;*/
 /*    object-fit: cover;*/
@@ -66,8 +80,9 @@ a{
     height: 28px;
     border-radius: 50%;
     font-size: 16px;
-    background-color: #B4B2CD;
-    color: white;
+    background-color: #FFF;
+    border: 2px solid #B4B2CD;
+    color: #B4B2CD;
     transition-property: background-color, color, border;
     transition-duration: 0.3s;
 }
@@ -93,7 +108,6 @@ a{
     }
 }
 .social-item-icon:hover {
-    background-color: white;
-    color: #B4B2CD;
-    border: 2px solid #B4B2CD;
+    background-color: #B4B2CD;
+    color: #FFF;
 }
