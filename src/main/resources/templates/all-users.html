@@ -11,51 +11,64 @@
     <title>All users</title>
 
 </head>
-<body>
+<body class="d-flex row">
 <!-- this is fragment for header to display -->
 <header th:insert="~{fragments/header.html :: header}"></header>
 
 
 
-  <main class="ps-2 pe-2">
-      <section>
+  <main>
+      <section class="ps-2 pe-2">
 <!--         Three decisions:
         1. masonry: add first <ul> style="padding-left: 0;" data-masonry='{"percentPosition": true}'
            + <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
         2. css .all-user-img add to <img> ?
         3. add to class col "d-flex align-items-stretch"
 -->
-        <ul  class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4 ps-0"
+          <h1 class="p-4">All users</h1>
+        <ul  class="row row-cols-1 row-cols-md-3 row-cols-xxl-5 g-4 ps-0"
              data-masonry='{"percentPosition": true,  "itemSelector": ".col" }'
              th:if="${!usersList.isEmpty()}"
         >
-            <li class="col" th:each="userItem: ${usersList}">
-                <div class="card text-center">
-                    <img
-                            th:src="${userItem.photo}"
-                            class="card-img-top"
-                            loading="lazy"
-                            alt="Profile photo"
+            <li class="col" th:each="userItem: ${usersList}" th:if="${!userItem.id.equals(userIdFromCookie)}">
+                <div class="card rounded-top">
+
+<!--                    USER LINK   -->
+
+                    <a
+                            th:href="'viewUserInfo/'+${userItem.getId()}"
+                            class="text-center user-link rounded-top border-bottom"
                     >
-                    <div class="card-body">
-                        <a
-                                th:href="'viewUserInfo/'+${userItem.getId()}"
-                                class="card-link"
-                                target="_blank"
-                        > <!--         go into profile               -->
-                            <span class="card-title" th:text="${userItem.name}"></span>
-                            <span class="card-title" th:text="${userItem.surname}"></span>
-                        </a>
-                        <p class="card-subtitle mb-2 text-muted" th:text="${userItem.status}"></p>
-                    </div>
-                    <p>List of pets</p>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">An item</li>
-                        <li class="list-group-item">A second item</li>
-                        <li class="list-group-item">A third item</li>
-                    </ul>
+
+<!--                    USER PHOTO  -->
+
+                        <img
+                                th:src="${userItem.photo}"
+                                class="card-img-top"
+                                loading="lazy"
+                                alt="Profile photo"
+                        >
+
+<!--                    USER INFO MIN  -->
+
+                        <div class="card-body">
+                            <h4>
+                                <span class="card-title" th:text="${userItem.name}"></span>
+                                <span class="card-title" th:text="${userItem.surname}"></span>
+                            </h4>
+<!--                           bg-primary -->
+                            <h4
+
+                                    class="badge rounded-pill bg-primary ps-2 pb-2 text-center d-block border border-white text-white"
+                                    th:text="${userItem.status.toLowerCase()}"
+                            ></h4>
+                        </div>
+                    </a>
+
+<!--                USER SOCIAL LINK LIST    -->
+
                     <ul class="card-body social-list">
-                        <li class="card-link" style="display: flex">
+                        <li class="card-link d-flex">
                             <a
                                     class="social-list-link"
                                     href="https://uk-ua.facebook.com/"
@@ -115,15 +128,65 @@
                           </span>
                             </a>
                         </li>
-<!--                        <a href="#" class="card-link"></a>-->
-<!--                        <a href="#" class="card-link"></a>-->
+                        <!--                        <a href="#" class="card-link"></a>-->
+                        <!--                        <a href="#" class="card-link"></a>-->
+                    </ul>
+
+<!--                USER PAWS LIST   -->
+
+                    <h6 th:if="${!userItem.getOwnedPets().isEmpty()}" class="text-muted text-start ps-2">paws:</h6>
+                    <ul
+                            th:if="${!userItem.getOwnedPets().isEmpty()}"
+                            class="list-group list-group-flush ps-0"
+                    >
+
+<!--                 USER PAW      -->
+
+                        <li th:each="petItem: ${userItem.getOwnedPets()}" class="list-group-item user-paw">
+                            <a th:href="@{'/pet-profile/' + ${petItem.id}}">
+                                <ul class="pb-2 ps-2">
+                                    <li
+                                            class="d-flex justify-content-between"
+                                            style="position: relative"
+                                    >
+                                        <h3
+                                                class="badge rounded-pill bg-success d-inline-block"
+                                                style="opacity: 60%; position: absolute; top: 0; left: 0; z-index: 3"
+                                                th:text="${petItem.getType().toLowerCase()}"
+                                        ></h3>
+                                        <img
+                                                class="align-self-start"
+                                                src="../logo.png"
+                                                alt="default profile logo"
+                                                style="object-fit: cover; border-radius: 50%; max-width: 90px"
+                                        >
+                                        <h5 class="text-dark ps-2 align-self-end">
+                                            <span
+                                                    class="ps-2"
+                                                    th:if="${petItem.sex.toLowerCase().equals('female')}"
+                                                    th:text="Ms. "
+                                            ></span>
+                                            <span
+                                                    class="ps-2"
+                                                    th:if="${petItem.sex.toLowerCase().equals('male')}"
+                                                    th:text="Mr. "
+                                            ></span>
+                                            <span th:text="${petItem?.nickname}"></span>
+                                        </h5>
+                                    </li>
+                                    <li th:if="${!petItem.breed.isBlank()}">
+                                        <span class="ps-2 d-flex justify-content-end text-muted" th:text="${petItem.breed}"></span>
+                                    </li>
+                                </ul>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
         </ul>
     </section>
   </main>
-  <footer th:insert="~{fragments/footer.html :: footer}"></footer>
+  <footer class="align-self-end" th:insert="~{fragments/footer.html :: footer}"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>

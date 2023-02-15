@@ -1,6 +1,9 @@
 package com.pawsandhands.UserEntity;
 
 import com.pawsandhands.EventEntity.Event;
+import com.pawsandhands.PetEntity.Pet;
+import com.pawsandhands.PetEntity.PetController;
+import com.pawsandhands.PetEntity.PetService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 @Controller
 public class UserController {
@@ -21,13 +25,16 @@ public class UserController {
         this.userService=userService;
     }
 
-
     @GetMapping ("/profile-page/{userId}")                               //To add e-mail and password check
-    public String showPage(@PathVariable Long userId, Model model,
+    public String showPage(Model model,
                            @CookieValue(value = "userId") String userIdFromCookie){
         try{
-            System.out.println(userIdFromCookie);
-            model.addAttribute("userData", userService.findUserById(Long.valueOf(userIdFromCookie)));
+            User userData = this.userService.findUserById(Long.valueOf(userIdFromCookie));
+            Set<Pet> userPet =  userData.getOwnedPets();
+
+            model.addAttribute("userData", userData);
+            model.addAttribute("userPet", userPet);
+
 //            return "profile-page";
                 return "viewUserInfo";
 
@@ -40,7 +47,10 @@ public class UserController {
     public String showMyEvents(Model model, @CookieValue(value = "userId") String userIdFromCookie){
         try {
             User userData = this.userService.findUserById(Long.valueOf(userIdFromCookie));
+            Set<Pet> userPet =  userData.getOwnedPets();
             model.addAttribute("userData", userData);
+            model.addAttribute("userPet", userPet);
+            model.addAttribute("userIdFromCookie", Long.valueOf(userIdFromCookie));
 
             return "viewUserInfo";
 
@@ -123,10 +133,11 @@ public class UserController {
 
 
     @GetMapping("/all-users")
-    public String showUsers(Model model){
+    public String showUsers(Model model, @CookieValue(value = "userId") String userIdFromCookie){
 
         try{
             model.addAttribute("usersList", this.userService.findAll());
+            model.addAttribute("userIdFromCookie", Long.valueOf(userIdFromCookie));
         }catch (Exception e){
             return "redirect:users?message=search_filed&error=" + e.getMessage();
         }
@@ -137,13 +148,15 @@ public class UserController {
 
 
     @GetMapping("/viewUserInfo/{userId}")
-    public String viewUserInfo(@PathVariable Integer userId,
-                             Model model)
-    {
+    public String viewUserInfo(@PathVariable Integer userId, Model model) {
+
         User user = userService.findById(userId);
+        Set<Pet> userPet =  user.getOwnedPets();
 
         try{
             model.addAttribute("userData", userService.findById(userId));
+            model.addAttribute("userPet", userPet);
+
         }catch (Exception e){
             return "redirect:user?message=search_filed&error=" + e.getMessage();
         }
@@ -152,7 +165,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/userUpdate/{userId}")
+    @GetMapping("/update-profile/{userId}")
     public String updateUser(@PathVariable Integer userId,
                              Model model)
     {
@@ -187,5 +200,4 @@ public class UserController {
 
         return "redirect:users";
     }
-
 }
