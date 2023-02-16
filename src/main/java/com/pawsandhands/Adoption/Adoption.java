@@ -22,6 +22,7 @@ public class Adoption {
     private String name;
     private String age;
     private String type;//cat or dog
+    private String sex;
     private String shelter;
     private String description;          //In html card => name, age, shelter, short desc, button "Reserve" + badge with type
     private boolean reserved = false;
