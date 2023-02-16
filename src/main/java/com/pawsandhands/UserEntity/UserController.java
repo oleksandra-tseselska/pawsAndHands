@@ -24,12 +24,31 @@ public class UserController{
         this.userService=userService;
     }
 
+
+    @GetMapping("/log-out")
+    public String handleUserLogOut(HttpServletResponse response){
+
+        try {
+            Cookie cookie = new Cookie("userId", null);
+            cookie.setMaxAge(0);                                     // Сookie expired
+            response.addCookie(cookie);
+
+            response.addCookie(new Cookie("userIsLoggedIn", "false"));
+
+            return "redirect:/";
+        }catch (Exception e){
+            return "redirect:/?message=logout_failed&error=" + e.getMessage();
+        }
+
+    }
+
     @PostMapping ("/logInStartPage")                                           //NEW  index.html + Btn"Login"
     public String handleUserLogin2(User user, HttpServletResponse response){             // first cookie save
 
         try{
             User loggedInUser = userService.verifyUser(user);
             setCookie(loggedInUser, response);
+
 
             return "redirect:profile-page/" + loggedInUser.getId();
 
@@ -44,6 +63,7 @@ public class UserController{
                            @CookieValue(value = "userId") String userIdFromCookie,
                            @PathVariable Long userId){
         try{
+            System.out.println(userIdFromCookie);
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model, userId);
             modelMap.values();
             modelMap.clear();
@@ -207,6 +227,7 @@ public class UserController{
 
     private void setCookie(User loggedInUser, HttpServletResponse response){
         Cookie cookie = new Cookie("userId", loggedInUser.getId().toString());
+        cookie.setMaxAge(7 * 24 * 60 * 60); // Сookie expires in 7 days
         response.addCookie(cookie);
         response.addCookie(new Cookie("userIsLoggedIn", "true"));
     }
