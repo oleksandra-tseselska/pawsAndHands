@@ -26,7 +26,7 @@
 
       <label style="margin-left:35px; font-size: 15px">Please select your status:</label>
       <br>
-      <select style="margin-top:10px; margin-left: 35px; padding: 3px 5px" name="status" th:value="${user?.getStatus()}">                   <!-- Field of User class object where input will be saved -->
+      <select name="status" th:value="${user?.getStatus()}">                   <!-- Field of User class object where input will be saved -->
         <option value="Pet owner">Pet owner</option>
         <option value="Service provider">Service provider</option>
         <option value="Pet owner and service provider">Pet owner and service provider</option>

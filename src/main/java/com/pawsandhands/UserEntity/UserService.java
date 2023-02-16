@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -38,12 +39,22 @@ public class UserService {
         return foundUser;
     }
 
-
     public User findUserById(Long userId) throws Exception {
-      return this.userRepository.findById(userId).orElseThrow();
+        Optional<User> optionalUser = this.userRepository.findById(userId);
+        User user = null;
+
+        if(optionalUser.isPresent()){
+            user = optionalUser.get();
+        }else {
+            throw new RuntimeException("user not found for id :: " +userId);
+        }
+
+        return user;
     }
 
-
+    public User save(User user){
+        return this.userRepository.save(user);
+    }
 
     public ArrayList<User> findAll() {
         return userRepository.findAll();

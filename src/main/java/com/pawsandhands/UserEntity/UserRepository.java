@@ -18,4 +18,6 @@ public interface UserRepository extends CrudRepository <User,Long> {
 
     User findUserById(Long userId);
 
+    @Override
+    <S extends User> S save(S entity);
 }

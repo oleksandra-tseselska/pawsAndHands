@@ -18,7 +18,7 @@
 
 
   <main>
-      <section class="ps-2 pe-2">
+      <section class="container">
 <!--         Three decisions:
         1. masonry: add first <ul> style="padding-left: 0;" data-masonry='{"percentPosition": true}'
            + <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
@@ -38,17 +38,17 @@
 
       <h1 th:if="${!usersList.isEmpty()}" class="p-4">All users</h1>
 
-        <ul  class="row row-cols-1 row-cols-md-3 row-cols-xxl-5 g-4 ps-0"
+        <ul  class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 g-4 ps-0"
              data-masonry='{"percentPosition": true,  "itemSelector": ".col" }'
              th:if="${!usersList.isEmpty()}"
         >
-            <li class="col" th:each="userItem: ${usersList}" th:if="${!userItem.id.equals(userIdFromCookie)}">
+            <li class="col" th:each="userItem: ${usersList}">    <!--th:if="${!userItem.id.equals(userIdFromCookie)}"-->
                 <div class="card rounded-top">
 
 <!--                    USER LINK   -->
 
                     <a
-                            th:href="'viewUserInfo/'+${userItem.getId()}"
+                            th:href="'profile-page/'+${userItem.id}"
                             class="text-center user-link rounded-top border-bottom"
                     >
 
@@ -159,18 +159,27 @@
                                             class="d-flex justify-content-between"
                                             style="position: relative"
                                     >
-                                        <h3
-                                                class="badge rounded-pill bg-success d-inline-block"
-                                                style="opacity: 60%; position: absolute; top: 0; left: 0; z-index: 3"
-                                                th:text="${petItem.getType().toLowerCase()}"
-                                        ></h3>
                                         <img
                                                 class="align-self-start"
                                                 src="../logo.png"
                                                 alt="default profile logo"
                                                 style="object-fit: cover; border-radius: 50%; max-width: 90px"
                                         >
-                                        <h5 class="text-dark ps-2 align-self-end">
+                                        <h4 th:if="${petItem.type.equals('dog')}">
+                                            <span
+                                                    class="badge position-absolute top-0 start-0 rounded-pill bg-success d-inline-block"
+                                                    style="opacity: 60%;"
+                                                    th:text="${petItem.getType().toLowerCase()}"
+                                            ></span>
+                                        </h4>
+                                        <h4 th:if="${petItem.type.equals('cat')}">
+                                            <span
+                                                    class="badge position-absolute top-0 start-0 rounded-pill bg-primary d-inline-block"
+                                                    style="opacity: 60%;"
+                                                    th:text="${petItem.getType().toLowerCase()}"
+                                            ></span>
+                                        </h4>
+                                        <h5 class="text-dark ps-2 align-self-end text-end">
                                             <span
                                                     class="ps-2"
                                                     th:if="${petItem.sex.toLowerCase().equals('female')}"

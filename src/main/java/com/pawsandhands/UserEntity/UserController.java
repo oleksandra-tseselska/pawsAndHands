@@ -1,42 +1,54 @@
 package com.pawsandhands.UserEntity;
 
-import com.pawsandhands.EventEntity.Event;
 import com.pawsandhands.PetEntity.Pet;
-import com.pawsandhands.PetEntity.PetController;
-import com.pawsandhands.PetEntity.PetService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
+import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 @Controller
-public class UserController {
+public class UserController{
 
     private final UserService userService;
-    private UserRepository repo;
+
+    private CustomMap<String, Value> modelUser = new CustomMap<>();
 
     @Autowired
     public UserController(UserService userService){
         this.userService=userService;
     }
 
+    @PostMapping ("/logInStartPage")                                           //NEW  index.html + Btn"Login"
+    public String handleUserLogin2(User user, HttpServletResponse response){             // first cookie save
+
+        try{
+            User loggedInUser = userService.verifyUser(user);
+            setCookie(loggedInUser, response);
+
+            return "redirect:profile-page/" + loggedInUser.getId();
+
+        }catch(Exception e){
+
+            return "redirect:/?message=login_failed&error=" + e.getMessage();
+        }
+    }
+
     @GetMapping ("/profile-page/{userId}")                               //To add e-mail and password check
     public String showPage(Model model,
-                           @CookieValue(value = "userId") String userIdFromCookie){
+                           @CookieValue(value = "userId") String userIdFromCookie,
+                           @PathVariable Long userId){
         try{
-            User userData = this.userService.findUserById(Long.valueOf(userIdFromCookie));
-            Set<Pet> userPet =  userData.getOwnedPets();
+            CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model, userId);
+            modelMap.values();
+            modelMap.clear();
 
-            model.addAttribute("userData", userData);
-            model.addAttribute("userPet", userPet);
-
-//            return "profile-page";
-                return "viewUserInfo";
+            return "profile-page";
 
         }catch (Exception e){
             return "redirect:/?message=user_not_found";
@@ -52,31 +64,30 @@ public class UserController {
             return "not-logged-in";
         }
         try {
-            User userData = this.userService.findUserById(Long.valueOf(userIdFromCookie));
-            Set<Pet> userPet =  userData.getOwnedPets();
-            model.addAttribute("userData", userData);
-            model.addAttribute("userPet", userPet);
-            model.addAttribute("userIdFromCookie", Long.valueOf(userIdFromCookie));
+            CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
+            modelMap.values();
+            modelMap.clear();
 
-            return "viewUserInfo";
+            return "profile-page";
 
         }catch (Exception e){
+
             return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
         }
     }
 
     @GetMapping("/registration")                        //OK
-    public String showRegistrationForm(){
-        return "registration";
+    public String showRegistrationForm(){                  // if press Btn"Create new account" (?only after index.html)
+        return "registration";                             // goes to registration.html
     }
 
 
-    @PostMapping("/register")
+    @PostMapping("/register")                                                      // after Btn "Register(?change to create)" in registration.html
     public String handleUserRegistration(User user, Model model) throws Exception {  //OK 2
         try {
             this.userService.createUser(user);
         }catch (Exception e){
-            model.addAttribute("message", "signup_failed");
+            model.addAttribute("message", "signup_failed");     // ?we really need this in registration.html
             model.addAttribute("error", e.getMessage());
             model.addAttribute("user", user);
             return "registration";
@@ -102,10 +113,7 @@ public class UserController {
 
         try{
             User loggedInUser = userService.verifyUser(user);
-
-            Cookie cookie = new Cookie("userId", loggedInUser.getId().toString());
-            response.addCookie(cookie);
-            response.addCookie(new Cookie("userIsLoggedIn", "true"));
+            setCookie(loggedInUser, response);
 
             return "redirect:profile-page/" + loggedInUser.getId();
 
@@ -114,32 +122,6 @@ public class UserController {
 
         }
     }
-
-
-    @GetMapping("/logInStartPage")                        //NEW
-    public String showLoggedInMode(){
-        return "profile-page";
-    }
-
-    @PostMapping ("/logInStartPage")                                           //NEW
-    public String handleUserLogin2(User user, HttpServletResponse response){
-
-        try{
-            User loggedInUser = userService.verifyUser(user);
-
-            Cookie cookie = new Cookie("userId", loggedInUser.getId().toString());
-            response.addCookie(cookie);
-            response.addCookie(new Cookie("userIsLoggedIn", "true"));
-
-            return "redirect:profile-page/" + loggedInUser.getId();
-
-        }catch(Exception e){
-            return "redirect:/?message=login_failed&error=" + e.getMessage();
-
-        }
-
-    }
-
 
     @GetMapping("/all-users")
     public String showUsers(Model model,
@@ -159,59 +141,73 @@ public class UserController {
         return "all-users";
     }
 
-
-
-    @GetMapping("/viewUserInfo/{userId}")
-    public String viewUserInfo(@PathVariable Integer userId, Model model) {
-
-        User user = userService.findById(userId);
-        Set<Pet> userPet =  user.getOwnedPets();
-
-        try{
-            model.addAttribute("userData", userService.findById(userId));
-            model.addAttribute("userPet", userPet);
-
-        }catch (Exception e){
-            return "redirect:user?message=search_filed&error=" + e.getMessage();
-        }
-
-        return "viewUserInfo";
-    }
-
-
-    @GetMapping("/update-profile/{userId}")
-    public String updateUser(@PathVariable Integer userId,
-                             Model model)
+    @GetMapping("/update-profile")
+    public String updateUser(Model model,
+                             @CookieValue(value = "userId") String userIdFromCookie)
     {
-        User user = userService.findById(userId);
-
         try{
-            model.addAttribute("userData", userService.findById(userId));
+            User userData = this.userService.findUserById(Long.valueOf(userIdFromCookie));
+            model.addAttribute("userData", userData);
+
         }catch (Exception e){
             return "redirect:user?message=search_filed&error=" + e.getMessage();
         }
 
-        return "userUpdate";
+        return "user-update";
     }
 
-    @PostMapping("/userUpdateBtn")
-    public String updateUserData (@RequestParam(name = "userId", required = false) Integer userId,
-                                  @RequestParam(name = "firstName", required = false) String firstName,
-                                  @RequestParam(name = "password", required = false) String password){
+    @PostMapping("/user-update")
+    public String updateUserData (@ModelAttribute("userData") User user){
 
-        User user = userService.findById(userId);
-        System.out.println(userId);
-        System.out.println(firstName);
-        System.out.println(password);
-        System.out.println(user.toString());
-
-        if(!user.getName().equals(firstName)){
-
-        }
-        if(!user.getPassword().equals(password)){
-
+        try {
+            this.userService.save(user);
+        }catch (Exception e){
+            return "redirect:user?message=update&error=" + e.getMessage();
         }
 
-        return "redirect:users";
+        return "redirect:profile-page/"+ user.getId();
+    }
+
+    private CustomMap<String, Value> getUserModelData(String stringUSERID, Model model) {
+        try {
+            Long userIdCookie = Long.valueOf(stringUSERID);
+            User userData = this.userService.findUserById(userIdCookie);
+            this.modelUser = putDataToModel(stringUSERID, model, userData);
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        return this.modelUser;
+    }
+
+    private CustomMap<String, Value> getUserModelData(String stringUSERID, Model model, Long USERID) {
+        try {
+            User userData = this.userService.findUserById(USERID);
+            this.modelUser = putDataToModel(stringUSERID, model, userData);
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        return this.modelUser;
+    }
+
+//    Read about @NotNull
+    private CustomMap<String, Value> putDataToModel(String stringUSERID, @NonNull Model model, @NonNull User userData){
+        Long userIdCookie = Long.valueOf(stringUSERID);
+        Set<Pet> userPet =  userData.getOwnedPets();
+
+        this.modelUser.put("userData", model.addAttribute("userData", userData));
+        this.modelUser.put("userPet", model.addAttribute("userPet", userPet));
+        this.modelUser.put("userIdFromCookie", model.addAttribute("userIdFromCookie", userIdCookie));
+
+        return  this.modelUser;
+    }
+
+    private void setCookie(User loggedInUser, HttpServletResponse response){
+        Cookie cookie = new Cookie("userId", loggedInUser.getId().toString());
+        response.addCookie(cookie);
+        response.addCookie(new Cookie("userIsLoggedIn", "true"));
     }
 }

@@ -15,7 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class User {
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) //auto_increment for primary key
