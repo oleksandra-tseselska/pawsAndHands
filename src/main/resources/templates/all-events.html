@@ -31,7 +31,13 @@
                         <p th:text="${eventItem.date}" class="align-self-end p-2"></p>
                         <h5 th:text="${eventItem.name}" class="card-title border-bottom p-2 text-center"></h5>
                         <p th:text="${eventItem.description}" class="card-text mb-4 p-2" style="text-align: justify"></p>
-                        <a th:href="'view-event/'+${eventItem.getId()}" class="btn btn-primary text-white mt-auto align-self-end m-2">See more</a>
+<!--                        <a th:href="'view-event/'+${eventItem.getId()}" class="btn btn-primary text-white mt-auto align-self-end m-2">See more</a>-->
+
+                        <form action="/view-event" method="get">
+                            <input type="hidden" th:value="${eventItem.getId()}" id="EventIdForView" name="EventId">
+                            <button type="submit" class="btn btn-primary">View event</button>
+                        </form>
+
                     </article>
                 </li>
             </ul>

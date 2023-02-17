@@ -94,12 +94,6 @@ public class AdoptionController {
             }else{
                 return "reservation-refusal";
             }
-
-//            reservedPet.setUser(userWhoReservesPet);
-//            reservedPet.setReserved(true);
-//            adoptionService.createPetForAdoption(reservedPet);
-
-
         }catch (Exception e){
             return "redirect:/adoption" + e.getMessage();          //Endpoint can be changed !!!
         }

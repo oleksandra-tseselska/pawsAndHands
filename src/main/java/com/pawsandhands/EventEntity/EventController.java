@@ -1,5 +1,6 @@
 package com.pawsandhands.EventEntity;
 
+import com.pawsandhands.Adoption.Adoption;
 import com.pawsandhands.UserEntity.User;
 import com.pawsandhands.UserEntity.UserService;
 import jakarta.servlet.http.Cookie;
@@ -7,10 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -113,11 +111,73 @@ public class EventController {
         }
     }
 
+    @GetMapping("/update-event")
+    public String updateEventView(
+            Model model,
+            @RequestParam(name = "EventId", required = false) int eventId,
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
+
+        try {
+            model.addAttribute("event",eventService.findById(eventId));
+            System.out.println(userIdFromCookie);
+            System.out.println(eventId);
+
+        }catch (Exception e){
+            return "redirect:all-events?message=search_filed&error=" + e.getMessage();          //Endpoint can be changed !!!
+        }
+        return "edit-event";}
 
 
 
-    @GetMapping("/view-event/{eventId}")
-    public String viewEventInfo(@PathVariable Integer eventId,
+    //HERE HERE HERE
+
+    @PostMapping("/save-updated-event")
+    public String updateEventAndSave(
+            Model model,
+            @RequestParam(name = "EventId", required = false) int eventId,
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
+
+        try {
+            System.out.println("User id:" + userIdFromCookie);
+            System.out.println("Event id:"+eventId);
+
+            Event eventForUpdate = eventService.findById(eventId);
+
+//            eventForUpdate.setDate(eventForUpdate.getDate());
+//            eventForUpdate.setName(eventForUpdate.getName());
+//            eventForUpdate.setDate(eventForUpdate.getDate());
+//            eventForUpdate.setCountry(eventForUpdate.getCountry());
+//            eventForUpdate.setCity(eventForUpdate.getCity());
+//            eventForUpdate.setLocation(eventForUpdate.getLocation());
+//            eventForUpdate.setSponsors(eventForUpdate.getSponsors());
+//            eventForUpdate.setDescription(eventForUpdate.getDescription());
+//            eventForUpdate.setOrganizers(eventForUpdate.getOrganizers());
+
+
+            eventService.createEvent(eventForUpdate);                  //should be overwritten
+
+        }catch (Exception e){
+            return "redirect:all-events?message=search_filed&error=" + e.getMessage();          //Endpoint can be changed !!!
+        }
+        return "edit-event";
+    }
+
+
+
+    @GetMapping("/view-event")   //("/view-event/{eventId}")
+    public String viewEventInfo(
+//            @PathVariable Integer eventId,
+            @RequestParam(name = "EventId", required = false) int eventId,
                                 Model model)
     {
         try{
@@ -128,6 +188,7 @@ public class EventController {
 
         return "view-event";
     }
+
 
     private ArrayList<Event> findEventsAfterNow(){
         ArrayList<Event> eventsAfterNow = new ArrayList<>();
