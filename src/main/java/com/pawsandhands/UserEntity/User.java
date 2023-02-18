@@ -14,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 public class User{
 
@@ -33,7 +34,11 @@ public class User{
     private String password;
     //boolean isAdmin;
     @Lob                               //annotation for BLOB format in DB; B64image Spring - saving like String
+    @Column(length = 50000000)
     private byte[] photo;
+
+    @Builder.Default
+    private String photoPath = "/img/users-photo/profile-photo_placeholder.png";
 
     @CreationTimestamp
     private Timestamp createdAt;        //automatically puts data
@@ -65,6 +70,7 @@ public class User{
                 ", telephone='" + telephone + '\'' +
                 ", password='" + password + '\'' +
                 ", photo=" + Arrays.toString(photo) +
+                ", photoPath=" + photoPath +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", number of ownedPets=" + getNumberOfPets() +

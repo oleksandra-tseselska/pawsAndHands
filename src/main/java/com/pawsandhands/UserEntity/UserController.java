@@ -5,11 +5,14 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.Value;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Set;
 
 @Controller
@@ -95,6 +98,31 @@ public class UserController{
             return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
         }
     }
+    @PostMapping(value = "/add-photo")
+    public String addProfilePhoto(@RequestParam("photo") MultipartFile multipartFile,
+                                  @CookieValue(value = "userId") String userIdFromCookie){
+        try{
+            Long userId = Long.valueOf(userIdFromCookie);
+            User user = this.userService.findUserById(userId);
+            String pathFile = "src/main/resources/static/img/users-photo/profile_photo_"+user.getId().toString()+".png";
+
+            String pathUserPhoto = "/img/users-photo/profile_photo_"+user.getId().toString()+".png";
+            byte[] photoByte = multipartFile.getBytes();
+
+            FileUtils.writeByteArrayToFile(new File(pathFile), multipartFile.getBytes());
+
+            user.setPhoto(photoByte);
+            user.setPhotoPath(pathUserPhoto);
+
+            this.userService.save(user);
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        return "redirect:profile";
+    }
+
 
     @GetMapping("/registration")                        //OK
     public String showRegistrationForm(){                  // if press Btn"Create new account" (?only after index.html)

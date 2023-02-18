@@ -56,6 +56,10 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
+    public void setUserInfoById(byte[] photo, String photoPath, Long userId){
+        this.userRepository.setUserInfoById(photo, photoPath, userId);
+    }
+
     public ArrayList<User> findAll() {
         return userRepository.findAll();
     }

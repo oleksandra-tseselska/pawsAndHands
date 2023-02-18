@@ -11,36 +11,41 @@ a{
     text-decoration: none;
 }
 .user-link{
-    background-color: #0D6EFC;
-    opacity: 90%;
+    background-color: rgba(13, 110, 252, 0.8);
     color: #FAFAFA;
     transition-property: background-color, color;
     transition-duration: 0.4s;
 }
-.user-link:hover{
-    background-color: #FFF;
-    color: #000;
+@media (min-width: 768px) {
+    .user-link:hover {
+        background-color: #FFF;
+        color: #000;
+    }
+
+    .user-paw:hover {
+        background-color: #F7F8F9;
+    }
 }
-.user-paw:hover{
-    background-color: #F7F8F9;
+.all-user-img{
+    max-height: 300px;
+    max-width: 95%;
+    padding-top: 10px;
+    border-radius: 5%;
+    object-fit: cover;
+    object-position: 50% 30%;
 }
-/*.all-user-img{*/
-/*    max-height: 400px;*/
-/*    object-fit: cover;*/
-/*    object-position: 50% 30%;*/
-/*}*/
-/*@media (min-width: 768px) {*/
-/*    .all-user-img{*/
-/*        max-height: 200px;*/
-/*        object-fit: cover;*/
-/*    }*/
-/*}*/
-/*@media (min-width: 1440px) {*/
-/*    .all-user-img{*/
-/*        max-height: 250px;*/
-/*        object-fit: cover;*/
-/*    }*/
-/*}*/
+@media (min-width: 768px) {
+    .all-user-img{
+        max-height: 350px;
+        object-fit: cover;
+    }
+}
+@media (min-width: 1440px) {
+    .all-user-img{
+        max-height: 350px;
+        object-fit: cover;
+    }
+}
 .social-list {
     display: flex;
     justify-content: space-evenly;

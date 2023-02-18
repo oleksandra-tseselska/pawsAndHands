@@ -17,7 +17,15 @@
             <!--            USER PHOTO  -->
 
             <div class="col-md-5">
-                <img class="view-user-img" alt="user photo" th:src="${userData?.photo}">
+                <img class="view-user-img" alt="user photo" th:src="${userData.photoPath}">
+                <button th:if="${userData.id.equals(userIdFromCookie)}"
+                        type="button"
+                        class="btn btn-outline-primary mt-2 mb-2 d-flex"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                >
+                    Change photo
+                </button>
             </div>
             <div class="col-md-7 col-lg-5 ms-auto me-auto d-flex flex-column justify-content-center align-self-start">
 
@@ -182,6 +190,26 @@
     </section>
 </main>
 <footer class="align-self-end" th:insert="~{fragments/footer.html :: footer}"></footer>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/add-photo" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="photo" class="form-label">Photo</label>
+                        <input type="file" class="form-control" id="photo" name="photo">
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary align-self-end">Add Photo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
