@@ -111,7 +111,7 @@ public class EventController {
         }
     }
 
-    @GetMapping("/update-event")
+    @GetMapping("/update-event")                                        //smotretj anketu zapolnennuju
     public String updateEventView(
             Model model,
             @RequestParam(name = "EventId", required = false) int eventId,
@@ -133,45 +133,30 @@ public class EventController {
         return "edit-event";}
 
 
-
-    //HERE HERE HERE
-
-    @PostMapping("/save-updated-event")
-    public String updateEventAndSave(
-            Model model,
-            @RequestParam(name = "EventId", required = false) int eventId,
-            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
-            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
-    ){
-        if(userIsLoggedInFromCookie.equals("false")) {
-            return "not-logged-in";
-        }
-
+    @PostMapping("/update-event")
+    public String handleEventUpdate(Event event,
+                                    @RequestParam(name = "EventId", required = false) int eventId,
+                                    @CookieValue(value = "userId") String userIdFromCookie
+    ) throws Exception {
         try {
-            System.out.println("User id:" + userIdFromCookie);
-            System.out.println("Event id:"+eventId);
+            Event oldEventData = eventService.findById(eventId);
 
-            Event eventForUpdate = eventService.findById(eventId);
+            //Setting creation date info (as it is not done manually by user)
+            event.setCreatedAt(oldEventData.getCreatedAt());
 
-//            eventForUpdate.setDate(eventForUpdate.getDate());
-//            eventForUpdate.setName(eventForUpdate.getName());
-//            eventForUpdate.setDate(eventForUpdate.getDate());
-//            eventForUpdate.setCountry(eventForUpdate.getCountry());
-//            eventForUpdate.setCity(eventForUpdate.getCity());
-//            eventForUpdate.setLocation(eventForUpdate.getLocation());
-//            eventForUpdate.setSponsors(eventForUpdate.getSponsors());
-//            eventForUpdate.setDescription(eventForUpdate.getDescription());
-//            eventForUpdate.setOrganizers(eventForUpdate.getOrganizers());
+            //Finding and setting user (as it is not done manually by user)
+            User eventUser = userService.findUserById(Long.valueOf(userIdFromCookie));
+            event.setUser(eventUser);
 
+            //Setting again this event id (as it is not done manually by user)
+            event.setId(eventId);
+            this.eventService.createEvent(event);
 
-            eventService.createEvent(eventForUpdate);                  //should be overwritten
-
-        }catch (Exception e){
-            return "redirect:all-events?message=search_filed&error=" + e.getMessage();          //Endpoint can be changed !!!
+        } catch (Exception e) {
+            return "redirect:create-event" + e.getMessage();
         }
-        return "edit-event";
+        return ("create-event");
     }
-
 
 
     @GetMapping("/view-event")   //("/view-event/{eventId}")
