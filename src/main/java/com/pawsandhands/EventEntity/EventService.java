@@ -23,6 +23,10 @@ public class EventService {
         this.eventRepository.save(event);
     }
 
+    public void deleteEvent(Long eventId){
+        this.eventRepository.deleteById(eventId);
+    }
+
     public ArrayList<Event> findEventsByUser (User user){        //For My Events Section
         return eventRepository.findEventByUser(user);
     }

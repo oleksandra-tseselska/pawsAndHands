@@ -30,6 +30,14 @@
         <ul class="row row-cols-1 row-cols-lg-3 g-4 ps-2 pe-2" th:if="${!(myEventsList.isEmpty())}">
             <!--ADD CLASSES HERE d-flex align-items-stretch-->
             <li th:each="myEventItem: ${myEventsList}" class="col d-flex align-items-stretch">
+
+<!--                <img-->
+<!--                        th:src="${myEventItem.getPhotoPath()}"-->
+<!--                        class="card-img-top all-user-img"-->
+<!--                        loading="lazy"-->
+<!--                        alt="Profile photo"-->
+<!--                >-->
+
                 <article class="card-body d-flex flex-column border rounded p-0">
                     <p th:text="${myEventItem.getDate()}" class="align-self-end p-2"></p>
                     <h5 th:text="${myEventItem.getName()}" class="card-title border-bottom p-2 text-center"></h5>

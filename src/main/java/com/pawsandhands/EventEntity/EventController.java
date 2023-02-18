@@ -111,6 +111,31 @@ public class EventController {
         }
     }
 
+    @PostMapping("/delete-event")
+    public String deleteEvent(
+            Model model,
+            @RequestParam(name = "EventId", required = false) Long eventId,
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
+
+        try {
+            System.out.println("Event with following id was deleted: " + eventId);
+            this.eventService.deleteEvent(eventId);
+
+        }catch (Exception e){
+            return "redirect:all-events?message=search_filed&error=" + e.getMessage();          //Endpoint can be changed !!!
+        }
+        return "redirect:my-events";
+    }
+
+
+
+
+
     @GetMapping("/update-event")                                        //smotretj anketu zapolnennuju
     public String updateEventView(
             Model model,
@@ -144,7 +169,7 @@ public class EventController {
             //Setting creation date info (as it is not done manually by user)
             event.setCreatedAt(oldEventData.getCreatedAt());
 
-            //Finding and setting user (as it is not done manually by user)
+            //Finding and setting user for event (as it is not done manually by user)
             User eventUser = userService.findUserById(Long.valueOf(userIdFromCookie));
             event.setUser(eventUser);
 

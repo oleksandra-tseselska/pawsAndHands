@@ -3,6 +3,7 @@ package com.pawsandhands.EventEntity;
 import com.pawsandhands.UserEntity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,12 +28,20 @@ public class Event {
     private String city;
     private String location;
     private String sponsors;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String organizers;
 
     @ManyToOne
     @PrimaryKeyJoinColumn(name="USERID", referencedColumnName="id")
     private User user;
+
+//    @Lob                               //annotation for BLOB format in DB; B64image Spring - saving like String
+//    @Column(length = 50000000)
+//    private byte[] photo;
+//
+//    @Builder.Default
+//    private String photoPath = "/img/events-photo/event-photo_placeholder.png";
 
     @CreationTimestamp
     private Timestamp createdAt;        //automatically puts data
