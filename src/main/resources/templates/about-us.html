@@ -4,23 +4,70 @@
   <!--    this block has all needed initial bootstrap and google fonts imports-->
   <th:block th:include="~{fragments/head.html :: head}"> </th:block>
 
-  <!--    add all your additional styles files add below this line-->
-
   <!--    customize title of your page-->
-  <title>about us</title>
+  <title>About us</title>
 </head>
-<body class="d-flex row">
+<body>
 <!-- this is fragment for header to display -->
 <header th:insert="~{fragments/header.html :: header}"></header>
 
-<main>
+<div class="row">
+  <div class="col-md-1"></div>
 
-  <!-- insert all your code below this line -->
+  <div class="col-md-7">
 
-</main>
+<h1 style="text-align: center">About us</h1>
+<br>
+<div style="font-size: 18px; text-align: justify">
+  <p>
+    Our “Paws & Hands” website is a big pet owners', pet lovers' and pet service providers' community and social
+    network with a great functionality.
+  </p>
 
-<footer class="align-self-end" th:insert="~{fragments/footer.html :: footer}"></footer>
-<!--Script for Bootstrap to work well, should be placed at the end of the Body tag-->
+  <p>
+    Have you ever thought where to find handler, groomer, veterinarian or other service provider for your pet?
+    Or maybe you are going to find a friend/couple for your pet or take a new pet at home? Wouldn't you also be
+    happy to get discounts for great quality pet services, accessories and food as well as get new friends that are
+    passionate about cats or dogs so much as you are?
+  </p>
+
+  <p>
+    If your answer is "yes", we are happy to announce that you are in the right place! In our website you can create
+    profiles for you and your pets, see other users and their pets, communicate with them, see pets looking for dates
+    or new homes and even reserve pets from pet shelters. Also you have an ability to see events for pets and their
+    owners as well as to create new ones by yourself. And don't forget to visit "Discounts" section where you can find
+    great offers that are available only for members of our community.
+  </p>
+
+  <p>
+    If you haven't registered yet <span><a href="/registration">let's do it right now</a></span>. Our pet lover community is waiting for you. Let's connect paws
+    and hands together!
+  </p>
+
+  <p style="font-size: 14px; text-align: right">
+    <b>Wishing All the Best, <br> Paws & Hands team</b>
+  </p>
+
+</div>
+  </div>
+
+    <div class="col-3" style="margin-top: 80px">
+      <img src="pawHand.jpg" alt="default profile logo" style="margin-left: 15px; width: 110%; height: 70%; border-radius: 60%;">
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<footer  class="align-self-end"  th:insert="~{fragments/footer.html :: footer}"></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 </body>
+
 </html>
