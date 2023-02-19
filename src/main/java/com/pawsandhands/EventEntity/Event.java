@@ -47,4 +47,5 @@ public class Event {
     private Timestamp createdAt;        //automatically puts data
     @UpdateTimestamp
     private Timestamp updatedAt;        //automatically puts data
+
 }
