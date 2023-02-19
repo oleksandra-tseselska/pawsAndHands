@@ -28,6 +28,10 @@
                 </button>
             </div>
             <div class="col-md-7 col-lg-5 ms-auto me-auto d-flex flex-column justify-content-center align-self-start">
+                <div th:if ="${(message != null) && message.equals('pet_was_deleted')}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Your pet was deleted. </strong>You could always add another one.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
 
                 <!--            USER NAME  -->
 

@@ -48,9 +48,14 @@ public class Pet {
     private String events;
     private String medicalInfo;
 
-    @ManyToMany(mappedBy = "ownedPets")
+    @ManyToMany
+    @JoinTable(
+            name = "pets_owners",
+            joinColumns = @JoinColumn(name = "pet_id", referencedColumnName = "petId"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"))
     private Set<User> petOwners;
 
+    @Column(updatable = false)
     @CreationTimestamp
     private Timestamp createdAt;
     @UpdateTimestamp

@@ -67,9 +67,9 @@ public class EventController {
             event.setUser(eventUser);
             this.eventService.createEvent(event);
         } catch (Exception e) {
-            return "redirect:create-event" + e.getMessage();
+            return "redirect:/create-event/" + e.getMessage();
         }
-        return ("create-event");
+        return ("/create-event");
     }
 
     @GetMapping("/all-events")
@@ -81,10 +81,10 @@ public class EventController {
 //                    "eventList", findEventsAfterNow());
                     "eventList", findTop3(eventsAfterNow));
         }catch (Exception e){
-            return "redirect:all-events" + e.getMessage();
+            return "redirect:/all-events/" + e.getMessage();
         }
 
-        return "all-events";
+        return "/all-events";
     }
 
 
@@ -178,7 +178,7 @@ public class EventController {
             this.eventService.createEvent(event);
 
         } catch (Exception e) {
-            return "redirect:create-event" + e.getMessage();
+            return "redirect:create-event/" + e.getMessage();
         }
         return ("create-event");
     }

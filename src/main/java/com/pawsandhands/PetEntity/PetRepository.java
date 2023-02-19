@@ -16,6 +16,6 @@ Pet findPetById(Long id);
 
 ArrayList<Pet> findAllByOrderByNickname();
 
-
+void delete(Pet entity);
 }
 

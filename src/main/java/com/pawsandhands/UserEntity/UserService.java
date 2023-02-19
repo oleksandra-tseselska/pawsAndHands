@@ -74,7 +74,13 @@ public class UserService {
             User userFromDb = userRepository.findUserById(userId);
             Set<Pet> setOfPets = new HashSet<>();
             setOfPets.addAll(userFromDb.getOwnedPets());
+
+            if(userFromDb.getOwnedPets() != null){
+                setOfPets.addAll(userFromDb.getOwnedPets());
+            }
+
             setOfPets.add(petFromDb);
+
 
             userFromDb.setOwnedPets(setOfPets);
             this.userRepository.save(userFromDb);
@@ -86,5 +92,21 @@ public class UserService {
     }
 
 
+    public void deletePetFromUser(Long userId, Pet petToDelete) {
+        try {
+            Pet petFromDb = petRepository.findPetById(petToDelete.getId());
+            User userFromDb = userRepository.findUserById(userId);
+            Set<Pet> setOfPets = new HashSet<>();
+            setOfPets.addAll(userFromDb.getOwnedPets());
+            setOfPets.remove(petFromDb);
+
+            userFromDb.setOwnedPets(setOfPets);
+            this.userRepository.save(userFromDb);
+            System.out.println(userRepository.findUserById(userId));
+
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }
 
 }

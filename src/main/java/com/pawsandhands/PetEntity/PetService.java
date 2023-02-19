@@ -20,13 +20,39 @@ public class PetService {
         this.petRepository.save(pet);
     }
 
+    public void updatePet(Pet petNew, Long id) throws Exception{
+        Pet petOld = findPetById(id);
+        petNew.setId(petOld.getId());
+        petNew.setCreatedAt(petOld.getCreatedAt());
+        if(petNew.getBreed().equals("empty") && !(petOld.getBreed().equals("empty"))){
+            petNew.setBreed(petOld.getBreed());
+        }
+
+        if(petNew.getCountry().equals("--") && !(petOld.getCountry().equals("--"))){
+            petNew.setCountry(petOld.getCountry());
+        }
+
+        if((petNew.getPetOwners() == null) && (petOld.getPetOwners() != null)){
+            petNew.setPetOwners(petOld.getPetOwners());
+        }
+
+        this.petRepository.save(petNew);
+    }
+
+
+
+
+
     public void updatePetWithOwner(Pet pet, Long ownerId) {
         try {
             Pet petFromDb = this.petRepository.findPetById(pet.getId());
             User userFromDb = userRepository.findUserById(ownerId);
             Set<User> setOfOwners = new HashSet<>();
 
-            setOfOwners.addAll(petFromDb.getPetOwners());
+            if(!(petFromDb.getPetOwners() == null)){
+                setOfOwners.addAll(petFromDb.getPetOwners());
+            }
+
             setOfOwners.add(userFromDb);
 
             petFromDb.setPetOwners(setOfOwners);
@@ -44,4 +70,18 @@ public class PetService {
         return this.petRepository.findAllByOrderByNickname();
     }
 
+    public void deletePet(Long petToDeleteId) {
+        Pet petToDelete = this.petRepository.findPetById(petToDeleteId);
+//        userRepository.deleteAllUsersFromPet(petToDelete);
+//        Set<User> setOfOwners = new HashSet<>();
+//        Set<User> setOfPets = new HashSet<>();
+//
+//        petToDelete.setPetOwners(setOfOwners);
+//        this.petRepository.save(petToDelete);
+//        System.out.println(petToDelete);
+        this.petRepository.delete(petToDelete);
+        System.out.println("pet was deleted");
+
+
+    }
 }

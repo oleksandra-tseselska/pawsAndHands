@@ -45,11 +45,7 @@ public class User{
     @UpdateTimestamp
     private Timestamp updatedAt;        //automatically puts data
 
-    @ManyToMany
-    @JoinTable(
-        name = "pets_owners",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"),
-        inverseJoinColumns = @JoinColumn(name = "pet_id", referencedColumnName = "petId"))
+    @ManyToMany(mappedBy = "petOwners")
     private Set<Pet> ownedPets;
 
     public int getNumberOfPets(){

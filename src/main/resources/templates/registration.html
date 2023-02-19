@@ -17,149 +17,141 @@
     <section class="container">
       <div class="row justify-content-end">
         <div class="row" style="height: 2rem;"></div>
+
         <div class="col col-md-5 col-lg-4 card p-4">
           <form action="/register" method="post" class="row g-3 needs-validation" novalidate>
-            <div class="form-floating col-md-6">
-              <input
-                      type="text"
-                      name="name"
-                      class="form-control"
-                      id="floatingFirstName"
-                      th:value="${user?.name}"
-                      aria-label="first name"
-                      required
-                      placeholder="Mark"
-              >
-              <label for="floatingFirstName" class="ms-1"> First name</label>
-              <div class="valid-feedback">
-                Looks good!
+              <div class="form-floating col-md-6">
+                  <input
+                          type="text"
+                          name="name"
+                          class="form-control"
+                          id="floatingFirstName"
+                          required
+                          maxlength="255"
+                  >
+                  <label for="floatingFirstName" class="ms-1">Name</label>
+                  <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                  <div class="invalid-feedback">
+                    Please enter your name.
+                  </div>
               </div>
-              <div class="invalid-feedback">
-                Please enter your name.
-              </div>
-            </div>
 
-            <div class="form-floating col-md-6">
-              <input
-                      type="text"
-                      name="surname"
-                      class="form-control"
-                      id="floatingLastName"
-                      th:value="${user?.surname}"
-                      aria-label="last name"
-                      required
-                      placeholder="Wind"
-              >
-              <label for="floatingLastName" class="ms-1">Last name</label>
-              <div class="valid-feedback">
-                Looks good!
-              </div>
-              <div class="invalid-feedback">
-                Please enter your surname.
-              </div>
-            </div>
+              <div class="form-floating col-md-6">
+                  <input
+                          type="text"
+                          name="surname"
+                          class="form-control"
+                          id="floatingLastName"
+                          placeholder="Surname"
+                          maxlength="255"
 
-            <div class="form-floating col-md-6">
-              <input
-                      type="email"
-                      name="email"
-                      class="form-control"
-                      id="floatingEmail"
-                      th:value="${user?.email}"
-                      aria-label="email"
-                      required
-                      placeholder="example@go.com"
-              >
-              <label for="floatingEmail" class="ms-1">Email</label>
-              <div class="valid-feedback">
-                Looks good!
+                          required
+                  >
+                  <label for="floatingLastName" class="ms-1">Surname</label>
+                  <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                  <div class="invalid-feedback">
+                    Please enter your surname.
+                  </div>
               </div>
-              <div class="invalid-feedback">
-                example@go.com
-              </div>
-            </div>
 
-            <div class="form-floating col-md-6">
-              <input
-                      type="tel"
-                      name="telephone"
-                      class="form-control"
-                      id="floatingPhone"
-                      th:value="${user?.telephone}"
-                      aria-label="telephone"
-                      required
-                      placeholder="12345678"
-              >
-              <label for="floatingPhone" class="ms-1">Telephone</label>
-              <div class="valid-feedback">
-                Looks good!
+              <div class="form-floating col-md-6">
+                  <input
+                          type="email"
+                          name="email"
+                          class="form-control"
+                          id="floatingEmail"
+                          required
+                          placeholder="example@email.com"
+                          maxlength="255"
+
+                  >
+                  <label for="floatingEmail" class="ms-1">Email</label>
+                  <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                  <div class="invalid-feedback">
+                      Please enter your email in a format example@email.com
+                  </div>
               </div>
-              <div class="invalid-feedback">
-                344 523 23
+
+              <div class="form-floating col-md-6">
+                  <input
+                          type="tel"
+                          name="telephone"
+                          class="form-control"
+                          id="floatingPhone"
+                          required
+                          placeholder="Phone"
+                          maxlength="60"
+                  >
+                  <label for="floatingPhone" class="ms-1">Phone</label>
+                  <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                  <div class="invalid-feedback">
+                      Please enter your phone number.
+                  </div>
               </div>
-            </div>
+
+              <div class="form-floating mb-3">
+                  <input
+                          type="password"
+                          name="password"
+                          class="form-control"
+                          id="floatingPassword"
+                          required
+                          placeholder="Password"
+                          minlength="8"
+                          maxlength="16"
+                          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$"
+                  >
+                  <label for="floatingPassword" class="ms-1">Password</label>
+                  <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                  <div class="invalid-feedback">
+                    Please make sure that your password contains lowercase and uppercase letters,
+                      numeric and special symbol (!@#$%^&*=+-_), and that the length is from 8 to 16 symbols.
+                  </div>
+                </div>
 
             <div class="form-floating mb-3">
-              <input
-                      type="password"
-                      name="password"
-                      class="form-control"
-                      id="floatingPassword"
-                      th:value="${user?.surname}"
-                      aria-label="Password: Lowercase + Uppercase + numeric
-                                 + special symbol(!@#$%^&*=+-_),
-                                  length from 8 till 16 symbols."
-                      required
-                      placeholder="Wild_me888"
-                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$"
-              >
-              <label for="floatingPassword" class="ms-1">Password</label>
-              <div class="valid-feedback">
-                Looks good!
-              </div>
-              <div class="invalid-feedback">
-                Lowercase + Uppercase + numeric
-                + special symbol(!@#$%^&*=+-_),
-                length from 8 till 16 symbols.
-              </div>
-            </div>
-
-            <div>
               <div th:insert="~{fragments/countries.html :: countries}" name="country"></div>
               <div class="invalid-feedback">
-                USA
+                 Select country
               </div>
             </div>
 
             <div class="form-floating mb-3">
               <input
-                      type="tel"
+                      type="text"
                       name="city"
                       class="form-control"
                       id="floatingCity"
-                      th:value="${user?.city}"
-                      aria-label="city"
                       required
-                      placeholder="New York"
+                      placeholder="City"
+                      maxlength="255"
               >
               <label for="floatingPhone" class="ms-1">City</label>
               <div class="valid-feedback">
                 Looks good!
               </div>
               <div class="invalid-feedback">
-                New York
+                Please specify city.
               </div>
             </div>
 
-            <div>
+            <div class="form-floating mb-3">
               <select
                       class="form-select"
                       name="status"
-                      th:value="${user?.status}"
-                      aria-label="Default select example"
                       required
               >
-                <option selected disabled value="">Choose state...</option>
+                <option selected disabled value="">Choose your user type</option>
                 <option value="Pet owner">Pet owner</option>
                 <option value="Service provider">Service provider</option>
                 <option value="Pet owner and service provider">Pet owner and service provider</option>
@@ -179,32 +171,32 @@
                       name="breeder_licence"
                       class="form-control"
                       id="floatingLicence"
-                      th:value="${user?.breeder_licence}"
-                      aria-label="breeder licence"
-                      required
                       placeholder="Breeder licence"
+                      maxlength="255"
               >
               <label for="floatingLicence" class="ms-1">Breeder licence</label>
               <div class="valid-feedback">
                 Looks good!
               </div>
               <div class="invalid-feedback">
-                345-4321
+                  Please provide a valid license.
               </div>
             </div>
 
 
-            <div class="col-12">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                <label class="form-check-label" for="invalidCheck">
-                  Agree to terms and conditions
-                </label>
-                <div class="invalid-feedback">
-                  You must agree before submitting.
-                </div>
-              </div>
-            </div>
+<!--            <div class="col-12">-->
+<!--              <div class="form-check">-->
+<!--                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>-->
+<!--                <label class="form-check-label" for="invalidCheck">-->
+<!--                  Agree to terms and conditions-->
+<!--                </label>-->
+<!--                <div class="invalid-feedback">-->
+<!--                  You must agree before submitting.-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+
+
             <div class="d-grid gap-2">
               <button class="btn btn-success" type="submit">Register</button>
             </div>

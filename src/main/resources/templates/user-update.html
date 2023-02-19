@@ -19,19 +19,21 @@
         <div class="col-lg-6">
             <h1 class="text-center">Update Information</h1>
 
-            <form action="#" method="post" th:action="@{/user-update}" th:object="${userData}">
+            <form method="post" th:action="@{/user-update}" th:object="${userData}">
 
               <input type="hidden" th:field="*{id}">
               <input type="hidden" th:field="*{createdAt}">
               <input type="hidden" th:field="*{password}">
 
-              <label for="status" class="form-label">Please select your status:</label>
-              <select class="form-control" name="status" id="status" th:value="${userData?.status}">                   <!-- Field of User class object where input will be saved -->
-                <option value="Pet owner">Pet owner</option>
-                <option value="Service provider">Service provider</option>
-                <option value="Pet owner and service provider">Pet owner and service provider</option>
-                <option value="User with no pets">User with no pets</option>
-              </select>
+              <div class="mb-3">
+                  <label for="status" class="form-label">Please select your status:</label>
+                  <select class="form-select" name="status" id="status" th:value="${userData?.status}">                   <!-- Field of User class object where input will be saved -->
+                    <option value="Pet owner">Pet owner</option>
+                    <option value="Service provider">Service provider</option>
+                    <option value="Pet owner and service provider">Pet owner and service provider</option>
+                    <option value="User with no pets">User with no pets</option>
+                  </select>
+              </div>
 
               <div class="mb-3">
                 <label for="name" class="form-label">First name</label>
@@ -50,7 +52,7 @@
 
               <div class="mb-3">
                 <label for="breeder_licence" class="form-label">Breeder licence</label>
-                <input type="text" class="form-control" id="breeder_licence" name="breeder_licence" required th:value="${userData?.breeder_licence}">
+                <input type="text" class="form-control" id="breeder_licence" name="breeder_licence" th:value="${userData?.breeder_licence}">
               </div>
 
               <div class="mb-3">

@@ -23,7 +23,7 @@
 <!--    PICTURE SECTION -->
 
     <div class="col-2">
-      <img src="../logo.png" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;">
+      <img src="/logo.png" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;">
     </div>
 
 
@@ -34,23 +34,27 @@
 
         <h2 class="text-capitalize"> <span class="text-truncate" th:text="${pet.getNickname().toLowerCase()}"> </span></h2>
         <h5 class="text-capitalize text-truncate text-muted" th:if="${!(pet.getFullName().isBlank())}" th:text="'Full official name: ' + ${pet.getFullName().toLowerCase()}"></h5>
+      </div>
 
-        <h3 class="badge rounded-pill bg-success" th:text="${pet.getType().toLowerCase()}"></h3>
+      <div class="row d-flex">
+        <div class="col-auto align-items-center my-auto">
+            <div class="me-auto my-auto badge rounded-pill bg-success" th:text="${pet.getType().toLowerCase()}"></div>
+        </div>
       </div>
 
 <!--      STATUSES SECTION -->
 
-      <div class="row">
-        <div class="col">
-          <span class="badge bg-warning text-dark" th:if="${pet.isLookingForDate()}">ready for a date</span>
+      <div class="row" th:if="${(pet.isLookingForDate()) || pet.isDied() || pet.isNewHome() }">
+        <div class="col" th:if="${pet.isLookingForDate()}">
+          <span class="badge bg-warning text-dark">ready for a date</span>
         </div>
 
-        <div class="col">
-          <span class="badge bg-dark text-white" th:if="${pet.isDied()}" >memorial page</span>
+        <div class="col" th:if="${pet.isDied()}">
+          <span class="badge bg-dark text-white">memorial page</span>
         </div>
 
-        <div class="col">
-          <span class="badge bg-info text-dark" th:if="${(pet.isNewHome())}">looking for a new home</span>
+        <div class="col" th:if="${pet.isNewHome()}">
+          <span class="badge bg-info text-dark" >looking for a new home</span>
         </div>
 
         <br><br>
@@ -133,7 +137,7 @@
           <span class="text-muted">Owner:</span>
         </div>
         <div class="col">
-          <a th:href="@{'/viewUserInfo/' + ${user.getId()}}" th:text="${user.getName()} + ' ' + ${user.getSurname()}"></a>
+          <a th:href="@{'/profile-page/' + ${user.getId()}}" th:text="${user.getName()} + ' ' + ${user.getSurname()}"></a>
         </div>
       </div>
 
