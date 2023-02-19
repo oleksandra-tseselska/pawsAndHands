@@ -4,86 +4,240 @@
 <head>
   <th:block th:include="~{fragments/head.html :: head}"> </th:block>
   <title>Registration form</title>
-
   <style>
     body {
       background: url("/catdog.jpeg") no-repeat;
       background-size: cover;
     }
   </style>
-
 </head>
 
 <body>
+  <main>
+    <section class="container">
+      <div class="row justify-content-end">
+        <div class="row" style="height: 2rem;"></div>
+        <div class="col col-md-5 col-lg-4 card p-4">
+          <form action="/register" method="post" class="row g-3 needs-validation" novalidate>
+            <div class="form-floating col-md-6">
+              <input
+                      type="text"
+                      name="name"
+                      class="form-control"
+                      id="floatingFirstName"
+                      th:value="${user?.name}"
+                      aria-label="first name"
+                      required
+                      placeholder="Mark"
+              >
+              <label for="floatingFirstName" class="ms-1"> First name</label>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+              <div class="invalid-feedback">
+                Please enter your name.
+              </div>
+            </div>
 
-<section style="margin-left: 30px; margin-right: 10px">
-  <div style=" float: right; padding-bottom: 12px; border-radius: 5%; background-color: white; margin-right: 30px; width: 25%">
+            <div class="form-floating col-md-6">
+              <input
+                      type="text"
+                      name="surname"
+                      class="form-control"
+                      id="floatingLastName"
+                      th:value="${user?.surname}"
+                      aria-label="last name"
+                      required
+                      placeholder="Wind"
+              >
+              <label for="floatingLastName" class="ms-1">Last name</label>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+              <div class="invalid-feedback">
+                Please enter your surname.
+              </div>
+            </div>
 
-    <h2 style="margin-left: 45px">Registration form:</h2>
+            <div class="form-floating col-md-6">
+              <input
+                      type="email"
+                      name="email"
+                      class="form-control"
+                      id="floatingEmail"
+                      th:value="${user?.email}"
+                      aria-label="email"
+                      required
+                      placeholder="example@go.com"
+              >
+              <label for="floatingEmail" class="ms-1">Email</label>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+              <div class="invalid-feedback">
+                example@go.com
+              </div>
+            </div>
+
+            <div class="form-floating col-md-6">
+              <input
+                      type="tel"
+                      name="telephone"
+                      class="form-control"
+                      id="floatingPhone"
+                      th:value="${user?.telephone}"
+                      aria-label="telephone"
+                      required
+                      placeholder="12345678"
+              >
+              <label for="floatingPhone" class="ms-1">Telephone</label>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+              <div class="invalid-feedback">
+                344 523 23
+              </div>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input
+                      type="password"
+                      name="password"
+                      class="form-control"
+                      id="floatingPassword"
+                      th:value="${user?.surname}"
+                      aria-label="Password: Lowercase + Uppercase + numeric
+                                 + special symbol(!@#$%^&*=+-_),
+                                  length from 8 till 16 symbols."
+                      required
+                      placeholder="Wild_me888"
+                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$"
+              >
+              <label for="floatingPassword" class="ms-1">Password</label>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+              <div class="invalid-feedback">
+                Lowercase + Uppercase + numeric
+                + special symbol(!@#$%^&*=+-_),
+                length from 8 till 16 symbols.
+              </div>
+            </div>
+
+            <div>
+              <div th:insert="~{fragments/countries.html :: countries}" name="country"></div>
+              <div class="invalid-feedback">
+                USA
+              </div>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input
+                      type="tel"
+                      name="city"
+                      class="form-control"
+                      id="floatingCity"
+                      th:value="${user?.city}"
+                      aria-label="city"
+                      required
+                      placeholder="New York"
+              >
+              <label for="floatingPhone" class="ms-1">City</label>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+              <div class="invalid-feedback">
+                New York
+              </div>
+            </div>
+
+            <div>
+              <select
+                      class="form-select"
+                      name="status"
+                      th:value="${user?.status}"
+                      aria-label="Default select example"
+                      required
+              >
+                <option selected disabled value="">Choose state...</option>
+                <option value="Pet owner">Pet owner</option>
+                <option value="Service provider">Service provider</option>
+                <option value="Pet owner and service provider">Pet owner and service provider</option>
+                <option value="User with no pets">User with no pets</option>
+              </select>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+              <div class="invalid-feedback">
+                Please provide a valid state.
+              </div>
+            </div>
+
+            <div class="form-floating">
+              <input
+                      type="text"
+                      name="breeder_licence"
+                      class="form-control"
+                      id="floatingLicence"
+                      th:value="${user?.breeder_licence}"
+                      aria-label="breeder licence"
+                      required
+                      placeholder="Breeder licence"
+              >
+              <label for="floatingLicence" class="ms-1">Breeder licence</label>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+              <div class="invalid-feedback">
+                345-4321
+              </div>
+            </div>
 
 
-    <form action="/register" method="post" style="align-content: center; margin-top: 20px">   <!-- User class object -->
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                <label class="form-check-label" for="invalidCheck">
+                  Agree to terms and conditions
+                </label>
+                <div class="invalid-feedback">
+                  You must agree before submitting.
+                </div>
+              </div>
+            </div>
+            <div class="d-grid gap-2">
+              <button class="btn btn-success" type="submit">Register</button>
+            </div>
+          </form>
 
-      <label style="margin-left:35px; font-size: 15px">Please select your status:</label>
-      <br>
-      <select name="status" th:value="${user?.getStatus()}">                   <!-- Field of User class object where input will be saved -->
-        <option value="Pet owner">Pet owner</option>
-        <option value="Service provider">Service provider</option>
-        <option value="Pet owner and service provider">Pet owner and service provider</option>
-        <option value="User with no pets">User with no pets</option>
-      </select>
+        </div>
+      </div>
+    </section>
+  </main>
 
-      <br>
 
-      <input style="margin-top:20px; margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="name" placeholder="Name" required th:value="${user?.getName()}">          <!-- Field of User class object where input will be saved -->
 
-      <br><br>
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function () {
+    'use strict'
 
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="surname" placeholder="Surname" required th:value="${user?.getSurname()}">
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
 
-      <br><br>
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+              form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                  event.preventDefault()
+                  event.stopPropagation()
+                }
 
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="email" name="email" placeholder="E-mail" required th:value="${user?.getEmail()}">
-
-      <br><br>
-
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="breeder_licence" placeholder="Breeder licence No" th:value="${user?.getBreeder_licence()}">
-
-      <br><br>
-
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="country" placeholder="Country" required th:value="${user?.getCountry()}">
-
-      <br><br>
-
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="text" name="city" placeholder="City" required th:value="${user?.getCity()}">
-
-      <br><br>
-
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="tel" name="telephone" placeholder="Telephone" required th:value="${user?.getTelephone()}">
-
-      <br><br>
-
-      <!--  Pattern:  at least one lowercase letter, at least one uppercase letter, at least one numeric value,
-            at least one special symbol(!@#$%^&*=+-_), total length should be >= 8 and <= 16  -->
-      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="password" oninvalid="alert('Password should contain at least one lowercase letter, at least one ' +
-     'uppercase letter, at least one numeric value,at least one special symbol(!@#$%^&*=+-_), total length should' +
-      ' be from 8 till 16 symbols')" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$" placeholder="Password" th:value="${user?.getPassword()}">
-
-      <br><br>
-
-<!--      <label  style="margin-left:45px; font-size: 15px">Profile image:</label>-->
-
-<!--      <br>-->
-
-<!--      <input  style="margin-left: 40px; padding: 3px 5px" size="25px" type="file" accept="image/*" name="photo" th:value="${user?.getPhoto()}">-->
-
-<!--      <br>-->
-
-      <button type="submit" style="padding: 5px 40px; margin-top:15px; border-color: initial; background-color:darkgreen;color: white; margin-left: 80px">Register</button>
-    </form>
-
-  </div>
-</section>
-
+                form.classList.add('was-validated')
+              }, false)
+            })
+  })()
+</script>
 </body>
 </html>
