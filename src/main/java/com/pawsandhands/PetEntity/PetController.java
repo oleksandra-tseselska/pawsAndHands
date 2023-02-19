@@ -206,7 +206,7 @@ public class PetController {
     ) {
         try {
             Pet petToUpdate = petService.findPetById(Long.valueOf(petId));
-            this.petService.deleteOwnerFromPet(petToUpdate, Long.valueOf(ownerId));
+//            this.petService.deleteOwnerFromPet(petToUpdate, Long.valueOf(ownerId));
             this.userService.deletePetFromUser(Long.valueOf(ownerId), petToUpdate);
 
             model.addAttribute("pet", petService.findPetById(Long.valueOf(petId)));
