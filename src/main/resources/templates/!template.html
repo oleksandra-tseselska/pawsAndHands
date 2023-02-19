@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
 <!--    this block has all needed initial bootstrap and google fonts imports-->
-    <th:block th:include="~{fragments/head.html :: head}"> </th:block>
+    <th:block th:insert="~{fragments/head.html :: head}"></th:block>
 
 <!--    add all your additional styles files add below this line-->
 
 <!--    customize title of your page-->
     <title>title</title>
 </head>
-<body>
+<body class="d-flex row">
 <!-- this is fragment for header to display -->
-<div th:insert="~{fragments/header.html :: header}"></div>
+<header th:insert="~{fragments/header.html :: header}"></header>
 
 <!-- insert all your code below this line -->
 
 
-
+<footer class="align-self-end" th:insert="~{fragments/footer.html :: footer}"></footer>
 <!--Script for Bootstrap to work well, should be placed at the end of the Body tag-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

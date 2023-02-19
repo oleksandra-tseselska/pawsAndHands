@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <th:block th:insert="~{fragments/head.html :: head}"> </th:block>
   <title>Reservation success</title>
 </head>
-<body>
+<body class="d-flex row">
+<header th:insert="~{fragments/header.html :: header}"></header>
 
 <h1 style="text-align: center">Thank you this pet was successfully reserved!</h1>
 <br>
@@ -19,5 +20,6 @@
 <br><br><br>
 <img src="pets.jpg" alt="Pets">
 
+<footer class="align-self-end"  th:insert="~{fragments/footer.html :: footer}"></footer>
 </body>
 </html>

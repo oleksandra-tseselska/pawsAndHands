@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <th:block th:insert="~{fragments/head.html :: head}"> </th:block>
   <title>Reservation refusal</title>
 </head>
-<body>
+<body class="d-flex row">
+<header th:insert="~{fragments/header.html :: header}"></header>
 
 <h1 style="color: red; text-align: center">Ooops, this pet was already reserved by someone else!</h1>
 <h3 style="text-align: center">There are many other pets looking for new homes, they would be happy to meet you!</h3>
@@ -20,5 +21,6 @@
 <br><br><br>
 <img src="pets.jpg" alt="Pets">
 
+<footer class="align-self-end"  th:insert="~{fragments/footer.html :: footer}"></footer>
 </body>
 </html>
