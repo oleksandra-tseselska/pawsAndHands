@@ -62,10 +62,18 @@ public class AdoptionController {
         try {
             model.addAttribute("adoptionPetList", adoptionService.findAllPetsForAdoption());
 
+            User user = userService.findUserById(Long.valueOf(userIdFromCookie)); //fining User in our DB
+
+            if (user.isAdmin()) {
+                return "all-pets-adoption-admin";
+            } else {
+                return "all-pets-adoption";
+            }
+
         } catch (Exception e) {
             return "redirect:all-pets-adoption" + e.getMessage();  // this direction can be changed
         }
-        return "all-pets-adoption";
+
     }
 
     @GetMapping("/my-pets-for-adoption")                //to add ref to this endpoint

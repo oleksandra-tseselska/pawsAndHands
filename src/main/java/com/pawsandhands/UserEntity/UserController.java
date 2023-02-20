@@ -173,21 +173,49 @@ public class UserController{
 
     @GetMapping("/all-users")
     public String showUsers(Model model,
-            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
-            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
-    ){
-        if(userIsLoggedInFromCookie.equals("false")) {
+                            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+                            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ) {
+        if (userIsLoggedInFromCookie.equals("false")) {
             return "not-logged-in";
         }
-        try{
+        try {
             model.addAttribute("usersList", this.userService.findAll());
             model.addAttribute("userIdFromCookie", Long.valueOf(userIdFromCookie));
-        }catch (Exception e){
+
+            User user = userService.findUserById(Long.valueOf(userIdFromCookie)); //fining User in our DB
+
+            if (user.isAdmin) {
+                return "all-users-admin";
+            } else {
+                return "all-users";
+            }
+
+        } catch (Exception e) {
             return "redirect:users?message=search_filed&error=" + e.getMessage();
         }
-
-        return "all-users";
     }
+
+
+//THIS METHOD IS OVERWRITTEN HIGHER, BUT PLEASE DON'T DELETE NOW
+
+//    @GetMapping("/all-users")
+//    public String showUsers(Model model,
+//            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+//            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+//    ){
+//        if(userIsLoggedInFromCookie.equals("false")) {
+//            return "not-logged-in";
+//        }
+//        try{
+//            model.addAttribute("usersList", this.userService.findAll());
+//            model.addAttribute("userIdFromCookie", Long.valueOf(userIdFromCookie));
+//        }catch (Exception e){
+//            return "redirect:users?message=search_filed&error=" + e.getMessage();
+//        }
+//
+//        return "all-users";
+//    }
 
     @GetMapping("/update-profile")
     public String updateUser(Model model,

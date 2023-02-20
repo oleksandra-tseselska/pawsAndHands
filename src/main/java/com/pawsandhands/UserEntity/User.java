@@ -32,7 +32,7 @@ public class User{
     private String city;
     private String telephone;
     private String password;
-    //boolean isAdmin;
+    boolean isAdmin = false;
     @Lob                               //annotation for BLOB format in DB; B64image Spring - saving like String
     @Column(length = 50000000)
     private byte[] photo;
