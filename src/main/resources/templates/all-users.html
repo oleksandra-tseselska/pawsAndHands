@@ -53,6 +53,9 @@
                             th:href="'profile-page/'+${userItem.id}"
                             class="text-center rounded-top border-bottom user-link"
                     >
+                        <div th:if="${userItem.isAdmin()}">
+                            <span class="badge position-absolute top-0 end-0 bg-success">Admin</span>
+                        </div>
 
 <!--                    USER PHOTO  -->
 
@@ -144,7 +147,19 @@
                         </li>
                     </ul>
 
-<!--                USER PAWS LIST   -->
+                    <!--     BUTTON FOR ADMIN MODE WITH POST FUNC  -->
+
+                    <div style="text-align: center" th:if="${currentUserIsAdmin}">
+<!--                        <div style="text-align: center" th:if="${currentUserIsAdmin} && ${!userItem.IsAdmin}">-->
+                    <form action="/grantAdminRights" method="post">
+                        <input  type="hidden" th:value="${userItem.getId()}" id="userIdToBeAdmin" name="userIdToBeAdmin">
+                        <button style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Grant Admin rights</button>
+                    </form>
+                    </div>
+
+                    <br>
+
+                    <!--                USER PAWS LIST   -->
 
                     <h6 th:if="${!userItem.getOwnedPets().isEmpty()}" class="text-muted text-start ps-2">paws:</h6>
                     <ul

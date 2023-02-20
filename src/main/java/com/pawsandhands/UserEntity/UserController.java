@@ -1,5 +1,6 @@
 package com.pawsandhands.UserEntity;
 
+import com.pawsandhands.Adoption.Adoption;
 import com.pawsandhands.PetEntity.Pet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -70,6 +71,14 @@ public class UserController{
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model, userId);
             modelMap.values();
             modelMap.clear();
+
+            User user = userService.findUserById(Long.valueOf(userIdFromCookie)); //fining User in our DB
+
+            if (user.isAdmin) {
+                model.addAttribute("currentUserIsAdmin", true);
+            }else{
+                model.addAttribute("currentUserIsAdmin", false);
+            }
 
             return "profile-page";
 
@@ -187,51 +196,84 @@ public class UserController{
         }
     }
 
+
     @GetMapping("/all-users")
     public String showUsers(Model model,
-                            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
-                            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
-    ) {
-        if (userIsLoggedInFromCookie.equals("false")) {
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
             return "not-logged-in";
         }
-        try {
+        try{
             model.addAttribute("usersList", this.userService.findAll());
             model.addAttribute("userIdFromCookie", Long.valueOf(userIdFromCookie));
+
 
             User user = userService.findUserById(Long.valueOf(userIdFromCookie)); //fining User in our DB
 
             if (user.isAdmin) {
-                return "all-users-admin";
-            } else {
-                return "all-users";
+                model.addAttribute("currentUserIsAdmin", true);
+            }else{
+                model.addAttribute("currentUserIsAdmin", false);
             }
 
-        } catch (Exception e) {
+
+        }catch (Exception e){
             return "redirect:users?message=search_filed&error=" + e.getMessage();
         }
+
+        return "all-users";
+    }
+
+    //HERE HERE HERE
+
+    @PostMapping("/grantAdminRights")
+    public String grantAdminRights(
+            Model model,
+            @RequestParam(name = "userIdToBeAdmin", required = false) Long userIdToBeAdmin,
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
+
+        try {
+            System.out.println("ID of User that will be granted admin rights: " + userIdToBeAdmin);
+            User userToBeAdmin = userService.findUserById(Long.valueOf(userIdToBeAdmin));
+            userToBeAdmin.setAdmin(true);
+            userService.createUser(userToBeAdmin);
+        }catch (Exception e){
+            return "redirect:/all-users" + e.getMessage();
+        }
+        return "redirect:/all-users";
     }
 
 
-//THIS METHOD IS OVERWRITTEN HIGHER, BUT PLEASE DON'T DELETE NOW
+    @PostMapping("/takeOffAdminRights")
+    public String takeOffAdminRights(
+            Model model,
+            @RequestParam(name = "userIdNotToBeAdmin", required = false) Long userIdNotToBeAdmin,
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
 
-//    @GetMapping("/all-users")
-//    public String showUsers(Model model,
-//            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
-//            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
-//    ){
-//        if(userIsLoggedInFromCookie.equals("false")) {
-//            return "not-logged-in";
-//        }
-//        try{
-//            model.addAttribute("usersList", this.userService.findAll());
-//            model.addAttribute("userIdFromCookie", Long.valueOf(userIdFromCookie));
-//        }catch (Exception e){
-//            return "redirect:users?message=search_filed&error=" + e.getMessage();
-//        }
-//
-//        return "all-users";
-//    }
+        try {
+            System.out.println("ID of User that will be taken off admin rights: " + userIdNotToBeAdmin);
+            User userNotToBeAdmin = userService.findUserById(Long.valueOf(userIdNotToBeAdmin));
+            userNotToBeAdmin.setAdmin(false);
+            userService.createUser(userNotToBeAdmin);
+        }catch (Exception e){
+            return "redirect:/all-users" + e.getMessage();
+        }
+        return "redirect:/all-users";
+    }
+
+
 
     @GetMapping("/update-profile")
     public String updateUser(Model model,
