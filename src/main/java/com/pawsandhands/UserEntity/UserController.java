@@ -98,9 +98,25 @@ public class UserController{
             return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
         }
     }
+    @GetMapping ("/edit-user-photo/{userId}")
+    public String showProfilePhoto(Model model,
+                                   @CookieValue(value = "userId") String userIdFromCookie
+    ){
+        try {
+
+            CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
+            modelMap.get("userData");
+
+            return "edit-user-photo";
+
+        }catch (Exception e){
+
+            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+        }
+    }
     @PostMapping(value = "/add-photo")
-    public String addProfilePhoto(@RequestParam("photo") MultipartFile multipartFile,
-                                  @CookieValue(value = "userId") String userIdFromCookie){
+    public String editProfilePhoto(@RequestParam("photo") MultipartFile multipartFile,
+                                   @CookieValue(value = "userId") String userIdFromCookie){
         try{
             Long userId = Long.valueOf(userIdFromCookie);
             User user = this.userService.findUserById(userId);

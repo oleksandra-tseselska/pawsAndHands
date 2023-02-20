@@ -1,5 +1,8 @@
 li{
     list-style-type: none;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: space-between;*/
 }
 *,
 *::before,
@@ -10,16 +13,9 @@ li{
 a{
     text-decoration: none;
 }
-.user-link{
-    background-color: rgba(13, 110, 252, 0.8);
-    color: #FAFAFA;
-    transition-property: background-color, color;
-    transition-duration: 0.4s;
-}
 @media (min-width: 768px) {
     .user-link:hover {
-        background-color: #FFF;
-        color: #000;
+        background-color: #F7F8F9;
     }
 
     .user-paw:hover {
@@ -28,9 +24,6 @@ a{
 }
 .all-user-img{
     max-height: 300px;
-    max-width: 95%;
-    padding-top: 10px;
-    border-radius: 5%;
     object-fit: cover;
     object-position: 50% 30%;
 }

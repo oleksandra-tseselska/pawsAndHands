@@ -17,7 +17,7 @@
     <div class="row">
       <div class="col-lg-3"></div>
         <div class="col-lg-6">
-            <h1 class="text-center">Update Information</h1>
+            <h1 class="text-center mb-4">Update Information</h1>
 
             <form method="post" th:action="@{/user-update}" th:object="${userData}">
 
@@ -55,10 +55,28 @@
                 <input type="text" class="form-control" id="breeder_licence" name="breeder_licence" th:value="${userData?.breeder_licence}">
               </div>
 
-              <div class="mb-3">
-                <label for="country" class="form-label">Surname</label>
-<!--                <div th:insert="~{fragments/countries.html :: countries}" id="countries" required th:value="${userData?.country}"></div>-->
-                <input type="text" class="form-control" id="country" name="country" required th:value="${userData?.country}">
+              <div class="mb-3" id="oldCountry" th:if="${!(userData.country.equals('--'))}">
+                <div class="row">
+                  <label class="form-label" for="countries">Country of permanent living</label>
+                  <div class="col-10">
+                    <input type="text" class="form-select" id="countries" name="countries" th:value="${userData.country}" disabled="true">
+                  </div>
+
+                  <div class="col-2 m-auto">
+                    <!--                        <i class="bi bi-x-lg" onclick="clearCountry()"></i>-->
+                    <button type="button" class="btn btn-outline-danger " onclick="onClickClearCountry()">Clear</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3" th:if="${userData.country.equals('--')}">
+                <label class="form-label" for="countries">Country of permanent living</label>
+                <div th:insert="~{fragments/countries.html :: countries}" id="countries"></div>
+              </div>
+
+              <div class="mb-3" id="newCountry" hidden="true">
+                <label class="form-label" for="countries">Country of permanent living</label>
+                <div th:insert="~{fragments/countries.html :: countries}" id="countries"></div>
               </div>
 
               <div class="mb-3">
@@ -90,5 +108,13 @@
 </main>
 <footer class="align-self-end"  th:insert="~{fragments/footer.html :: footer}"></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script>
+  function onClickClearCountry() {
+    document.getElementById('countries').value = null;
+    // countries.disabled = false;
+    newCountry.hidden = false;
+    oldCountry.hidden = true;
+  }
+</script>
 </body>
 </html>
