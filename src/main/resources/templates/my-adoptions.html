@@ -27,6 +27,8 @@
     </div>
 
     <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
         <h1 th:if="!${myAdoptionList.isEmpty()}">Pets to be adopted by me</h1>
         <div th:if="!${myAdoptionList.isEmpty()}" class="d-flex flex-wrap gap-3 justify-content-start align-items-start">
             <div class="card d-flex align-items-stretch" style=" width: 15rem;" th:each="pet : ${myAdoptionList}">
@@ -67,7 +69,7 @@
 <!--                        <button type="submit" class="btn btn-primary">Reserve</button>-->
 <!--                    </form>-->
 
-
+                </div>
                 </div>
             </div>
         </div>
