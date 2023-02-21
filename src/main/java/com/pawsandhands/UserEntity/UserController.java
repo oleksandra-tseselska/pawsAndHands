@@ -115,6 +115,7 @@ public class UserController{
 
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
             modelMap.get("userData");
+            modelMap.clear();
 
             return "edit-user-photo";
 
