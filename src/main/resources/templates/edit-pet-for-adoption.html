@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Event creation</title>
+  <th:block th:include="~{fragments/head.html :: head}"> </th:block>
+  <link href="styles-maryia.css" rel="stylesheet">
+</head>
+
+<body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<div th:insert="~{fragments/header.html :: header}"></div>
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-lg-3"></div>
+
+    <div class="col-lg-6">
+      <h1 class="text-center">Here you can edit information for pet for adoption</h1>
+
+      <br>
+
+      <form action="/savePetForAdoption" method="post" id="/savePetForAdoption">
+
+        <div class="mb-3">
+          <label for="name" class="form-label">Please enter pet full name:</label>
+          <input type="text" class="form-control"  th:value="${pet.getName()}" id="name" name="name" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="types" class="form-label">Is it cat or dog?</label><br>
+          <div class="btn-group" role="group" id="types">
+
+            <input type="radio" th:value="${pet.getType()}" class="btn-check" name="type" id="cat" value="cat" autocomplete="off" required>
+            <label class="btn btn-outline-primary" for="cat">Cat</label>
+
+            <input type="radio" th:value="${pet.getType()}" class="btn-check" name="type" id="dog" value="dog" autocomplete="off">
+            <label class="btn btn-outline-primary" for="dog">Dog</label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="age" class="form-label">How old this pet could be?</label>
+          <input type="number" th:value="${pet.getAge()}"  class="form-control" id="age" name="age" required>
+        </div>
+
+
+        <div class="mb-3">
+          <label for="sex" class="form-label">Please select sex:</label><br>
+          <div class="btn-group" th:value="${pet.getSex()}"  role="group" id="sex">
+            <input type="radio" class="btn-check form-control" value="male" name="sex" id="male" autocomplete="off" required>
+            <label class="btn btn-outline-primary" for="male">Male</label>
+
+            <input type="radio" class="btn-check form-control" value="female" name="sex" id="female" autocomplete="off">
+            <label class="btn btn-outline-primary" for="female">Female</label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+
+          <div>
+            <label class="form-label" for="shelter">In which shelter pet is located?</label>
+
+            <select class="form-control" th:value="${pet.getShelter()}"  id="shelter" name="shelter" autocomplete="off">
+              <option value="Pet Paradise">Pet Paradise</option>
+              <option value="Ulubele">Ulubele</option>
+              <option value="Kind heart">Kind heart</option>
+              <option value="Kitty house">Kitty house</option>
+              <option value="DogLand">DogLand</option>
+            </select>
+
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Pet description:</label>
+          <textarea th:text="${pet.getDescription()}"  class="form-control" id="description" name="description" rows="4" cols="50"></textarea>
+        </div>
+
+
+        <div class="mb-3">
+          <label for="reservation" class="form-label">Reserved:</label><br>
+          <div class="btn-group"  th:value="${pet.isReserved()}" role="group" id="reservation">
+
+            <input type="radio" class="btn-check" name="reserved" id="reserved" value="true" autocomplete="off" required>
+            <label class="btn btn-outline-primary" for="reserved">Yes</label>
+
+            <input type="radio" class="btn-check" name="reserved" id="notReserved" value="false" autocomplete="off" required>
+            <label class="btn btn-outline-primary" for="notReserved">No</label>
+          </div>
+        </div>
+
+        <input type="hidden" th:value="${pet.getId()}" id="petIdForUpdate" name="petId">
+
+
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button class="btn btn-outline-primary me-md-2" type="reset">Reset</button>
+          <button class="btn btn-primary" type="submit">Edit pet</button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+
+
+<footer>
+
+  <div th:insert="~{fragments/footer.html :: footer}"></div>
+
+</footer>
+
+</html>

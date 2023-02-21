@@ -20,6 +20,10 @@ public class AdoptionService {
         this.adoptionRepository.save(petForAdoption);
     }
 
+    public void deletePetForAdoption(Long petId){
+        this.adoptionRepository.deleteById(petId);
+    }
+
     public ArrayList<Adoption> findAllPetsForAdoption(){
         return adoptionRepository.findAll();
     }
@@ -36,7 +40,7 @@ public class AdoptionService {
         return adoptionRepository.findAdoptionsByUser(user);
     }
 
-    public Adoption findAdoptedPetById(Long adoptionPetId){
+    public Adoption findAdoptionPetById(Long adoptionPetId){
         return adoptionRepository.findAdoptionsById(adoptionPetId);
 
     }

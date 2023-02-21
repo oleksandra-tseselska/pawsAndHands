@@ -89,12 +89,26 @@
                             Description: <span th:text="${#strings.abbreviate(pet.description,150)}"></span>
                         </p>
 
+                        <div class="d-flex mt-auto justify-content-around">
+
                         <form action="/reserve" method="post">
                             <input type="hidden" th:value="${pet.getId()}" id="petId" name="petId">
                             <button type="submit" class="btn btn-primary">Reserve</button>
                         </form>
 
-                    </div>
+
+                            <form th:if="${currentUserIsAdmin}" action="/editPetForAdoption" method="get">
+                                <input  type="hidden" th:value="${pet.getId()}" id="petIdToBeUpdated" name="petIdToBeUpdated">
+                                <button style="font-style: revert; background-color: darkgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Edit</button>
+<!--                                <button type="submit" class="btn btn-primary">Edit</button>-->
+                            </form>
+
+                        <form th:if="${currentUserIsAdmin}" action="/deletePetForAdoption" method="post">
+                                <input  type="hidden" th:value="${pet.getId()}" id="petIdToBeDeleted" name="petIdToBeDeleted">
+                                <button style="font-style: revert; background-color: red; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Delete</button>
+                        </form>
+
+                        </div>
                 </div>
             </div>
         </div>
