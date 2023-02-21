@@ -30,14 +30,11 @@
       </div>
 
       <h1 th:if="${!usersList.isEmpty()}" class="p-4">All users</h1>
-
-<!--           data-masonry='{"percentPosition": true,  "itemSelector": ".col" }'-->
-
         <ul  class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-4 ps-0"
              data-masonry='{"percentPosition": true,  "itemSelector": ".col" }'
              th:if="${!usersList.isEmpty()}"
         >
-            <li class="col" th:each="userItem: ${usersList}">    <!--th:if="${!userItem.id.equals(userIdFromCookie)}"-->
+            <li class="col" th:each="userItem: ${usersList}">
                 <div class="card rounded-top">
 
 <!--                    USER LINK   -->
@@ -104,125 +101,80 @@
 
 <!--                USER SOCIAL LINK LIST    -->
 
-                    <ul class="card-body social-list py-3">
-                        <li class="card-link d-flex">
+                    <ul
+                            class="card-body social-list py-3 mx-auto"
+                    >
+                        <li
+                                class="card-link d-flex text-muted"
+                                th:if="${userItem.facebookUrl == null   &&
+                                         userItem.twitterUrl == null    &&
+                                         userItem.instagramUrl == null  &&
+                                         userItem.youtubeUrl == null    &&
+                                         userItem.pinterestUrl == null}"
+                        >
+                            No social links yet
+                        </li>
+                        <li class="card-link d-flex" th:if="${userItem.facebookUrl != null}">
                             <a
                                     class="social-list-link"
-                                    href="https://uk-ua.facebook.com/"
+                                    th:href="${userItem.facebookUrl}"
                                     target="_blank"
                                     aria-label="facebook"
                             >
-                          <span class="social-item-icon">
-                            <span class="icon-facebook"></span>
-                          </span>
+                              <span class="social-item-icon">
+                                <span class="icon-facebook"></span>
+                              </span>
                             </a>
                         </li>
-                        <li class="card-link">
+                        <li class="card-link" th:if="${userItem.twitterUrl != null}">
                             <a
                                     class="social-list-link"
-                                    href="https://twitter.com/"
+                                    th:href="${userItem.twitterUrl}"
                                     target="_blank"
                                     aria-label="twitter"
                             >
-                          <span class="social-item-icon">
-                            <span class="icon-twitter"></span>
-                          </span>
+                              <span class="social-item-icon">
+                                <span class="icon-twitter"></span>
+                              </span>
                             </a>
                         </li>
-                        <li class="card-link">
+                        <li class="card-link" th:if="${userItem.instagramUrl != null}">
                             <a
                                     class="social-list-link"
-                                    href="https://instagram.com/"
+                                    th:href="${userItem.instagramUrl}"
                                     target="_blank"
                                     aria-label="instagram"
                             >
-                          <span class="social-item-icon">
-                            <span class="icon-instagram"></span>
-                          </span>
+                              <span class="social-item-icon">
+                                <span class="icon-instagram"></span>
+                              </span>
                             </a>
                         </li>
-                        <li class="card-link">
+                        <li class="card-link" th:if="${userItem.youtubeUrl != null}">
                             <a
                                     class="list-link"
-                                    href="https://www.youtube.com/"
+                                    th:href="${userItem.youtubeUrl}"
                                     target="_blank"
                                     aria-label="youtube"
                             >
-                          <span class="social-item-icon">
-                            <span class="icon-youtube"></span>
-                          </span>
+                              <span class="social-item-icon">
+                                <span class="icon-youtube"></span>
+                              </span>
                             </a>
                         </li>
-                        <li class="card-link">
+                        <li class="card-link" th:if="${userItem.pinterestUrl != null}">
                             <a
                                     class="social-list-link"
-                                    href="https://www.pinterest.com/"
+                                    th:href="${userItem.pinterestUrl}"
                                     target="_blank"
                                     aria-label="pinterest"
                             >
-                          <span class="social-item-icon">
-                            <span class="icon-pinterest"></span>
-                          </span>
+                              <span class="social-item-icon">
+                                <span class="icon-pinterest"></span>
+                              </span>
                             </a>
                         </li>
                     </ul>
-
-
-<!--                    <ul-->
-<!--                            th:if="${!userItem.getOwnedPets().isEmpty()}"-->
-<!--                            class="list-group list-group-flush"-->
-<!--                    >-->
-
-<!--&lt;!&ndash;                 USER PAW      &ndash;&gt;-->
-
-<!--                        <li th:each="petItem: ${userItem.getOwnedPets()}" class="list-group-item user-paw">-->
-<!--                            <a th:href="@{'/pet-profile/' + ${petItem.id}}">-->
-<!--                                <ul class="pb-2 ps-2">-->
-<!--                                    <li-->
-<!--                                            class="d-flex justify-content-between"-->
-<!--                                            style="position: relative"-->
-<!--                                    >-->
-<!--                                        <img-->
-<!--                                                class="align-self-start"-->
-<!--                                                src="../logo.png"-->
-<!--                                                alt="default profile logo"-->
-<!--                                                style="object-fit: cover; border-radius: 50%; max-width: 90px"-->
-<!--                                        >-->
-<!--                                        <h4 th:if="${petItem.type.equals('dog')}">-->
-<!--                                            <span-->
-<!--                                                    class="badge position-absolute top-0 start-0 rounded-pill bg-success d-inline-block"-->
-<!--                                                    style="opacity: 60%;"-->
-<!--                                                    th:text="${petItem.getType().toLowerCase()}"-->
-<!--                                            ></span>-->
-<!--                                        </h4>-->
-<!--                                        <h4 th:if="${petItem.type.equals('cat')}">-->
-<!--                                            <span-->
-<!--                                                    class="badge position-absolute top-0 start-0 rounded-pill bg-primary d-inline-block"-->
-<!--                                                    style="opacity: 60%;"-->
-<!--                                                    th:text="${petItem.getType().toLowerCase()}"-->
-<!--                                            ></span>-->
-<!--                                        </h4>-->
-<!--                                        <h6 class="text-dark ps-2 align-self-end text-end">-->
-<!--                                            <span-->
-<!--                                                    class="ps-2"-->
-<!--                                                    th:if="${petItem.sex.toLowerCase().equals('female')}"-->
-<!--                                                    th:text="Ms. "-->
-<!--                                            ></span>-->
-<!--                                            <span-->
-<!--                                                    class="ps-2"-->
-<!--                                                    th:if="${petItem.sex.toLowerCase().equals('male')}"-->
-<!--                                                    th:text="Mr. "-->
-<!--                                            ></span>-->
-<!--                                            <span th:text="${petItem?.nickname}"></span>-->
-<!--                                        </h6>-->
-<!--                                    </li>-->
-<!--                                    <li th:if="${!petItem.breed.isBlank()}">-->
-<!--                                        <span class="ps-2 d-flex justify-content-end text-muted" th:text="${petItem.breed}"></span>-->
-<!--                                    </li>-->
-<!--                                </ul>-->
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
                 </div>
             </li>
         </ul>

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -33,6 +34,11 @@ public class User{
     private String telephone;
     private String password;
     boolean isAdmin = false;
+    private URL facebookUrl;
+    private URL twitterUrl;
+    private URL instagramUrl;
+    private URL youtubeUrl;
+    private URL pinterestUrl;
     @Lob                               //annotation for BLOB format in DB; B64image Spring - saving like String
     @Column(length = 50000000)
     private byte[] photo;

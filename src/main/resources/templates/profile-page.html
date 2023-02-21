@@ -109,7 +109,28 @@
                         </div>
                         <ul class="list-group list-group-flush ms-2">
                             <li class="row pb-4" th:each="petItem: ${userPet}">
-                                <h3 class="badge rounded-pill bg-success text-start" style="opacity: 60%; padding-left: 30%" th:text="${petItem.type.toLowerCase()}"></h3>
+
+                                <h3
+                                        th:if="${petItem.type.equals('dog')}"
+                                        class="badge rounded-pill bg-success text-start"
+                                        style="opacity: 60%; padding-left: 30%"
+                                >
+                                            <span
+                                                    th:text="${petItem.getType().toLowerCase()}"
+                                            ></span>
+                                </h3>
+                                <h3
+                                        th:if="${petItem.type.equals('cat')}"
+                                        class="badge rounded-pill bg-primary text-start"
+                                        style="opacity: 60%; padding-left: 30%"
+                                >
+                                            <span
+                                                    th:text="${petItem.getType().toLowerCase()}"
+                                            ></span>
+                                </h3>
+
+
+<!--                                <h3 class="badge rounded-pill bg-success text-start" style="opacity: 60%; padding-left: 30%" th:text="${petItem.type.toLowerCase()}"></h3>-->
                                 <ul class="list-group list-group-flush ms-2">
                                     <li class="row">
                                         <div class="col">

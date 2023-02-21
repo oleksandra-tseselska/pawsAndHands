@@ -29,7 +29,7 @@ a{
 }
 @media (min-width: 768px) {
     .all-user-img{
-        height: 350px;
+        height: 250px;
         object-fit: cover;
     }
 }
@@ -86,8 +86,8 @@ a{
 }
 @media (min-width: 1200px) {
     .social-item-icon {
-        width: 25px;
-        height: 25px;
+        width: 22px;
+        height: 22px;
         font-size: 16px;
     }
 }
