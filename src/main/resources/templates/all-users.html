@@ -79,6 +79,20 @@
                         </div>
                     </a>
 
+                    <!--                USER PAWS LIST   -->
+
+                    <h6
+                            th:if="${!userItem.getOwnedPets().isEmpty()}"
+                            th:text="'Paws: '+${userItem.getNumberOfPets()}"
+                            class="text-muted text-start ps-2 text-center border-bottom py-2"
+                    ></h6>
+                    <h6
+                            th:if="${userItem.getOwnedPets().isEmpty()}"
+                            class="text-muted text-start ps-2 text-center border-bottom py-2"
+                    >
+                        This user has no pets yet
+                    </h6>
+
 <!--                USER SOCIAL LINK LIST    -->
 
                     <ul class="card-body social-list py-3">
@@ -144,64 +158,62 @@
                         </li>
                     </ul>
 
-<!--                USER PAWS LIST   -->
 
-                    <h6 th:if="${!userItem.getOwnedPets().isEmpty()}" class="text-muted text-start ps-2">paws:</h6>
-                    <ul
-                            th:if="${!userItem.getOwnedPets().isEmpty()}"
-                            class="list-group list-group-flush"
-                    >
+<!--                    <ul-->
+<!--                            th:if="${!userItem.getOwnedPets().isEmpty()}"-->
+<!--                            class="list-group list-group-flush"-->
+<!--                    >-->
 
-<!--                 USER PAW      -->
+<!--&lt;!&ndash;                 USER PAW      &ndash;&gt;-->
 
-                        <li th:each="petItem: ${userItem.getOwnedPets()}" class="list-group-item user-paw">
-                            <a th:href="@{'/pet-profile/' + ${petItem.id}}">
-                                <ul class="pb-2 ps-2">
-                                    <li
-                                            class="d-flex justify-content-between"
-                                            style="position: relative"
-                                    >
-                                        <img
-                                                class="align-self-start"
-                                                src="../logo.png"
-                                                alt="default profile logo"
-                                                style="object-fit: cover; border-radius: 50%; max-width: 90px"
-                                        >
-                                        <h4 th:if="${petItem.type.equals('dog')}">
-                                            <span
-                                                    class="badge position-absolute top-0 start-0 rounded-pill bg-success d-inline-block"
-                                                    style="opacity: 60%;"
-                                                    th:text="${petItem.getType().toLowerCase()}"
-                                            ></span>
-                                        </h4>
-                                        <h4 th:if="${petItem.type.equals('cat')}">
-                                            <span
-                                                    class="badge position-absolute top-0 start-0 rounded-pill bg-primary d-inline-block"
-                                                    style="opacity: 60%;"
-                                                    th:text="${petItem.getType().toLowerCase()}"
-                                            ></span>
-                                        </h4>
-                                        <h5 class="text-dark ps-2 align-self-end text-end">
-                                            <span
-                                                    class="ps-2"
-                                                    th:if="${petItem.sex.toLowerCase().equals('female')}"
-                                                    th:text="Ms. "
-                                            ></span>
-                                            <span
-                                                    class="ps-2"
-                                                    th:if="${petItem.sex.toLowerCase().equals('male')}"
-                                                    th:text="Mr. "
-                                            ></span>
-                                            <span th:text="${petItem?.nickname}"></span>
-                                        </h5>
-                                    </li>
-                                    <li th:if="${!petItem.breed.isBlank()}">
-                                        <span class="ps-2 d-flex justify-content-end text-muted" th:text="${petItem.breed}"></span>
-                                    </li>
-                                </ul>
-                            </a>
-                        </li>
-                    </ul>
+<!--                        <li th:each="petItem: ${userItem.getOwnedPets()}" class="list-group-item user-paw">-->
+<!--                            <a th:href="@{'/pet-profile/' + ${petItem.id}}">-->
+<!--                                <ul class="pb-2 ps-2">-->
+<!--                                    <li-->
+<!--                                            class="d-flex justify-content-between"-->
+<!--                                            style="position: relative"-->
+<!--                                    >-->
+<!--                                        <img-->
+<!--                                                class="align-self-start"-->
+<!--                                                src="../logo.png"-->
+<!--                                                alt="default profile logo"-->
+<!--                                                style="object-fit: cover; border-radius: 50%; max-width: 90px"-->
+<!--                                        >-->
+<!--                                        <h4 th:if="${petItem.type.equals('dog')}">-->
+<!--                                            <span-->
+<!--                                                    class="badge position-absolute top-0 start-0 rounded-pill bg-success d-inline-block"-->
+<!--                                                    style="opacity: 60%;"-->
+<!--                                                    th:text="${petItem.getType().toLowerCase()}"-->
+<!--                                            ></span>-->
+<!--                                        </h4>-->
+<!--                                        <h4 th:if="${petItem.type.equals('cat')}">-->
+<!--                                            <span-->
+<!--                                                    class="badge position-absolute top-0 start-0 rounded-pill bg-primary d-inline-block"-->
+<!--                                                    style="opacity: 60%;"-->
+<!--                                                    th:text="${petItem.getType().toLowerCase()}"-->
+<!--                                            ></span>-->
+<!--                                        </h4>-->
+<!--                                        <h6 class="text-dark ps-2 align-self-end text-end">-->
+<!--                                            <span-->
+<!--                                                    class="ps-2"-->
+<!--                                                    th:if="${petItem.sex.toLowerCase().equals('female')}"-->
+<!--                                                    th:text="Ms. "-->
+<!--                                            ></span>-->
+<!--                                            <span-->
+<!--                                                    class="ps-2"-->
+<!--                                                    th:if="${petItem.sex.toLowerCase().equals('male')}"-->
+<!--                                                    th:text="Mr. "-->
+<!--                                            ></span>-->
+<!--                                            <span th:text="${petItem?.nickname}"></span>-->
+<!--                                        </h6>-->
+<!--                                    </li>-->
+<!--                                    <li th:if="${!petItem.breed.isBlank()}">-->
+<!--                                        <span class="ps-2 d-flex justify-content-end text-muted" th:text="${petItem.breed}"></span>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
                 </div>
             </li>
         </ul>
