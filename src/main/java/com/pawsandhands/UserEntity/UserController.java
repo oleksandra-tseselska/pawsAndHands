@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.Base64;
 import java.util.Set;
 
 @Controller
@@ -128,19 +129,24 @@ public class UserController{
     public String editProfilePhoto(@RequestParam("photo") MultipartFile multipartFile,
                                    @CookieValue(value = "userId") String userIdFromCookie){
         try{
+
+//           max 1048576
+            if(!multipartFile.isEmpty()){
             Long userId = Long.valueOf(userIdFromCookie);
             User user = this.userService.findUserById(userId);
             String pathFile = "src/main/resources/static/img/users-photo/profile_photo_"+user.getId().toString()+".png";
 
-            String pathUserPhoto = "/img/users-photo/profile_photo_"+user.getId().toString()+".png";
+            String pathUserPhoto = "/img/users-photo/profile_photo_"+user.getId()+".png";
             byte[] photoByte = multipartFile.getBytes();
+            String encodedString = Base64.getEncoder().encodeToString(photoByte);
 
             FileUtils.writeByteArrayToFile(new File(pathFile), multipartFile.getBytes());
 
-            user.setPhoto(photoByte);
+            user.setPhoto(encodedString);
             user.setPhotoPath(pathUserPhoto);
 
             this.userService.save(user);
+            }
 
         }catch (Exception e){
             e.getMessage();

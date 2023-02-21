@@ -12,12 +12,26 @@
       <form action="/add-photo" method="post" enctype="multipart/form-data">
         <div class="row align-items-center">
           <div class="col-md-5">
-            <img th:src="${userData.photoPath}" alt="default profile logo" id="frame" class="img-fluid view-user-img"/>
+            <img
+                    th:src="${userData.photoPath}"
+                    alt="default profile logo"
+                    id="frame"
+                    class="img-fluid view-user-img mb-4 mb-md-0"
+            />
           </div>
           <div class="col-md-7 col-lg-5 ms-auto me-auto">
             <label for="image" class="form-label">Choose new photo and hit the button below:</label>
             <input type="file" class="form-control" id="image" name="photo" onchange="preview()">
-            <button type="submit" class="btn btn-primary mt-4 d-flex ms-auto">Add Photo</button>
+            <div class="mt-4 d-flex ms-auto justify-content-end">
+<!--              <a-->
+<!--                      th:href="'profile-page/'+${userItem.id}"-->
+<!--                      class="btn btn-outline-primary mx-2 px-4"-->
+<!--              >-->
+<!--                Back-->
+<!--              </a>-->
+              <button type="submit" class="btn btn-primary mx-2">Add Photo</button>
+            </div>
+
           </div>
         </div>
       </form>

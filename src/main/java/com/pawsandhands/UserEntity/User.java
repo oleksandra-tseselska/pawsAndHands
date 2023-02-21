@@ -39,9 +39,9 @@ public class User{
     private URL instagramUrl;
     private URL youtubeUrl;
     private URL pinterestUrl;
-    @Lob                               //annotation for BLOB format in DB; B64image Spring - saving like String
-    @Column(length = 50000000)
-    private byte[] photo;
+//    @Lob                               //annotation for BLOB format in DB; B64image Spring - saving like String
+    @Column(columnDefinition = "LONGTEXT")
+    private String photo;
 
     @Builder.Default
     private String photoPath = "/img/users-photo/profile-photo_placeholder.png";
