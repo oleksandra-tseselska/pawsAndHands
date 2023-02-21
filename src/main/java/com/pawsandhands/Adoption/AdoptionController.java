@@ -33,6 +33,12 @@ public class AdoptionController {
 
 
     //To change return location
+    @GetMapping("/createPetForAdoption")
+    public String handlePetCreation(){
+        return ("create-pet-for-adoption");
+    }
+
+    //To change return location
     @PostMapping("/createPetForAdoption")
     public String handlePetCreation(Adoption adoption,
                                       @CookieValue(value = "userId") String userIdFromCookie
@@ -45,7 +51,7 @@ public class AdoptionController {
         } catch (Exception e) {
             return "redirect:create-pet-for-adoption" + e.getMessage();
         }
-        return ("create-pet-for-adoption");
+        return ("redirect:/adoption");    //check
     }
 
 
@@ -64,11 +70,13 @@ public class AdoptionController {
 
             User user = userService.findUserById(Long.valueOf(userIdFromCookie)); //fining User in our DB
 
+            //Checking if User is Admin, if yes => in html additional button will appear => to add pet
             if (user.isAdmin()) {
-                return "all-pets-adoption-admin";
-            } else {
-                return "all-pets-adoption";
+                model.addAttribute("currentUserIsAdmin", true);
             }
+
+            return "all-pets-adoption";
+
 
         } catch (Exception e) {
             return "redirect:all-pets-adoption" + e.getMessage();  // this direction can be changed

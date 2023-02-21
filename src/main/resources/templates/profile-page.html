@@ -95,15 +95,6 @@
                         </ul>
                     </li>
 
-                    <!--     BUTTON FOR ADMIN MODE WITH POST FUNC  -->
-
-                    <div style="text-align: center" th:if="${currentUserIsAdmin}">
-                        <form action="/takeOffAdminRights" method="post">
-                            <input  type="hidden" th:value="${userData.id}" id="userIdNotToBeAdmin" name="userIdNotToBeAdmin">
-                            <button style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Take off Admin rights</button>
-                        </form>
-                    </div>
-
                     <!--            USER PETS INFO  -->
 
                     <li class="row" th:if="${!userPet.isEmpty()}">

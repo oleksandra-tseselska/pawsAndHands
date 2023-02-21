@@ -22,12 +22,39 @@
                 <div class="col-8">
                     <h1 style="text-align: center">There are no pets for adoption</h1>
                 </div>
+
+                       <!--   BUTTON TO ADD PETS FOR ADOPTION FOR ADMIN  -->
+
+                <div style="text-align: center" th:if="${currentUserIsAdmin}">
+                    <br>
+                    <a th:href="@{'/createPetForAdoption'}" class="btn btn-outline-primary" style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center">
+                        Add new pet for adoption
+                    </a>
+                </div>
+
+                       <!--        BUTTON TO ADD PETS FOR ADOPTION FOR ADMIN  (END)      -->
+
                 <div class="col-2"></div>
             </div>
         </div>
 
         <div class="row">
             <h1 th:if="!${adoptionPetList.isEmpty()}">All pets for adoption</h1>
+
+
+            <!--   BUTTON TO ADD PETS FOR ADOPTION FOR ADMIN  -->
+
+            <div style="text-align: left" th:if="${currentUserIsAdmin}">
+
+                <a th:href="@{'/createPetForAdoption'}" class="btn btn-outline-primary" style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center">
+                    Add new pet for adoption
+                </a>
+                <br><br>
+            </div>
+
+            <!--        BUTTON TO ADD PETS FOR ADOPTION FOR ADMIN  (END)      -->
+
+
             <div th:if="!${adoptionPetList.isEmpty()}" class="d-flex flex-wrap gap-3 justify-content-start align-items-start">
                 <div class="card" style="width: 15rem;" th:each="pet : ${adoptionPetList}">
 
@@ -58,7 +85,7 @@
                             Shelter: <span th:text="${pet.getShelter()}"></span>
                             <br>
 
-                        <p class="card-text" style="min-height: 100px; max-height: 100px; overflow: hidden;">
+                        <p class="card-text" style="min-height: 120px; max-height: 120px; overflow: hidden;">
                             Description: <span th:text="${#strings.abbreviate(pet.description,150)}"></span>
                         </p>
 

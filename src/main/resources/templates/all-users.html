@@ -150,11 +150,22 @@
                     <!--     BUTTON FOR ADMIN MODE WITH POST FUNC  -->
 
                     <div style="text-align: center" th:if="${currentUserIsAdmin}">
-<!--                        <div style="text-align: center" th:if="${currentUserIsAdmin} && ${!userItem.IsAdmin}">-->
+
+                        <span th:if="${!userItem.isAdmin()}">
                     <form action="/grantAdminRights" method="post">
                         <input  type="hidden" th:value="${userItem.getId()}" id="userIdToBeAdmin" name="userIdToBeAdmin">
                         <button style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Grant Admin rights</button>
                     </form>
+                        </span>
+
+                        <span th:if="${userItem.isAdmin()}">
+<!--                        <div style="text-align: center" th:if="${currentUserIsAdmin} && ${!userItem.IsAdmin}">-->
+                    <form action="/takeOffAdminRights" method="post">
+                        <input  type="hidden" th:value="${userItem.getId()}" id="userIdNotToBeAdmin" name="userIdNotToBeAdmin">
+                        <button style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Take off Admin rights</button>
+                    </form>
+                        </span>
+
                     </div>
 
                     <br>

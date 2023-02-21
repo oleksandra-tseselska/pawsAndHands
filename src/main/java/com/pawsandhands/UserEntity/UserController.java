@@ -214,10 +214,7 @@ public class UserController{
 
             if (user.isAdmin) {
                 model.addAttribute("currentUserIsAdmin", true);
-            }else{
-                model.addAttribute("currentUserIsAdmin", false);
             }
-
 
         }catch (Exception e){
             return "redirect:users?message=search_filed&error=" + e.getMessage();
