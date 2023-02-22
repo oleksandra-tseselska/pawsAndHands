@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Event creation</title>
-  <th:block th:include="~{fragments/head.html :: head}"> </th:block>
+  <th:block th:insert="~{fragments/head.html :: head}"> </th:block>
   <link href="styles-maryia.css" rel="stylesheet">
 </head>
 
@@ -29,17 +29,27 @@
           <input type="text" class="form-control"  th:value="${pet.getName()}" id="name" name="name" required>
         </div>
 
+        <!-- CAT OR DOG - if statement in Thymeleaf in order to show correct value selected     -->
         <div class="mb-3">
-          <label for="types" class="form-label">Is it cat or dog?</label><br>
-          <div class="btn-group" role="group" id="types">
-
-            <input type="radio" th:value="${pet.getType()}" class="btn-check" name="type" id="cat" value="cat" autocomplete="off" required>
+          <label for="types" class="form-label">Is it a cat or a dog?</label><br>
+          <div class="btn-group" role="group" id="types" th:if="${(pet.getType() != null) && pet.getType().equals('cat')}">
+            <input type="radio" class="btn-check" name="type" id="cat" value="cat" autocomplete="off" checked required>
             <label class="btn btn-outline-primary" for="cat">Cat</label>
 
-            <input type="radio" th:value="${pet.getType()}" class="btn-check" name="type" id="dog" value="dog" autocomplete="off">
+            <input type="radio" class="btn-check" name="type" id="dog" value="dog" autocomplete="off" >
             <label class="btn btn-outline-primary" for="dog">Dog</label>
           </div>
+
+          <div class="btn-group" role="group" id="types1" th:if="${(pet.getType() != null) && pet.getType().equals('dog')}">
+            <input type="radio" class="btn-check" name="type" id="cat1" value="cat" autocomplete="off" required>
+            <label class="btn btn-outline-primary" for="cat">Cat</label>
+
+            <input type="radio" class="btn-check" name="type" id="dog1" value="dog" autocomplete="off" checked >
+            <label class="btn btn-outline-primary" for="dog">Dog</label>
+          </div>
+
         </div>
+
 
         <div class="mb-3">
           <label for="age" class="form-label">How old this pet could be?</label>
@@ -49,13 +59,22 @@
 
         <div class="mb-3">
           <label for="sex" class="form-label">Please select sex:</label><br>
-          <div class="btn-group" th:value="${pet.getSex()}"  role="group" id="sex">
-            <input type="radio" class="btn-check form-control" value="male" name="sex" id="male" autocomplete="off" required>
+          <div class="btn-group" th:if="${(pet.getSex() != null) && pet.getSex().equals('male')}"  role="group" id="sex">
+            <input type="radio" class="btn-check form-control" value="male" name="sex" id="male" autocomplete="off" required checked>
             <label class="btn btn-outline-primary" for="male">Male</label>
 
             <input type="radio" class="btn-check form-control" value="female" name="sex" id="female" autocomplete="off">
             <label class="btn btn-outline-primary" for="female">Female</label>
           </div>
+
+          <div class="btn-group" th:if="${(pet.getSex() != null) && pet.getSex().equals('female')}"  role="group" id="sex1">
+            <input type="radio" class="btn-check form-control" value="male" name="sex1" id="male1" autocomplete="off" required>
+            <label class="btn btn-outline-primary" for="male">Male</label>
+
+            <input type="radio" class="btn-check form-control" value="female" name="sex1" id="female1" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="female">Female</label>
+          </div>
+
         </div>
 
         <div class="mb-3">
@@ -82,14 +101,24 @@
 
         <div class="mb-3">
           <label for="reservation" class="form-label">Reserved:</label><br>
-          <div class="btn-group"  th:value="${pet.isReserved()}" role="group" id="reservation">
+          <div class="btn-group" th:if="${(pet.isReserved() != null) && pet.isReserved()==true}" role="group" id="reservation">
 
-            <input type="radio" class="btn-check" name="reserved" id="reserved" value="true" autocomplete="off" required>
+            <input type="radio" class="btn-check" name="reserved" id="reserved" value="true" autocomplete="off" required checked>
             <label class="btn btn-outline-primary" for="reserved">Yes</label>
 
             <input type="radio" class="btn-check" name="reserved" id="notReserved" value="false" autocomplete="off" required>
             <label class="btn btn-outline-primary" for="notReserved">No</label>
           </div>
+
+          <div class="btn-group" th:if="${(pet.isReserved() != null) && pet.isReserved()==false}" role="group" id="reservation1">
+
+            <input type="radio" class="btn-check" name="reserved" id="reserved1" value="true" autocomplete="off" required>
+            <label class="btn btn-outline-primary" for="reserved">Yes</label>
+
+            <input type="radio" class="btn-check" name="reserved" id="notReserved1" value="false" autocomplete="off" required checked>
+            <label class="btn btn-outline-primary" for="notReserved">No</label>
+          </div>
+
         </div>
 
         <input type="hidden" th:value="${pet.getId()}" id="petIdForUpdate" name="petId">
