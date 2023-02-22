@@ -44,14 +44,81 @@ public class AdoptionController {
                                       @CookieValue(value = "userId") String userIdFromCookie
     ) throws Exception {
         try {
-//            System.out.println(userIdFromCookie);
-//            User userWhoAddsPetForAdoption = userService.findUserById(Long.valueOf(userIdFromCookie));
-//            adoption.setUser(userWhoAddsPetForAdoption);
             this.adoptionService.createPetForAdoption(adoption);
         } catch (Exception e) {
             return "redirect:create-pet-for-adoption" + e.getMessage();
         }
         return ("redirect:/adoption");    //check
+    }
+
+
+    //DELETE PET FOR ADOPTION
+
+    @PostMapping("/deletePetForAdoption")
+    public String deletePetForAdoption(
+            Model model,
+            @RequestParam(name = "petIdToBeDeleted", required = false) Long petIdToBeDeleted,
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
+
+        try {
+            System.out.println("Pet with following id was deleted: " + petIdToBeDeleted);
+            this.adoptionService.deletePetForAdoption(petIdToBeDeleted);
+
+        }catch (Exception e){
+            return "redirect:all-pets-adoption?message=search_filed&error=" + e.getMessage();          //Endpoint can be changed !!!
+        }
+        return "redirect:/adoption";
+    }
+
+
+    //EDIT PET FOR ADOPTION
+
+    @GetMapping("/editPetForAdoption")                                        //smotretj anketu zapolnennuju
+    public String updatePetView(
+            Model model,
+            @RequestParam(name = "petIdToBeUpdated", required = false) Long petIdToBeUpdated,
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
+
+        try {
+            model.addAttribute("pet",adoptionService.findAdoptionPetById(petIdToBeUpdated));
+            System.out.println("Pet with the following ID will be updated: " + petIdToBeUpdated);
+
+        }catch (Exception e){
+            return "redirect:create-pet-for-adoption?message=search_filed&error=" + e.getMessage();          //Endpoint can be changed !!!
+        }
+        return "edit-pet-for-adoption";}
+
+
+
+    @PostMapping("/savePetForAdoption")
+    public String handlePetUpdate(Adoption adoption,
+                                    @RequestParam(name = "petId", required = false) Long petId,
+                                    @CookieValue(value = "userId") String userIdFromCookie
+    ) throws Exception {
+        try {
+            Adoption oldAdoptionData = adoptionService.findAdoptionPetById(petId);
+
+            //Setting creation date info (as it is not done manually by user)
+            adoption.setCreatedAt(oldAdoptionData.getCreatedAt());
+
+//          //Setting again this adoption id (as it is not done manually by user)
+            adoption.setId(petId);
+            this.adoptionService.createPetForAdoption(adoption);
+
+        } catch (Exception e) {
+            return "redirect:edit-pet-for-adoption/" + e.getMessage();
+        }
+        return ("redirect:/adoption");
     }
 
 
@@ -83,6 +150,7 @@ public class AdoptionController {
         }
 
     }
+
 
     @GetMapping("/my-pets-for-adoption")                //to add ref to this endpoint
     public String showMyPetsForAdoption(
@@ -128,7 +196,7 @@ public class AdoptionController {
         try {
             System.out.println(userIdFromCookie);
             User userWhoReservesPet = userService.findUserById(Long.valueOf(userIdFromCookie));
-            Adoption reservedPet = adoptionService.findAdoptedPetById(petId);
+            Adoption reservedPet = adoptionService.findAdoptionPetById(petId);
 
             if(reservedPet.isReserved()==false){
                 reservedPet.setUser(userWhoReservesPet);

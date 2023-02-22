@@ -49,12 +49,6 @@ public class EventController {
     }
 
 
-    //To change return location
-//    @GetMapping("/createEvent")
-//    public String showEventApproval() {
-//        return "create-event";
-//    }
-
 
     //To change return location
     @PostMapping("/createEvent")
@@ -131,9 +125,6 @@ public class EventController {
         }
         return "redirect:my-events";
     }
-
-
-
 
 
     @GetMapping("/update-event")                                        //smotretj anketu zapolnennuju
