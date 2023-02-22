@@ -15,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-
+@Builder
 @Entity
 public class Event {
 
@@ -31,6 +31,11 @@ public class Event {
     @Column(columnDefinition = "TEXT")
     private String description;
     private String organizers;
+    @Column(columnDefinition = "LONGTEXT")
+    private String photo;
+
+    @Builder.Default
+    private String photoPath = "/img/event-photo/event-placeholder.png";
 
     @ManyToOne
     @PrimaryKeyJoinColumn(name="USERID", referencedColumnName="id")

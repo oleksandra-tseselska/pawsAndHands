@@ -24,6 +24,7 @@
                 <!--ADD CLASSES HERE d-flex align-items-stretch-->
                 <li th:each="eventItem: ${eventList}" class="col d-flex align-items-stretch">
                     <article class="card-body d-flex flex-column border rounded p-0">
+                        <img class="col-md-5 pb-2" th:src="${eventItem.photoPath}" style="object-fit: cover; width: 100%; max-height: 200px">
                         <p th:text="${eventItem.date}" class="align-self-end p-2"></p>
                         <h5 th:text="${eventItem.name}" class="card-title border-bottom p-2 text-center"></h5>
                         <p th:text="${eventItem.description}" class="card-text mb-4 p-2" style="text-align: justify"></p>

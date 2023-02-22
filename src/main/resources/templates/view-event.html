@@ -7,9 +7,12 @@
 <body class="d-flex row">
   <header th:insert="~{fragments/header.html :: header}"></header>
   <main>
-    <section class="container d-flex justify-content-center">
-      <div class="row flex-sm-row-reverse">
-        <div class="col-sm-6">
+    <section class="container">
+      <div class="row">
+<!--        <div class="col-md-5 py-2">-->
+          <img class="col-md-5 py-2" th:src="${eventData.photoPath}" style="object-fit: cover; max-height: 400px">
+<!--        </div>-->
+        <div class="col-md-7">
           <ul class="list-group list-group-flush text-center">
             <li class="list-group-item">
               <label th:text="${eventData?.name}"></label>
@@ -27,17 +30,8 @@
             <li class="list-group-item">
               <label th:text="${eventData?.description}"></label>
             </li>
-          </ul>
-        </div>
-        <div class="col-sm-4  col-md-5 ps-2 pe-2">
-          <!--          <img class="view-user-img" th:src="${}">-->
-          <ul  class="row row-cols-1 row-cols-md-2 g-4 ps-0 text-center"
-               data-masonry='{"percentPosition": true,  "itemSelector": ".col" }'
-          >
-            <li class="card">
-              <a href="#" th:text="${eventData?.sponsors}">
-                <!--            <img src="..." class="card-img-top" alt="...">-->
-              </a>
+            <li class="list-group-item">
+              <label th:text="${eventData?.sponsors}"></label>
             </li>
           </ul>
         </div>
