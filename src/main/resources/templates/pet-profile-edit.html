@@ -23,13 +23,13 @@
 <!--    PICTURE COLUMN -->
 
     <div class="col-2">
-      <img src="/logo.png" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;" id="frame" class="img-fluid"/>
+      <img th:src="${pet.photoPath}" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;" id="frame" class="img-fluid"/>
 
-      <div class="mb-3">
-        <label for="image" class="form-label">Upload another picture</label>
-        <input class="form-control" type="file" id="image" onchange="preview()">
-        <i class="bi bi-x-lg" onclick="clearImage()"></i>
-      </div>
+<!--      <div class="mb-3">-->
+<!--        <label for="image" class="form-label">Upload another picture</label>-->
+<!--        <input class="form-control" type="file" id="image" accept="image/png, image/jpeg" onchange="preview()">-->
+<!--        <i class="bi bi-x-lg" onclick="clearImage()"></i>-->
+<!--      </div>-->
 
       <!--      <div class="mb-3">-->
 <!--        <label for="formFile" class="form-label">Default file input example</label>-->

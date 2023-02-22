@@ -23,8 +23,17 @@
 <!--    PICTURE SECTION -->
 
     <div class="col-2">
-      <img src="/logo.png" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;">
+      <img th:src="${pet.photoPath}" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;">
+      <a
+              th:if="${currentUserIsPetOwner}"
+              th:href="@{'/edit-pet-photo/' + ${petId}}"
+              type="button"
+              class="btn btn-outline-primary my-2 ms-3"
+      >
+        Change photo
+      </a>
     </div>
+
 
 
     <div class="col-5">

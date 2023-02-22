@@ -39,7 +39,9 @@ public class PetService {
         this.petRepository.save(petNew);
     }
 
-
+    public Pet save(Pet pet){
+        return this.petRepository.save(pet);
+    }
 
 
 

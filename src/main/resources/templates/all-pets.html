@@ -45,7 +45,7 @@
                         <span th:if="${pet.isDied()}" class="badge position-absolute top-50 end-0 bg-dark text-white">memorial page</span>
                         <span class="badge position-absolute top-50 end-0 bg-info text-dark" th:if="${(pet.isNewHome()) && !(pet.isDied())}">looking for a new home</span>
 
-                        <img src="/logo.png" class="card-img-top" alt="profile-picture]">
+                        <img th:src="${pet.photoPath}" class="card-img-top" alt="profile-picture]">
 
                         <div class="card-body">
                             <h5 class="card-title text-truncate">
