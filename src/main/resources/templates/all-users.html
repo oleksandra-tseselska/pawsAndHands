@@ -83,12 +83,22 @@
                             </form>
                         </span>
 
-                        <span th:if="${userItem.isAdmin()}">
+                        <span th:if="${userItem.isAdmin() && userItem.id != 1}">
 <!--                        <div style="text-align: center" th:if="${currentUserIsAdmin} && ${!userItem.IsAdmin}">-->
                             <form action="/takeOffAdminRights" method="post">
                                 <input  type="hidden" th:value="${userItem.getId()}" id="userIdNotToBeAdmin" name="userIdNotToBeAdmin">
                                 <button style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Take off Admin rights</button>
                             </form>
+                        </span>
+
+<!--                        ADMIN FOREVER -->
+
+                        <span th:if="${userItem.id == 1}">
+                            <h4
+                                    class="badge rounded-pill bg-success d-inline-block py-1 mt-2"
+                            >
+                                ADMIN
+                            </h4>
                         </span>
 
                     </div>

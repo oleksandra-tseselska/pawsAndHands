@@ -1,0 +1,38 @@
+.sorry-words{
+    padding-top: 30vh;
+    text-align: center;
+}
+.spinner-wrap{
+    padding-top: 2vh;
+    width: 4vh;
+    height: 4vh;
+    margin-left: auto;
+    margin-right: auto;
+}
+.loading {
+    display: flex;
+    justify-content: center;
+}
+.loading::after {
+    content: "";
+    width: 3vh;
+    height: 3vh;
+    border: 10px solid #dddddd;
+    border-top-color: #009579;
+    border-radius: 50%;
+    animation: loading 1s ease infinite;
+}
+@keyframes loading {
+    to {
+        transform: rotate(1turn);
+    }
+}
+#myButton {
+    display: none;
+}
+.button-wrap{
+    display: flex;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 4vh;
+}

@@ -1,12 +1,12 @@
 package com.pawsandhands.UserEntity;
 
-import com.pawsandhands.Adoption.Adoption;
 import com.pawsandhands.PetEntity.Pet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.Value;
 import org.apache.commons.io.FileUtils;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +53,13 @@ public class UserController{
         try{
             User loggedInUser = userService.verifyUser(user);
             setCookie(loggedInUser, response);
+
+//            Add ADMIN rights to UserID == 1
+
+            if(loggedInUser.getId() == 1 && !loggedInUser.isAdmin()){
+                loggedInUser.setAdmin(true);
+                this.userService.save(loggedInUser);
+            }
 
 
             return "redirect:profile-page/" + loggedInUser.getId();
@@ -130,29 +137,94 @@ public class UserController{
                                    @CookieValue(value = "userId") String userIdFromCookie){
         try{
 
-//           max 1048576
-            if(!multipartFile.isEmpty()){
-            Long userId = Long.valueOf(userIdFromCookie);
-            User user = this.userService.findUserById(userId);
-            String pathFile = "src/main/resources/static/img/users-photo/profile_photo_"+user.getId().toString()+".png";
+            if(!multipartFile.isEmpty()
+                    && multipartFile.getSize() < 1048576
+                    && (multipartFile.getContentType() != "image/png" || multipartFile.getContentType() != "image/jpeg")){
 
-            String pathUserPhoto = "/img/users-photo/profile_photo_"+user.getId()+".png";
-            byte[] photoByte = multipartFile.getBytes();
-            String encodedString = Base64.getEncoder().encodeToString(photoByte);
+                Long userId = Long.valueOf(userIdFromCookie);
+                User user = this.userService.findUserById(userId);
+                String pathFile =
+                        "src/main/resources/static/img/users-photo/profile_photo_"
+                                +user.getId().toString()+
+                                ".png";
 
-            FileUtils.writeByteArrayToFile(new File(pathFile), multipartFile.getBytes());
+                String pathUserPhoto = "/img/users-photo/profile_photo_"+user.getId()+".png";
+                byte[] photoByte = multipartFile.getBytes();
+                String encodedString = Base64.getEncoder().encodeToString(photoByte);
 
-            user.setPhoto(encodedString);
-            user.setPhotoPath(pathUserPhoto);
+                FileUtils.writeByteArrayToFile(new File(pathFile), multipartFile.getBytes());
 
-            this.userService.save(user);
+                user.setPhoto(encodedString);
+                user.setPhotoPath(pathUserPhoto);
+
+                this.userService.save(user);
+
+                return "redirect:spinner";
+            }else {
+                return "redirect:error-img-page";
             }
 
+
+
+        }catch (FileSizeLimitExceededException e){
+            return "redirect:error-img-page";
         }catch (Exception e){
             e.getMessage();
         }
 
-        return "redirect:profile";
+        return "redirect:edit-user-photo";
+    }
+
+    @GetMapping ("/error-img-page")
+    public String errorEditProfilePhoto(@CookieValue(value = "userId") String userIdFromCookie, Model model){
+        try {
+
+            CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
+            modelMap.get("userData");
+            modelMap.clear();
+
+            return "error-img-page";
+
+        }catch (Exception e){
+
+            return "redirect:error-img-page?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+        }
+    }
+    @GetMapping ("/spinner")
+    public String showProfilePhoto(@CookieValue(value = "userId") String userIdFromCookie,
+                                   Model model){
+        try {
+
+            CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
+            modelMap.values();
+            modelMap.clear();
+
+//            CHECK IF PHOTO CHANGED
+
+
+//            Long userId = Long.valueOf(userIdFromCookie);
+//            User user = this.userService.findUserById(userId);
+//            String inputFilePath = "profile_photo_"+userId+".png";
+//            ClassLoader classLoader = getClass().getClassLoader();
+//
+//            File inputFile = new File(classLoader
+//                    .getResource(inputFilePath)
+//                    .getFile());
+//            byte[] fileContent = FileUtils.readFileToByteArray(inputFile);
+//            String encodedString = Base64
+//                    .getEncoder()
+//                    .encodeToString(fileContent);
+//
+//            if(user.getPhoto().equals(encodedString)){
+//                return "redirect:profile";
+//            }
+
+            return "spinner";
+
+        }catch (Exception e){
+
+            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+        }
     }
 
 
