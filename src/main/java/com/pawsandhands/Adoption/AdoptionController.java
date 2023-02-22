@@ -214,4 +214,40 @@ public class AdoptionController {
     }
 
 
+    //UNRESERVE PET
+
+
+    @GetMapping("/takeOffReservation")
+    public String unreservePetPage(){
+        return "reservation-takeoff";
+    }
+
+    @PostMapping("/takeOffReservation")
+    public String unreservePet(
+            Model model,
+            @RequestParam(name = "petIdToBeUnreserved", required = false) Long petId,
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
+
+        try {
+            Adoption reservedPet = adoptionService.findAdoptionPetById(petId);
+
+            reservedPet.setUser(null);
+            reservedPet.setReserved(false);
+            adoptionService.createPetForAdoption(reservedPet);
+            } catch (Exception e){
+            return "redirect:reservation-takeoff" + e.getMessage();          //Endpoint can be changed !!!
+        }
+
+        return "reservation-takeoff";
+    }
+
+
+
+
+
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <th:block th:insert="~{fragments/head.html :: head}"> </th:block>
+  <title>Reservation success</title>
+</head>
+<body class="d-flex row">
+<header th:insert="~{fragments/header.html :: header}"></header>
+
+<h1 style="text-align: center">This pet was unreserved! Hope that you will find another one...</h1>
+<br>
+<div style="text-align: center;">
+
+<!--  To check if there is a better way to make a reference to an endpoint -->
+<button style="cursor: pointer; text-align: center; color: #FAFAFA; background-color: #04AA6D;  border: none;  font-size: 26px; padding: 10px; width: 160px; text-align: center;" onclick="window.location.href='http://localhost:2020/adoption';"> Go Back</button>
+</div>
+
+<!--  <a class="nav-link align-nav-element" href="/adoption">Go back</a>-->
+
+<br><br><br>
+<img src="pets.jpg" alt="Pets">
+
+<footer class="align-self-end"  th:insert="~{fragments/footer.html :: footer}"></footer>
+</body>
+</html>
