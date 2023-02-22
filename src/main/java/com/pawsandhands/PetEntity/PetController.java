@@ -2,10 +2,15 @@ package com.pawsandhands.PetEntity;
 
 import com.pawsandhands.UserEntity.User;
 import com.pawsandhands.UserEntity.UserService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.util.Base64;
 
 @Controller
 public class PetController {
@@ -110,6 +115,74 @@ public class PetController {
         }
         return "pet-profile";
     }
+
+//   Add Photo Start
+    @GetMapping ("/edit-pet-photo/{petId}")
+    public String showPetPhoto(Model model,
+                                   @PathVariable Long petId
+    ){
+        try {
+
+            model.addAttribute("pet", petService.findPetById(petId));
+
+
+            return "edit-pet-photo";
+
+        }catch (Exception e){
+
+            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+        }
+    }
+
+    @PostMapping(value = "/add-photo/{petId}")
+    public String editPetPhoto(@PathVariable Long petId,
+                               @RequestParam("photo") MultipartFile multipartFile){
+        try{
+            Pet pet = this.petService.findPetById(petId);
+
+                //            Photo Start
+            String pathFilePet =
+                    "src/main/resources/static/img/pets-photo/profile_photo_"
+                            +petId+
+                            ".png";
+
+            String pathPetPhoto = "/img/pets-photo/profile_photo_"+petId+".png";
+            byte[] photoByte = multipartFile.getBytes();
+            String encodedString = Base64.getEncoder().encodeToString(photoByte);
+
+            FileUtils.writeByteArrayToFile(new File(pathFilePet), multipartFile.getBytes());
+
+            pet.setPhoto(encodedString);
+            pet.setPhotoPath(pathPetPhoto);
+                //            Photo End
+
+            this.petService.save(pet);
+
+            System.out.println("hi");
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        return "redirect:/spinner-pet/"+petId.toString();
+    }
+
+    @GetMapping ("/spinner-pet/{petId}")
+    public String showSpinnerPet(@PathVariable Long petId,
+                                   Model model){
+        try {
+
+            model.addAttribute("pet", petService.findPetById(petId));
+
+            return "spinner-pet";
+
+        }catch (Exception e){
+
+            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+        }
+    }
+
+    //   Add Photo End
 
     @GetMapping("pet-profile/{petId}/edit")
     public String displayPetEditProfile(
@@ -246,10 +319,6 @@ public class PetController {
 
         }
     }
-
-
-
-
 
 
     @GetMapping("all-pets")

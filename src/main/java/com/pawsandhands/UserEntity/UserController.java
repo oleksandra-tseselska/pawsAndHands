@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.Value;
 import org.apache.commons.io.FileUtils;
-import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -143,7 +142,7 @@ public class UserController{
 
                 Long userId = Long.valueOf(userIdFromCookie);
                 User user = this.userService.findUserById(userId);
-                String pathFile =
+                String pathFileUser =
                         "src/main/resources/static/img/users-photo/profile_photo_"
                                 +user.getId().toString()+
                                 ".png";
@@ -152,27 +151,25 @@ public class UserController{
                 byte[] photoByte = multipartFile.getBytes();
                 String encodedString = Base64.getEncoder().encodeToString(photoByte);
 
-                FileUtils.writeByteArrayToFile(new File(pathFile), multipartFile.getBytes());
+                FileUtils.writeByteArrayToFile(new File(pathFileUser), multipartFile.getBytes());
 
                 user.setPhoto(encodedString);
                 user.setPhotoPath(pathUserPhoto);
 
                 this.userService.save(user);
 
-                return "redirect:spinner";
+                return "redirect:spinner-user";
             }else {
                 return "redirect:error-img-page";
             }
 
 
 
-        }catch (FileSizeLimitExceededException e){
-            return "redirect:error-img-page";
         }catch (Exception e){
-            e.getMessage();
+            return "redirect:error-img-page";
         }
 
-        return "redirect:edit-user-photo";
+//        return "redirect:edit-user-photo";
     }
 
     @GetMapping ("/error-img-page")
@@ -191,7 +188,7 @@ public class UserController{
         }
     }
     @GetMapping ("/spinner")
-    public String showProfilePhoto(@CookieValue(value = "userId") String userIdFromCookie,
+    public String showSpinnerUser(@CookieValue(value = "userId") String userIdFromCookie,
                                    Model model){
         try {
 
@@ -219,7 +216,7 @@ public class UserController{
 //                return "redirect:profile";
 //            }
 
-            return "spinner";
+            return "spinner-user";
 
         }catch (Exception e){
 

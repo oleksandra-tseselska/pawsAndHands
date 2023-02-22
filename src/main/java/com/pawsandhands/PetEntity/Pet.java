@@ -3,6 +3,7 @@ package com.pawsandhands.PetEntity;
 import com.pawsandhands.UserEntity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,6 +21,7 @@ import static java.time.temporal.ChronoUnit.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 @Entity //represeting the db table in the db
 public class Pet {
     @Id
@@ -47,6 +49,12 @@ public class Pet {
     private String childs;
     private String events;
     private String medicalInfo;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String photo;
+
+    @Builder.Default
+    private String photoPath = "/img/pets-photo/pet_placeholder.png";
 
     @ManyToMany
     @JoinTable(
