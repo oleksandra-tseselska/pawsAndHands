@@ -122,6 +122,8 @@ public class AdoptionController {
     }
 
 
+    //I AM HERE
+
     @GetMapping("/adoption")
     public String showAllPetsForAdoption(
             Model model,

@@ -29,10 +29,19 @@
                         <p th:text="${eventItem.description}" class="card-text mb-4 p-2" style="text-align: justify"></p>
 <!--                        <a th:href="'view-event/'+${eventItem.getId()}" class="btn btn-primary text-white mt-auto align-self-end m-2">See more</a>-->
 
+                        <div class="d-flex mt-auto justify-content-around">
                         <form action="/view-event" method="get">
                             <input type="hidden" th:value="${eventItem.getId()}" id="EventIdForView" name="EventId">
                             <button type="submit" class="btn btn-primary">View event</button>
                         </form>
+
+                            <form th:if="${currentUserIsAdmin}" action="/delete-event" method="post">
+                                <input type="hidden" th:value="${eventItem.getId()}" id="EventIdForDeleting" name="EventId">
+                                <button type="submit" class="btn btn-primary" style="background-color: red">Delete event</button>
+                            </form>
+
+                            <br><br>
+                        </div>
 
                     </article>
                 </li>

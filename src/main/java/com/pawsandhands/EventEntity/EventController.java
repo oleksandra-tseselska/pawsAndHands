@@ -67,13 +67,21 @@ public class EventController {
     }
 
     @GetMapping("/all-events")
-    public String showAllEvents(Model model){
+    public String showAllEvents(Model model,  @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie){
         ArrayList<Event> eventsAfterNow = findEventsAfterNow();
 
         try {
             model.addAttribute(
 //                    "eventList", findEventsAfterNow());
                     "eventList", findTop3(eventsAfterNow));
+
+            User user = userService.findUserById(Long.valueOf(userIdFromCookie)); //fining User in our DB
+
+            //Checking if User is Admin, if yes => in html additional button will appear => to delete event
+            if (user.isAdmin()) {
+                model.addAttribute("currentUserIsAdmin", true);
+            }
+
         }catch (Exception e){
             return "redirect:/all-events/" + e.getMessage();
         }
@@ -123,7 +131,7 @@ public class EventController {
         }catch (Exception e){
             return "redirect:all-events?message=search_filed&error=" + e.getMessage();          //Endpoint can be changed !!!
         }
-        return "redirect:my-events";
+        return "redirect:all-events";
     }
 
 
