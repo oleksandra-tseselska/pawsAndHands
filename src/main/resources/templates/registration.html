@@ -2,234 +2,222 @@
 <html lang="en">
 
 <head>
-  <th:block th:include="~{fragments/head.html :: head}"> </th:block>
-  <title>Registration form</title>
-  <style>
-    body {
-      background: url("/catdog.jpeg") no-repeat;
-      background-size: cover;
-    }
-  </style>
+    <th:block th:include="~{fragments/head.html :: head}"> </th:block>
+    <title>Registration form</title>
+    <style>
+        body {
+            background: url("/catdog.jpeg") no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
 
 <body>
-  <main>
+<main>
     <section class="container">
-      <div class="row justify-content-end">
-        <div class="row" style="height: 2rem;"></div>
+        <div class="row justify-content-end">
+            <div class="row" style="height: 2rem;"></div>
 
-        <div class="col col-md-5 col-lg-4 card p-4">
-          <form action="/register" method="post" class="row g-3 needs-validation" novalidate>
-              <div class="form-floating col-md-6">
-                  <input
-                          type="text"
-                          name="name"
-                          class="form-control"
-                          id="floatingFirstName"
-                          required
-                          maxlength="255"
-                  >
-                  <label for="floatingFirstName" class="ms-1">Name</label>
-                  <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                  <div class="invalid-feedback">
-                    Please enter your name.
-                  </div>
-              </div>
+            <div class="col col-md-5 col-lg-4 card p-4">
+                <form action="/register" method="post" class="row g-3 needs-validation" novalidate>
+                    <h3 class="text-center"> Registration form: </h3>
+                    <div class="mb-1">
+                        <input
+                                type="text"
+                                name="name"
+                                class="form-control"
+                                required
+                                placeholder="First Name"
+                                maxlength="255"
+                        >
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter your name.
+                        </div>
+                    </div>
 
-              <div class="form-floating col-md-6">
-                  <input
-                          type="text"
-                          name="surname"
-                          class="form-control"
-                          id="floatingLastName"
-                          placeholder="Surname"
-                          maxlength="255"
+                    <div class="mb-1">
+                        <input
+                                type="text"
+                                name="surname"
+                                class="form-control"
+                                placeholder="Surname"
+                                maxlength="255"
 
-                          required
-                  >
-                  <label for="floatingLastName" class="ms-1">Surname</label>
-                  <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                  <div class="invalid-feedback">
-                    Please enter your surname.
-                  </div>
-              </div>
+                                required
+                        >
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter your surname.
+                        </div>
+                    </div>
 
-              <div class="form-floating col-md-6">
-                  <input
-                          type="email"
-                          name="email"
-                          class="form-control"
-                          id="floatingEmail"
-                          required
-                          placeholder="example@email.com"
-                          maxlength="255"
+                    <div class="mb-1">
+                        <input
+                                type="email"
+                                name="email"
+                                class="form-control"
+                                required
+                                placeholder="example@email.com"
+                                maxlength="255"
 
-                  >
-                  <label for="floatingEmail" class="ms-1">Email</label>
-                  <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                  <div class="invalid-feedback">
-                      Please enter your email in a format example@email.com
-                  </div>
-              </div>
+                        >
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter your email in a format example@email.com
+                        </div>
+                    </div>
 
-              <div class="form-floating col-md-6">
-                  <input
-                          type="tel"
-                          name="telephone"
-                          class="form-control"
-                          id="floatingPhone"
-                          required
-                          placeholder="Phone"
-                          maxlength="60"
-                  >
-                  <label for="floatingPhone" class="ms-1">Phone</label>
-                  <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                  <div class="invalid-feedback">
-                      Please enter your phone number.
-                  </div>
-              </div>
+                    <div class="mb-1">
+                        <input
+                                type="tel"
+                                name="telephone"
+                                class="form-control"
+                                required
+                                placeholder="Phone"
+                                maxlength="60"
+                        >
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter your phone number.
+                        </div>
+                    </div>
 
-              <div class="form-floating mb-3">
-                  <input
-                          type="password"
-                          name="password"
-                          class="form-control"
-                          id="floatingPassword"
-                          required
-                          placeholder="Password"
-                          minlength="8"
-                          maxlength="16"
-                          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$"
-                  >
-                  <label for="floatingPassword" class="ms-1">Password</label>
-                  <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                  <div class="invalid-feedback">
-                    Please make sure that your password contains lowercase and uppercase letters,
-                      numeric and special symbol (!@#$%^&*=+-_), and that the length is from 8 to 16 symbols.
-                  </div>
-                </div>
+                    <div class="mb-1">
+                        <input
+                                type="password"
+                                name="password"
+                                class="form-control"
+                                required
+                                placeholder="Password"
+                                minlength="8"
+                                maxlength="16"
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$"
+                        >
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please make sure that your password contains lowercase and uppercase letters,
+                            numeric and special symbol (!@#$%^&*=+-_), and that the length is from 8 to 16 symbols.
+                        </div>
+                    </div>
 
-            <div class="form-floating mb-3">
-              <div th:insert="~{fragments/countries.html :: countries}" name="country"></div>
-              <div class="invalid-feedback">
-                 Select country
-              </div>
+                    <div class="mb-1">
+                        <div th:insert="~{fragments/countries.html :: countries}" name="country"></div>
+                        <div class="invalid-feedback">
+                            Select country
+                        </div>
+                    </div>
+
+                    <div class="mb-1">
+                        <input
+                                type="text"
+                                name="city"
+                                class="form-control"
+                                required
+                                placeholder="City"
+                                maxlength="255"
+                        >
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please specify city.
+                        </div>
+                    </div>
+
+                    <div class="mb-1">
+                        <select
+                                class="form-select"
+                                name="status"
+                                required
+                        >
+                            <option selected disabled value="">Choose your user type</option>
+                            <option value="Pet owner">Pet owner</option>
+                            <option value="Service provider">Service provider</option>
+                            <option value="Pet owner and service provider">Pet owner and service provider</option>
+                            <option value="User with no pets">User with no pets</option>
+                        </select>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please provide a valid state.
+                        </div>
+                    </div>
+
+                    <div class="mb-1">
+                        <input
+                                type="text"
+                                name="breeder_licence"
+                                class="form-control"
+                                placeholder="Breeder licence"
+                                maxlength="255"
+                        >
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please provide a valid license.
+                        </div>
+                    </div>
+
+
+                    <!--            <div class="col-12">-->
+                    <!--              <div class="form-check">-->
+                    <!--                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>-->
+                    <!--                <label class="form-check-label" for="invalidCheck">-->
+                    <!--                  Agree to terms and conditions-->
+                    <!--                </label>-->
+                    <!--                <div class="invalid-feedback">-->
+                    <!--                  You must agree before submitting.-->
+                    <!--                </div>-->
+                    <!--              </div>-->
+                    <!--            </div>-->
+
+
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success" type="submit">Register</button>
+                    </div>
+                </form>
+
             </div>
-
-            <div class="form-floating mb-3">
-              <input
-                      type="text"
-                      name="city"
-                      class="form-control"
-                      id="floatingCity"
-                      required
-                      placeholder="City"
-                      maxlength="255"
-              >
-              <label for="floatingPhone" class="ms-1">City</label>
-              <div class="valid-feedback">
-                Looks good!
-              </div>
-              <div class="invalid-feedback">
-                Please specify city.
-              </div>
-            </div>
-
-            <div class="form-floating mb-3">
-              <select
-                      class="form-select"
-                      name="status"
-                      required
-              >
-                <option selected disabled value="">Choose your user type</option>
-                <option value="Pet owner">Pet owner</option>
-                <option value="Service provider">Service provider</option>
-                <option value="Pet owner and service provider">Pet owner and service provider</option>
-                <option value="User with no pets">User with no pets</option>
-              </select>
-              <div class="valid-feedback">
-                Looks good!
-              </div>
-              <div class="invalid-feedback">
-                Please provide a valid state.
-              </div>
-            </div>
-
-            <div class="form-floating">
-              <input
-                      type="text"
-                      name="breeder_licence"
-                      class="form-control"
-                      id="floatingLicence"
-                      placeholder="Breeder licence"
-                      maxlength="255"
-              >
-              <label for="floatingLicence" class="ms-1">Breeder licence</label>
-              <div class="valid-feedback">
-                Looks good!
-              </div>
-              <div class="invalid-feedback">
-                  Please provide a valid license.
-              </div>
-            </div>
-
-
-<!--            <div class="col-12">-->
-<!--              <div class="form-check">-->
-<!--                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>-->
-<!--                <label class="form-check-label" for="invalidCheck">-->
-<!--                  Agree to terms and conditions-->
-<!--                </label>-->
-<!--                <div class="invalid-feedback">-->
-<!--                  You must agree before submitting.-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-
-
-            <div class="d-grid gap-2">
-              <button class="btn btn-success" type="submit">Register</button>
-            </div>
-          </form>
-
         </div>
-      </div>
     </section>
-  </main>
+</main>
 
 
 
 <script>
-  // Example starter JavaScript for disabling form submissions if there are invalid fields
-  (function () {
-    'use strict'
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.querySelectorAll('.needs-validation')
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
 
-    // Loop over them and prevent submission
-    Array.prototype.slice.call(forms)
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
             .forEach(function (form) {
-              form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                  event.preventDefault()
-                  event.stopPropagation()
-                }
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
 
-                form.classList.add('was-validated')
-              }, false)
+                    form.classList.add('was-validated')
+                }, false)
             })
-  })()
+    })()
 </script>
 </body>
 </html>

@@ -187,7 +187,7 @@ public class UserController{
             return "redirect:error-img-page?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
         }
     }
-    @GetMapping ("/spinner")
+    @GetMapping ("/spinner-user")
     public String showSpinnerUser(@CookieValue(value = "userId") String userIdFromCookie,
                                    Model model){
         try {
