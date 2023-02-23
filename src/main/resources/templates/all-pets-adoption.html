@@ -39,7 +39,8 @@
         </div>
 
         <div class="row">
-            <h1 th:if="!${adoptionPetList.isEmpty()}">All pets for adoption</h1>
+            <div th:if="!${adoptionPetList.isEmpty()}">
+            <h1>All pets for adoption</h1>
 
 
             <!--   BUTTON TO ADD PETS FOR ADOPTION FOR ADMIN  -->
@@ -50,6 +51,7 @@
                     Add new pet for adoption
                 </a>
                 <br><br>
+                </div>
             </div>
 
             <!--        BUTTON TO ADD PETS FOR ADOPTION FOR ADMIN  (END)      -->
