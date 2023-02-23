@@ -12,9 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
+import java.util.ArrayList;
 import java.util.Set;
 
 @Controller
@@ -65,7 +66,6 @@ public class UserController{
                 this.userService.save(loggedInUser);
             }
 
-
             return "redirect:profile-page/" + loggedInUser.getId();
 
         }catch(Exception e){
@@ -79,26 +79,22 @@ public class UserController{
                            @CookieValue(value = "userId") String userIdFromCookie,
                            @PathVariable Long userId){
         try{
-
+//          get photo from DB
             User currentUser = this.userService.findUserById(userId);
 
             if(currentUser.getPhoto() != null){
                 String pathFileUser = "profile_photo_" +currentUser.getId().toString()+ "." +currentUser.getContentType();
-                this.filesStorage.base64DecodedString(currentUser.getPhoto(),
-                        "profile_photo_" +currentUser.getId().toString()+"."+ currentUser.getContentType(),
-                        imgUsersPath);
+                this.filesStorage.base64DecodedString(currentUser.getPhoto(), pathFileUser, imgUsersPath);
             }
 
-            System.out.println(currentUser.getId());
-            System.out.println(currentUser.getPhoto() == null);
-
-            System.out.println(userIdFromCookie);
+//          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model, userId);
             modelMap.values();
             modelMap.clear();
 
             User user = userService.findUserById(Long.valueOf(userIdFromCookie)); //fining User in our DB
 
+//            check admin
             if (user.isAdmin) {
                 model.addAttribute("currentUserIsAdmin", true);
             }else{
@@ -121,22 +117,15 @@ public class UserController{
             return "not-logged-in";
         }
         try {
-
+//          get photo from DB
             User user = findUserByCookieId(userIdFromCookie);
-            System.out.println(user.getId());
-            System.out.println(user.getPhoto() == null);
 
             if(user.getPhoto() != null){
-                System.out.println("Hi");
-                this.filesStorage.base64DecodedString(user.getPhoto(),
-                        "profile_photo_" +user.getId().toString()+"."+user.getContentType(),
-                        imgUsersPath);
-
+                String pathFileUser = "profile_photo_" +user.getId().toString()+ "." +user.getContentType();
+                this.filesStorage.base64DecodedString(user.getPhoto(), pathFileUser, imgUsersPath);
             }
 
-//            System.out.println(user.getPhoto() == null + " profile");
-
-
+//          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
             modelMap.values();
             modelMap.clear();
@@ -153,7 +142,7 @@ public class UserController{
                                    @CookieValue(value = "userId") String userIdFromCookie
     ){
         try {
-
+//          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
             modelMap.get("userData");
             modelMap.clear();
@@ -170,7 +159,7 @@ public class UserController{
                                    @CookieValue(value = "userId") String userIdFromCookie){
         try{
             User user = findUserByCookieId(userIdFromCookie);
-
+//          get content type (jpeg or png?)
             String contentTypeFile = this.filesStorage.getContentType(multipartFile);
             String pathFileUser;
             String pathUserPhoto;
@@ -183,10 +172,12 @@ public class UserController{
                 return "redirect:error-img-page";
             }
 
+//            file to Base64 and save
             userPhotoPath = this.imgUsersPath.resolve(Paths.get(pathFileUser));
             String encodedString = this.filesStorage.base64EncodedString(multipartFile);
             this.filesStorage.save(multipartFile, userPhotoPath);
 
+//            send data to DB
             user.setPhoto(encodedString);
             user.setPhotoPath(pathUserPhoto);
             user.setContentType(contentTypeFile);
@@ -203,7 +194,7 @@ public class UserController{
     @GetMapping ("/error-img-page")
     public String errorEditProfilePhoto(@CookieValue(value = "userId") String userIdFromCookie, Model model){
         try {
-
+//          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
             modelMap.get("userData");
             modelMap.clear();
@@ -219,52 +210,32 @@ public class UserController{
     public String showSpinnerUser(@CookieValue(value = "userId") String userIdFromCookie,
                                    Model model){
         try {
-
+//          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
             modelMap.values();
             modelMap.clear();
-
-//            CHECK IF PHOTO CHANGED
-
-
-//            Long userId = Long.valueOf(userIdFromCookie);
-//            User user = this.userService.findUserById(userId);
-//            String inputFilePath = "profile_photo_"+userId+".png";
-//            ClassLoader classLoader = getClass().getClassLoader();
-//
-//            File inputFile = new File(classLoader
-//                    .getResource(inputFilePath)
-//                    .getFile());
-//            byte[] fileContent = FileUtils.readFileToByteArray(inputFile);
-//            String encodedString = Base64
-//                    .getEncoder()
-//                    .encodeToString(fileContent);
-//
-//            if(user.getPhoto().equals(encodedString)){
-//                return "redirect:profile";
-//            }
 
             return "spinner-user";
 
         }catch (Exception e){
 
-            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+            return "redirect:index?message=update_error" + e.getMessage();          //Endpoint can be changed !!!
         }
     }
 
 
     @GetMapping("/registration")                        //OK
-    public String showRegistrationForm(){                  // if press Btn"Create new account" (?only after index.html)
-        return "registration";                             // goes to registration.html
+    public String showRegistrationForm(){
+        return "registration";
     }
 
 
-    @PostMapping("/register")                                                      // after Btn "Register(?change to create)" in registration.html
+    @PostMapping("/register")
     public String handleUserRegistration(User user, Model model) throws Exception {  //OK 2
         try {
             this.userService.createUser(user);
         }catch (Exception e){
-            model.addAttribute("message", "signup_failed");     // ?we really need this in registration.html
+            model.addAttribute("message", "signup_failed");
             model.addAttribute("error", e.getMessage());
             model.addAttribute("user", user);
             return "registration";
@@ -309,8 +280,18 @@ public class UserController{
         if(userIsLoggedInFromCookie.equals("false")) {
             return "not-logged-in";
         }
+
+//        get photos of all users
         try{
-            model.addAttribute("usersList", this.userService.findAll());
+            ArrayList<User> users = this.userService.findAll();
+            for(User user: users){
+                if(user.getPhoto() != null){
+                    String pathFileUser = "profile_photo_" +user.getId().toString()+ "." +user.getContentType();
+                    this.filesStorage.base64DecodedString(user.getPhoto(), pathFileUser, imgUsersPath);
+                }
+            }
+
+            model.addAttribute("usersList", users);
             model.addAttribute("userIdFromCookie", Long.valueOf(userIdFromCookie));
 
 
