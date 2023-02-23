@@ -1,10 +1,7 @@
 package com.pawsandhands.EventEntity;
 
-import com.pawsandhands.Adoption.Adoption;
 import com.pawsandhands.UserEntity.User;
 import com.pawsandhands.UserEntity.UserService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +26,6 @@ public class EventController {
 
     @GetMapping("/discounts")
     public String showDiscounts(
-            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
             @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
     ){
         if(userIsLoggedInFromCookie.equals("false")) {
@@ -37,9 +33,10 @@ public class EventController {
         }
         return "discounts";
     }
+
+
     @GetMapping("/create-event")
     public String showCreateEventPage(
-            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
             @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
     ){
         if(userIsLoggedInFromCookie.equals("false")) {
@@ -49,22 +46,21 @@ public class EventController {
     }
 
 
-
-    //To change return location
     @PostMapping("/createEvent")
     public String handleEventCreation(Event event,
           @CookieValue(value = "userId") String userIdFromCookie
-    ) throws Exception {
+    ) {
         try {
             System.out.println(userIdFromCookie);
             User eventUser = userService.findUserById(Long.valueOf(userIdFromCookie));
             event.setUser(eventUser);
             this.eventService.createEvent(event);
         } catch (Exception e) {
-            return "redirect:/create-event/" + e.getMessage();
+            return "redirect:/my-events/" + e.getMessage();
         }
-        return ("/create-event");
+        return ("redirect:/my-events");
     }
+
 
     @GetMapping("/all-events")
     public String showAllEvents(Model model,  @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie){
@@ -72,7 +68,7 @@ public class EventController {
 
         try {
             model.addAttribute(
-//                    "eventList", findEventsAfterNow());
+//                    "eventList", findEventsAfterNow());          //Wouldn't it be better to see ALL EVENTS?
                     "eventList", findTop3(eventsAfterNow));
 
             User user = userService.findUserById(Long.valueOf(userIdFromCookie)); //fining User in our DB
@@ -89,8 +85,6 @@ public class EventController {
         return "/all-events";
     }
 
-
-    //For My Events page
 
     @GetMapping("/my-events")
     public String showMyEvents(Model model,
@@ -109,15 +103,13 @@ public class EventController {
             return "my-events";
 
         }catch (Exception e){
-            return "redirect:create-event/?message=" + e.getMessage();          //Endpoint can be changed !!!
+            return "redirect:my-events/?message=" + e.getMessage();
         }
     }
 
     @PostMapping("/delete-event")
     public String deleteEvent(
-            Model model,
             @RequestParam(name = "EventId", required = false) Long eventId,
-            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
             @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
     ){
         if(userIsLoggedInFromCookie.equals("false")) {
@@ -129,17 +121,16 @@ public class EventController {
             this.eventService.deleteEvent(eventId);
 
         }catch (Exception e){
-            return "redirect:all-events?message=search_filed&error=" + e.getMessage();          //Endpoint can be changed !!!
+            return "redirect:/my-events/" + e.getMessage();
         }
-        return "redirect:all-events";
+        return "redirect:/my-events";
     }
 
 
-    @GetMapping("/update-event")                                        //smotretj anketu zapolnennuju
+    @GetMapping("/update-event")                                        //to get filled in form
     public String updateEventView(
             Model model,
             @RequestParam(name = "EventId", required = false) int eventId,
-            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
             @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
     ){
         if(userIsLoggedInFromCookie.equals("false")) {
@@ -148,8 +139,7 @@ public class EventController {
 
         try {
             model.addAttribute("event",eventService.findById(eventId));
-            System.out.println(userIdFromCookie);
-            System.out.println(eventId);
+            System.out.println("Event id to be updated: " + eventId);
 
         }catch (Exception e){
             return "redirect:all-events?message=search_filed&error=" + e.getMessage();          //Endpoint can be changed !!!
@@ -161,7 +151,7 @@ public class EventController {
     public String handleEventUpdate(Event event,
                                     @RequestParam(name = "EventId", required = false) int eventId,
                                     @CookieValue(value = "userId") String userIdFromCookie
-    ) throws Exception {
+    ){
         try {
             Event oldEventData = eventService.findById(eventId);
 
@@ -177,9 +167,9 @@ public class EventController {
             this.eventService.createEvent(event);
 
         } catch (Exception e) {
-            return "redirect:create-event/" + e.getMessage();
+            return "redirect:/my-events/" + e.getMessage();
         }
-        return ("create-event");
+        return ("redirect:/my-events");
     }
 
 
