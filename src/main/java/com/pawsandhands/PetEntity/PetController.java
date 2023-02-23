@@ -10,12 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 
 @Controller
 public class PetController {
     private final PetService petService;
     private final UserService userService;
+
+    private final Path pets = Paths.get("src/main/resources/static/img/pets-photo");
 
     @Autowired
     public PetController(PetService petService, UserService userService) {

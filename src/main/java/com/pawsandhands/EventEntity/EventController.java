@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ public class EventController {
 
     private EventService eventService;
     private UserService userService;
+
+    private final Path events = Paths.get("src/main/resources/static/img/events-photo");
 
     @Autowired
     public EventController(EventService eventService, UserService userService) {

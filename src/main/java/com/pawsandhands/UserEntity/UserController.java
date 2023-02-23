@@ -1,18 +1,19 @@
 package com.pawsandhands.UserEntity;
 
+import com.pawsandhands.FileStorage.FilesStorageServiceImpl;
 import com.pawsandhands.PetEntity.Pet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.Value;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Set;
 
@@ -21,11 +22,15 @@ public class UserController{
 
     private final UserService userService;
 
+    private final FilesStorageServiceImpl filesStorage;
     private CustomMap<String, Value> modelUser = new CustomMap<>();
 
+    private final Path imgUsersPath = Paths.get("src/main/resources/static/img/users-photo");
+
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService, FilesStorageServiceImpl filesStorage){
         this.userService=userService;
+        this.filesStorage = filesStorage;
     }
 
 
@@ -74,6 +79,19 @@ public class UserController{
                            @CookieValue(value = "userId") String userIdFromCookie,
                            @PathVariable Long userId){
         try{
+
+            User currentUser = this.userService.findUserById(userId);
+
+            if(currentUser.getPhoto() != null){
+                String pathFileUser = "profile_photo_" +currentUser.getId().toString()+ "." +currentUser.getContentType();
+                this.filesStorage.base64DecodedString(currentUser.getPhoto(),
+                        "profile_photo_" +currentUser.getId().toString()+"."+ currentUser.getContentType(),
+                        imgUsersPath);
+            }
+
+            System.out.println(currentUser.getId());
+            System.out.println(currentUser.getPhoto() == null);
+
             System.out.println(userIdFromCookie);
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model, userId);
             modelMap.values();
@@ -103,6 +121,22 @@ public class UserController{
             return "not-logged-in";
         }
         try {
+
+            User user = findUserByCookieId(userIdFromCookie);
+            System.out.println(user.getId());
+            System.out.println(user.getPhoto() == null);
+
+            if(user.getPhoto() != null){
+                System.out.println("Hi");
+                this.filesStorage.base64DecodedString(user.getPhoto(),
+                        "profile_photo_" +user.getId().toString()+"."+user.getContentType(),
+                        imgUsersPath);
+
+            }
+
+//            System.out.println(user.getPhoto() == null + " profile");
+
+
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
             modelMap.values();
             modelMap.clear();
@@ -135,41 +169,35 @@ public class UserController{
     public String editProfilePhoto(@RequestParam("photo") MultipartFile multipartFile,
                                    @CookieValue(value = "userId") String userIdFromCookie){
         try{
+            User user = findUserByCookieId(userIdFromCookie);
 
-            if(!multipartFile.isEmpty()
-                    && multipartFile.getSize() < 1048576
-                    && (multipartFile.getContentType() != "image/png" || multipartFile.getContentType() != "image/jpeg")){
+            String contentTypeFile = this.filesStorage.getContentType(multipartFile);
+            String pathFileUser;
+            String pathUserPhoto;
+            Path userPhotoPath;
 
-                Long userId = Long.valueOf(userIdFromCookie);
-                User user = this.userService.findUserById(userId);
-                String pathFileUser =
-                        "src/main/resources/static/img/users-photo/profile_photo_"
-                                +user.getId().toString()+
-                                ".png";
-
-                String pathUserPhoto = "/img/users-photo/profile_photo_"+user.getId()+".png";
-                byte[] photoByte = multipartFile.getBytes();
-                String encodedString = Base64.getEncoder().encodeToString(photoByte);
-
-                FileUtils.writeByteArrayToFile(new File(pathFileUser), multipartFile.getBytes());
-
-                user.setPhoto(encodedString);
-                user.setPhotoPath(pathUserPhoto);
-
-                this.userService.save(user);
-
-                return "redirect:spinner-user";
-            }else {
+            if(contentTypeFile != null){
+                pathFileUser = "profile_photo_" +user.getId().toString()+ "."+ contentTypeFile;
+                pathUserPhoto = "/img/users-photo/profile_photo_"+user.getId()+ "."+ contentTypeFile;
+            } else {
                 return "redirect:error-img-page";
             }
 
+            userPhotoPath = this.imgUsersPath.resolve(Paths.get(pathFileUser));
+            String encodedString = this.filesStorage.base64EncodedString(multipartFile);
+            this.filesStorage.save(multipartFile, userPhotoPath);
 
+            user.setPhoto(encodedString);
+            user.setPhotoPath(pathUserPhoto);
+            user.setContentType(contentTypeFile);
+            this.userService.save(user);
+
+            return "redirect:spinner-user";
 
         }catch (Exception e){
+
             return "redirect:error-img-page";
         }
-
-//        return "redirect:edit-user-photo";
     }
 
     @GetMapping ("/error-img-page")
@@ -375,11 +403,16 @@ public class UserController{
         return "redirect:profile-page/"+ user.getId();
     }
 
+    private User findUserByCookieId(String stringUSERID) throws Exception{
+        Long userIdCookie = Long.valueOf(stringUSERID);
+        User userData = this.userService.findUserById(userIdCookie);
+
+        return userData;
+    }
+
     private CustomMap<String, Value> getUserModelData(String stringUSERID, Model model) {
         try {
-            Long userIdCookie = Long.valueOf(stringUSERID);
-            User userData = this.userService.findUserById(userIdCookie);
-            this.modelUser = putDataToModel(stringUSERID, model, userData);
+            this.modelUser = putDataToModel(stringUSERID, model, findUserByCookieId(stringUSERID));
 
         }catch (Exception e){
             e.getMessage();

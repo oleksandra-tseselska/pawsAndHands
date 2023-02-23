@@ -52,6 +52,7 @@ public class Pet {
 
     @Column(columnDefinition = "LONGTEXT")
     private String photo;
+    private String contentType;
 
     @Builder.Default
     private String photoPath = "/img/pets-photo/pet_placeholder.png";

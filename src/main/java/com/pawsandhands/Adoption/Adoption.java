@@ -32,6 +32,7 @@ public class Adoption {
 //    private byte[] photo;
     @Column(columnDefinition = "LONGTEXT")
     private String photo;
+    private String contentType;
 
     @Builder.Default
     private String photoPath = "/img/adoption-photo/adoption_placeholder.png";
