@@ -75,14 +75,7 @@ public class FilesStorageServiceImpl  implements FileStorageService{
     @Override
     public void base64DecodedString(String encodedString, String outputFileName, Path path) throws IOException{
         byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
-        File outputFile = new File(path+File.pathSeparator+outputFileName);
-//        ByteArrayInputStream bis = new ByteArrayInputStream(decodedBytes);
-//        BufferedImage copyImg = ImageIO.read(bis);
-//        ImageIO.write(copyImg, "jpg", new File("output.jpg") );
-//
-////        ImageIcon imageIcon = new ImageIcon(decodedBytes);
-////
-////        Image image = imageIcon.getImage();
+        File outputFile = new File(path+File.separator+outputFileName);
         FileUtils.writeByteArrayToFile(outputFile, decodedBytes);
     }
 
