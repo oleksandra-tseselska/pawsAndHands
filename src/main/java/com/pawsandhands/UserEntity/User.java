@@ -42,8 +42,6 @@ public class User{
 //    @Lob                               //annotation for BLOB format in DB; B64image Spring - saving like String
     @Column(columnDefinition = "LONGTEXT")
     private String photo;
-    private String contentType;
-
     @Builder.Default
     private String photoPath = "/img/users-photo/profile-photo_placeholder.png";
 

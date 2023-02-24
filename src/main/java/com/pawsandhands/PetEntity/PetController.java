@@ -110,11 +110,14 @@ public class PetController {
             @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
     ) {
         try {
+//            delete temp img
+            this.filesStorage.deleteAll();
+
 //            get photo from DB
             Pet pet = this.petService.findPetById(petId);
 
             if(pet.getPhoto() != null){
-                String pathFileUser = "profile_photo_" +pet.getId().toString()+ "." +pet.getContentType();
+                String pathFileUser = "profile_photo_" +pet.getId().toString()+ ".png";
                 this.filesStorage.base64DecodedString(pet.getPhoto(), pathFileUser, imgPetsPath);
             }
 //            set data to html
@@ -140,9 +143,10 @@ public class PetController {
                                    @PathVariable Long petId
     ){
         try {
-
+//            delete temp img
+            this.filesStorage.deleteAll();
+//            data from DB
             model.addAttribute("pet", petService.findPetById(petId));
-
 
             return "edit-pet-photo";
 
@@ -157,58 +161,32 @@ public class PetController {
                                @RequestParam("photo") MultipartFile multipartFile,
                                HttpServletResponse response){
         try{
-            Pet pet = this.petService.findPetById(petId);
+//            add folder for temp photos
+            this.filesStorage.init();
 
-            //          get content type (jpeg or png?)
-            String contentTypeFile = this.filesStorage.getContentType(multipartFile);
+            Pet pet = this.petService.findPetById(petId);
             String pathFileUser;
             String pathUserPhoto;
             Path userPhotoPath;
 
-            System.out.println(contentTypeFile);
+            pathFileUser = "profile_photo_" +pet.getId().toString()+ ".png";
+            pathUserPhoto = "/img/pets-photo/profile_photo_"+pet.getId()+ ".png";
 
-            if(contentTypeFile != null){
-                pathFileUser = "profile_photo_" +pet.getId().toString()+ "."+ contentTypeFile;
-                pathUserPhoto = "/img/pets-photo/profile_photo_"+pet.getId()+ "."+ contentTypeFile;
-            } else {
-                return "redirect:error-img-pet-page";
-            }
 
 //            file to Base64 and save
             userPhotoPath = this.imgPetsPath.resolve(Paths.get(pathFileUser));
             String encodedString = this.filesStorage.base64EncodedString(multipartFile);
-            this.filesStorage.save(multipartFile, userPhotoPath);
+            this.filesStorage.save(multipartFile, userPhotoPath, pathFileUser);
 
 //            send data to DB
             pet.setPhoto(encodedString);
             pet.setPhotoPath(pathUserPhoto);
-            pet.setContentType(contentTypeFile);
             this.petService.save(pet);
 
 //            Cookie pet
             Cookie cookie = new Cookie("petId", pet.getId().toString());
             cookie.setMaxAge(10 * 60);                                     // Сookie expired
             response.addCookie(cookie);
-
-//            old code
-
-//            //            Photo Start
-//            String pathFilePet =
-//                    "src/main/resources/static/img/pets-photo/profile_photo_"
-//                            +petId+
-//                            ".png";
-//
-//            String pathPetPhoto = "/img/pets-photo/profile_photo_"+petId+".png";
-//            byte[] photoByte = multipartFile.getBytes();
-//            String encodedString = Base64.getEncoder().encodeToString(photoByte);
-//
-//            FileUtils.writeByteArrayToFile(new File(pathFilePet), multipartFile.getBytes());
-//
-//            pet.setPhoto(encodedString);
-//            pet.setPhotoPath(pathPetPhoto);
-//            //            Photo End
-
-//            this.petService.save(pet);
 
         }catch (Exception e){
             e.getMessage();
@@ -400,7 +378,7 @@ public class PetController {
             ArrayList<Pet> pets = this.petService.findAllByOrderByNickname();
             for(Pet pet: pets){
                 if(pet.getPhoto() != null){
-                    String pathFileUser = "profile_photo_" +pet.getId().toString()+ "." +pet.getContentType();
+                    String pathFileUser = "profile_photo_" +pet.getId().toString()+ ".png";
                     this.filesStorage.base64DecodedString(pet.getPhoto(), pathFileUser, imgPetsPath);
                 }
             }

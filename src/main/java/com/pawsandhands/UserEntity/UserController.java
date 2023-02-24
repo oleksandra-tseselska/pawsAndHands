@@ -79,11 +79,14 @@ public class UserController{
                            @CookieValue(value = "userId") String userIdFromCookie,
                            @PathVariable Long userId){
         try{
+//            delete temp img
+            this.filesStorage.deleteAll();
+
 //          get photo from DB
             User currentUser = this.userService.findUserById(userId);
 
             if(currentUser.getPhoto() != null){
-                String pathFileUser = "profile_photo_" +currentUser.getId().toString()+ "." +currentUser.getContentType();
+                String pathFileUser = "profile_photo_" +currentUser.getId().toString()+ ".png";
                 this.filesStorage.base64DecodedString(currentUser.getPhoto(), pathFileUser, imgUsersPath);
             }
 
@@ -117,11 +120,14 @@ public class UserController{
             return "not-logged-in";
         }
         try {
+//            delete temp img
+            this.filesStorage.deleteAll();
+
 //          get photo from DB
             User user = findUserByCookieId(userIdFromCookie);
 
             if(user.getPhoto() != null){
-                String pathFileUser = "profile_photo_" +user.getId().toString()+ "." +user.getContentType();
+                String pathFileUser = "profile_photo_" +user.getId().toString()+ ".png";
                 this.filesStorage.base64DecodedString(user.getPhoto(), pathFileUser, imgUsersPath);
             }
 
@@ -142,6 +148,9 @@ public class UserController{
                                    @CookieValue(value = "userId") String userIdFromCookie
     ){
         try {
+//            delete temp img
+            this.filesStorage.deleteAll();
+
 //          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
             modelMap.get("userData");
@@ -158,30 +167,28 @@ public class UserController{
     public String editProfilePhoto(@RequestParam("photo") MultipartFile multipartFile,
                                    @CookieValue(value = "userId") String userIdFromCookie){
         try{
+//            add folder for temp photos
+            this.filesStorage.init();
+
             User user = findUserByCookieId(userIdFromCookie);
-//          get content type (jpeg or png?)
-            String contentTypeFile = this.filesStorage.getContentType(multipartFile);
             String pathFileUser;
             String pathUserPhoto;
             Path userPhotoPath;
 
-            if(contentTypeFile != null){
-                pathFileUser = "profile_photo_" +user.getId().toString()+ "."+ contentTypeFile;
-                pathUserPhoto = "/img/users-photo/profile_photo_"+user.getId()+ "."+ contentTypeFile;
-            } else {
-                return "redirect:error-img-page";
-            }
+                pathFileUser = "profile_photo_" +user.getId().toString()+ ".png";
+                pathUserPhoto = "/img/users-photo/profile_photo_"+user.getId()+ ".png";
 
 //            file to Base64 and save
             userPhotoPath = this.imgUsersPath.resolve(Paths.get(pathFileUser));
             String encodedString = this.filesStorage.base64EncodedString(multipartFile);
-            this.filesStorage.save(multipartFile, userPhotoPath);
+            this.filesStorage.save(multipartFile, userPhotoPath, pathFileUser);
 
 //            send data to DB
             user.setPhoto(encodedString);
             user.setPhotoPath(pathUserPhoto);
-            user.setContentType(contentTypeFile);
+
             this.userService.save(user);
+            this.filesStorage.deleteAll();
 
             return "redirect:spinner-user";
 
@@ -286,7 +293,8 @@ public class UserController{
             ArrayList<User> users = this.userService.findAll();
             for(User user: users){
                 if(user.getPhoto() != null){
-                    String pathFileUser = "profile_photo_" +user.getId().toString()+ "." +user.getContentType();
+                    String pathFileUser = "profile_photo_" +user.getId().toString()+ ".png";
+//                    String pathFileUser = "profile_photo_" +user.getId().toString()+ "." +user.getContentType();
                     this.filesStorage.base64DecodedString(user.getPhoto(), pathFileUser, imgUsersPath);
                 }
             }
