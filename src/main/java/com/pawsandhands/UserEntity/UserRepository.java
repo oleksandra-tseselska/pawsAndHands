@@ -24,6 +24,6 @@ public interface UserRepository extends CrudRepository <User,Long> {
     @Query("update User u set u.photo = ?1, u.photoPath = ?2 where u.id = ?3")
     void setUserInfoById(byte[] photo, String photoPath, Long userId);
 
-//    @Override
-//    <S extends User> S save(S entity);
+    @Override
+    User save(User user);
 }

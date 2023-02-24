@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 @Controller
@@ -14,6 +16,8 @@ public class AdoptionController {
 
     private AdoptionService adoptionService;
     private UserService userService;
+
+    private final Path adoptions = Paths.get("src/main/resources/static/img/adoptions-photo");
 
     public AdoptionController(AdoptionService adoptionService, UserService userService) {
         this.adoptionService = adoptionService;
