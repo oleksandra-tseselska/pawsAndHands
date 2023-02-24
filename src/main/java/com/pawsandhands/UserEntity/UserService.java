@@ -46,7 +46,7 @@ public class UserService {
         if(optionalUser.isPresent()){
             user = optionalUser.get();
         }else {
-            throw new RuntimeException("user not found for id :: " +userId);
+            throw new RuntimeException("user not found for id : " +userId);
         }
 
         return user;
