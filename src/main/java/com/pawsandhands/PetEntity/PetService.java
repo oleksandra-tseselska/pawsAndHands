@@ -24,6 +24,8 @@ public class PetService {
         Pet petOld = findPetById(id);
         petNew.setId(petOld.getId());
         petNew.setCreatedAt(petOld.getCreatedAt());
+        petNew.setPhoto(petOld.getPhoto());
+        petNew.setPhotoPath(petOld.getPhotoPath());
         if(petNew.getBreed().equals("empty") && !(petOld.getBreed().equals("empty"))){
             petNew.setBreed(petOld.getBreed());
         }
