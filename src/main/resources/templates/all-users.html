@@ -66,7 +66,7 @@
 <!--                           bg-primary -->
                             <h6
 
-                                    class="text-muted text-center"
+                                    class="text-muted text-truncate text-center"
                                     th:text="${userItem.status}"
                             ></h6>
                         </div>
@@ -78,7 +78,12 @@
 
                         <span th:if="${!userItem.isAdmin()}">
                             <form action="/grantAdminRights" method="post">
-                                <input  type="hidden" th:value="${userItem.getId()}" id="userIdToBeAdmin" name="userIdToBeAdmin">
+                                <input
+                                        type="hidden"
+                                        th:value="${userItem.getId()}"
+                                        id="userIdToBeAdmin"
+                                        name="userIdToBeAdmin"
+                                >
                                 <button style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Grant Admin rights</button>
                             </form>
                         </span>
@@ -86,7 +91,12 @@
                         <span th:if="${userItem.isAdmin() && userItem.id != 1}">
 <!--                        <div style="text-align: center" th:if="${currentUserIsAdmin} && ${!userItem.IsAdmin}">-->
                             <form action="/takeOffAdminRights" method="post">
-                                <input  type="hidden" th:value="${userItem.getId()}" id="userIdNotToBeAdmin" name="userIdNotToBeAdmin">
+                                <input
+                                        type="hidden"
+                                        th:value="${userItem.getId()}"
+                                        id="userIdNotToBeAdmin"
+                                        name="userIdNotToBeAdmin"
+                                >
                                 <button style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Take off Admin rights</button>
                             </form>
                         </span>
@@ -109,7 +119,8 @@
                     <ul th:if="${!userItem.getOwnedPets().isEmpty()}" style="position: relative" class="ps-0">
                         <h6
                                 th:text="'Paws: '+${userItem.getNumberOfPets()}"
-                                class="text-muted text-start ps-2 text-start border-bottom py-2 ps-2 text-center"
+                                class="text-muted text-start ps-2 text-start
+                                border-bottom py-2 ps-2 text-center text-truncate"
                         ></h6>
                         <li th:each="petItem: ${userItem.getOwnedPets()}">
                             <h6 th:if="${petItem.type.equals('dog')}">
@@ -130,7 +141,7 @@
                     </ul>
                     <h6
                             th:if="${userItem.getOwnedPets().isEmpty()}"
-                            class="text-muted text-start ps-2 text-center border-bottom py-2"
+                            class="text-muted text-start text-truncate ps-2 text-center border-bottom py-2"
                     >
                         This user has no pets yet
                     </h6>
@@ -141,7 +152,7 @@
                             class="card-body social-list py-3 mx-auto"
                     >
                         <li
-                                class="card-link d-flex text-muted"
+                                class="card-link d-flex text-muted text-truncate"
                                 th:if="${userItem.facebookUrl == null   &&
                                          userItem.twitterUrl == null    &&
                                          userItem.instagramUrl == null  &&
