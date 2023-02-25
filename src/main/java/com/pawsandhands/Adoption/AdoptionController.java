@@ -1,11 +1,13 @@
 package com.pawsandhands.Adoption;
 
 import com.pawsandhands.EventEntity.Event;
+import com.pawsandhands.FileStorage.FilesStorageServiceImpl;
 import com.pawsandhands.UserEntity.User;
 import com.pawsandhands.UserEntity.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,12 +18,13 @@ public class AdoptionController {
 
     private AdoptionService adoptionService;
     private UserService userService;
+    private final FilesStorageServiceImpl filesStorage;
+    private final Path imgAdoptionsPath = Paths.get("src/main/resources/static/img/adoption-photo");
 
-    private final Path adoptions = Paths.get("src/main/resources/static/img/adoptions-photo");
-
-    public AdoptionController(AdoptionService adoptionService, UserService userService) {
+    public AdoptionController(AdoptionService adoptionService, UserService userService, FilesStorageServiceImpl filesStorage) {
         this.adoptionService = adoptionService;
         this.userService = userService;
+        this.filesStorage = filesStorage;
     }
 
     @GetMapping("/addPetForAdoption")
@@ -103,7 +106,6 @@ public class AdoptionController {
         return "edit-pet-for-adoption";}
 
 
-
     @PostMapping("/savePetForAdoption")
     public String handlePetUpdate(Adoption adoption,
                                     @RequestParam(name = "petId", required = false) Long petId,
@@ -125,6 +127,69 @@ public class AdoptionController {
         return ("redirect:/adoption");
     }
 
+    //   Add Photo Start
+    @GetMapping ("/editAdoptionPhoto")
+    public String showPetPhoto(Model model,
+                               @RequestParam(name = "petIdToBeUpdated", required = false) Long petIdToBeUpdated
+    ){
+        try {
+//            delete temp img
+            this.filesStorage.deleteAll();
+//            data from DB
+            model.addAttribute("adoption", adoptionService.findAdoptionPetById(petIdToBeUpdated));
+
+            return "edit-adoption-pet-photo";
+        }catch (Exception e){
+
+            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+        }
+    }
+
+    @PostMapping("/addPhotoAdoptionPet")
+    public String editEventPhoto(@RequestParam(name = "petIdToBeUpdated", required = false) Long petIdToBeUpdated,
+                                 @RequestParam("photo") MultipartFile multipartFile){
+        try{
+//            add folder for temp photos
+            this.filesStorage.init();
+
+            Adoption adoptionPet = this.adoptionService.findAdoptionPetById(petIdToBeUpdated);
+            String pathFileAdoptionPet;
+            String pathAdoptionPetPhoto;
+            Path eventPhotoPath;
+
+            pathFileAdoptionPet = "adoption-pet_photo_" +petIdToBeUpdated.toString()+ ".png";
+            pathAdoptionPetPhoto = "/img/adoption-photo/adoption-pet_photo_"+petIdToBeUpdated+ ".png";
+
+
+//            file to Base64 and save
+            eventPhotoPath = this.imgAdoptionsPath.resolve(Paths.get(pathFileAdoptionPet));
+            String encodedString = this.filesStorage.base64EncodedString(multipartFile);
+            this.filesStorage.save(multipartFile, eventPhotoPath, pathFileAdoptionPet);
+
+//            send data to DB
+            adoptionPet.setPhoto(encodedString);
+            adoptionPet.setPhotoPath(pathAdoptionPetPhoto);
+            this.adoptionService.createPetForAdoption(adoptionPet);
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        return "redirect:/spinner-adoption/"+petIdToBeUpdated.toString();
+    }
+
+    @GetMapping ("/spinner-adoption/{adoptionPetId}")
+    public String showSpinnerPet(){
+        try {
+            return "spinner-adoption";
+        }catch (Exception e){
+
+            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+        }
+    }
+
+    //   Add Photo End
+
 
     //I AM HERE
 
@@ -139,7 +204,20 @@ public class AdoptionController {
         }
 
         try {
-            model.addAttribute("adoptionPetList", adoptionService.findAllPetsForAdoption());
+            //            delete temp img
+            this.filesStorage.deleteAll();
+
+            ArrayList<Adoption> allAdoptions = adoptionService.findAllPetsForAdoption();
+
+            //     get photos of all adoption pets from DB
+            for(Adoption adoption: allAdoptions){
+                if(adoption.getPhoto() != null){
+                    String pathFileUser = "adoption-pet_photo_" +adoption.getId()+ ".png";
+                    this.filesStorage.base64DecodedString(adoption.getPhoto(), pathFileUser, imgAdoptionsPath);
+                }
+            }
+
+            model.addAttribute("adoptionPetList", allAdoptions);
 
             User user = userService.findUserById(Long.valueOf(userIdFromCookie)); //fining User in our DB
 
@@ -173,6 +251,15 @@ public class AdoptionController {
             User userWhoAdoptsPets = userService.findUserById(Long.valueOf(userIdFromCookie));
 
             ArrayList<Adoption> myAdoptions = this.adoptionService.findReservedPetsByUser(userWhoAdoptsPets);
+
+            //     get photos of all adoption pets from DB
+            for(Adoption adoption: myAdoptions){
+                if(adoption.getPhoto() != null){
+                    String pathFileUser = "adoption-pet_photo_" +adoption.getId()+ ".png";
+                    this.filesStorage.base64DecodedString(adoption.getPhoto(), pathFileUser, imgAdoptionsPath);
+                }
+            }
+
             model.addAttribute("myAdoptionList", myAdoptions);
             return "my-adoptions";     //create this html
 
