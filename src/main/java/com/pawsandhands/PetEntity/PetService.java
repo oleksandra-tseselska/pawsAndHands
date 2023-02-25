@@ -24,11 +24,8 @@ public class PetService {
 //            throws Exception
     {
         try {
-            Pet petOld = findPetById(id);
+            Pet petOld = petRepository.findPetById(id);
             petNew.setId(petOld.getId());
-//            System.out.println(petNew);
-//            System.out.println(petOld);
-
             petNew.setCreatedAt(petOld.getCreatedAt());
             petNew.setPhoto(petOld.getPhoto());
             petNew.setPhotoPath(petOld.getPhotoPath());
@@ -37,22 +34,6 @@ public class PetService {
             if(petNew.getBreed().equals("empty") && !(petOld.getBreed().equals("empty"))){
                 petNew.setBreed(petOld.getBreed());
             }
-//            System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
-
-//            if((petOld.getCountry() == null) && (petNew.getCountry() == null)) {
-//            }
-//
-//            if((petOld.getCountry() == null) && (petNew.getCountry() != null)) {
-//            }
-    public void updatePet(Pet petNew, Long id) throws Exception{
-        Pet petOld = findPetById(id);
-        petNew.setId(petOld.getId());
-        petNew.setCreatedAt(petOld.getCreatedAt());
-        petNew.setPhoto(petOld.getPhoto());
-        petNew.setPhotoPath(petOld.getPhotoPath());
-        if(petNew.getBreed().equals("empty") && !(petOld.getBreed().equals("empty"))){
-            petNew.setBreed(petOld.getBreed());
-        }
 
             if((petOld.getCountry() != null) && (petNew.getCountry() == null)) {
                 petNew.setCountry(petOld.getCountry());
