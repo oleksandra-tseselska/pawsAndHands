@@ -227,7 +227,6 @@ public class EventController {
 
             Integer eventIdInt = eventId != null ? eventId.intValue() : null;
             Event event = this.eventService.findById(eventIdInt);
-            System.out.println(event.toString());
             String pathFileEvent;
             String pathEventPhoto;
             Path eventPhotoPath;
@@ -238,9 +237,7 @@ public class EventController {
 
 //            file to Base64 and save
             eventPhotoPath = this.imgEventsPath.resolve(Paths.get(pathFileEvent));
-            System.out.println(eventPhotoPath +" eventPhotoPath absolut");
             String encodedString = this.filesStorage.base64EncodedString(multipartFile);
-//            System.out.println(encodedString);
             this.filesStorage.save(multipartFile, eventPhotoPath, pathFileEvent);
 
 //            send data to DB
