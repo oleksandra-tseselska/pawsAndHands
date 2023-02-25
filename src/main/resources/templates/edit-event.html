@@ -14,9 +14,19 @@
 <div class="container">
 
   <div class="row">
-    <div class="col-lg-3"></div>
+    <div class="col-lg-2"></div>
+    <div class="col-lg-2">
+      <img th:src="${event.photoPath}" alt="default event photo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;" id="frame" class="img-fluid"/>
+      <a
+              th:href="@{'/edit-event-photo/' + ${event.id}}"
+              type="button"
+              class="btn btn-outline-primary my-2 ms-3"
+      >
+        Change photo
+      </a>
+    </div>
 
-    <div class="col-lg-6">
+    <div class="col-lg-5">
       <h1 class="text-center">Here you can edit your event</h1>
 
       <br>

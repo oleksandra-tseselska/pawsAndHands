@@ -1,11 +1,13 @@
 package com.pawsandhands.EventEntity;
 
+import com.pawsandhands.FileStorage.FilesStorageServiceImpl;
 import com.pawsandhands.UserEntity.User;
 import com.pawsandhands.UserEntity.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,13 +21,15 @@ public class EventController {
 
     private EventService eventService;
     private UserService userService;
+    private final FilesStorageServiceImpl filesStorage;
 
-    private final Path events = Paths.get("src/main/resources/static/img/events-photo");
+    private final Path imgEventsPath = Paths.get("src/main/resources/static/img/event-photo");
 
     @Autowired
-    public EventController(EventService eventService, UserService userService) {
+    public EventController(EventService eventService, UserService userService, FilesStorageServiceImpl filesStorage) {
         this.eventService = eventService;
         this.userService = userService;
+        this.filesStorage = filesStorage;
     }
 
     @GetMapping("/discounts")
@@ -71,6 +75,14 @@ public class EventController {
         ArrayList<Event> eventsAfterNow = findEventsAfterNow();
 
         try {
+            //     get photos of all events from DB
+            for(Event event: eventsAfterNow){
+                if(event.getPhoto() != null){
+                    String pathFileUser = "event_photo_" +event.getId()+ ".png";
+                    this.filesStorage.base64DecodedString(event.getPhoto(), pathFileUser, imgEventsPath);
+                }
+            }
+
             model.addAttribute(
 //                    "eventList", findEventsAfterNow());          //Wouldn't it be better to see ALL EVENTS?
                     "eventList", findTop3(eventsAfterNow));
@@ -103,6 +115,15 @@ public class EventController {
             User userWhoCreatedEvents = userService.findUserById(Long.valueOf(userIdFromCookie));
 
             ArrayList<Event> myEvents = this.eventService.findEventsByUser(userWhoCreatedEvents);
+
+            //     get photos of all events from DB
+            for(Event event: myEvents){
+                if(event.getPhoto() != null){
+                    String pathFileUser = "event_photo_" +event.getId()+ ".png";
+                    this.filesStorage.base64DecodedString(event.getPhoto(), pathFileUser, imgEventsPath);
+                }
+            }
+
             model.addAttribute("myEventsList", myEvents);
             return "my-events";
 
@@ -176,6 +197,79 @@ public class EventController {
         return ("redirect:/my-events");
     }
 
+    //   Add Photo Start
+    @GetMapping ("/edit-event-photo/{eventId}")
+    public String showPetPhoto(Model model,
+                               @PathVariable Long eventId
+    ){
+        try {
+//            delete temp img
+            this.filesStorage.deleteAll();
+
+//            data from DB
+            Integer eventIdInt = eventId != null ? eventId.intValue() : null;
+            model.addAttribute("event", eventService.findById(eventIdInt));
+
+            return "edit-event-photo";
+
+        }catch (Exception e){
+
+            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+        }
+    }
+
+    @PostMapping("/add-photo/eventId/{eventId}")
+    public String editEventPhoto(@PathVariable Long eventId,
+                               @RequestParam("photo") MultipartFile multipartFile){
+        try{
+//            add folder for temp photos
+            this.filesStorage.init();
+
+            Integer eventIdInt = eventId != null ? eventId.intValue() : null;
+            Event event = this.eventService.findById(eventIdInt);
+            System.out.println(event.toString());
+            String pathFileEvent;
+            String pathEventPhoto;
+            Path eventPhotoPath;
+
+            pathFileEvent = "event_photo_" +eventId.toString()+ ".png";
+            pathEventPhoto = "/img/event-photo/event_photo_"+eventId+ ".png";
+
+
+//            file to Base64 and save
+            eventPhotoPath = this.imgEventsPath.resolve(Paths.get(pathFileEvent));
+            System.out.println(eventPhotoPath +" eventPhotoPath absolut");
+            String encodedString = this.filesStorage.base64EncodedString(multipartFile);
+//            System.out.println(encodedString);
+            this.filesStorage.save(multipartFile, eventPhotoPath, pathFileEvent);
+
+//            send data to DB
+            event.setPhoto(encodedString);
+            event.setPhotoPath(pathEventPhoto);
+            this.eventService.createEvent(event);
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+
+        return "redirect:/spinner-event/"+eventId.toString();
+    }
+
+    @GetMapping ("/spinner-event/{eventId}")
+    public String showSpinnerPet(@PathVariable Integer eventId,
+                                 Model model){
+        try {
+            model.addAttribute("event", eventService.findById(eventId));
+
+            return "spinner-event";
+        }catch (Exception e){
+
+            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+        }
+    }
+
+    //   Add Photo End
+
 
     @GetMapping("/view-event")   //("/view-event/{eventId}")
     public String viewEventInfo(
@@ -184,6 +278,17 @@ public class EventController {
                                 Model model)
     {
         try{
+//            delete temp img
+            this.filesStorage.deleteAll();
+
+//            get photo from DB
+            Event event = this.eventService.findById(eventId);
+
+            if(event.getPhoto() != null){
+                String pathFileUser = "event_photo_" +event.getId()+ ".png";
+                this.filesStorage.base64DecodedString(event.getPhoto(), pathFileUser, imgEventsPath);
+            }
+
             model.addAttribute("eventData", eventService.findById(eventId));
         }catch (Exception e){
             return "redirect:all-events?message=search_filed&error=" + e.getMessage();

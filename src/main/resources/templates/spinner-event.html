@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <th:block th:insert="~{fragments/head.html :: head}"></th:block>
+  <link href="/css/spinner.css" rel="stylesheet"/>
+  <title>Loading</title>
+</head>
+<body>
+<h1 class="sorry-words">Please wait we'll load <span class="text-success">New photo</span> of your <span class="text-success">Event</span></h1>
+<div class="spinner-wrap">
+  <div class="loading loading--full-height"></div>
+</div>
+<div class="d-flex mx-auto button-wrap">
+  <form action="/view-event" method="get" class="mx-auto px-4">
+    <input type="hidden" th:value="${event.id}" id="EventIdForView" name="EventId">
+    <button type="submit" class="btn btn-primary">Go to Event Profile</button>
+  </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+  $(function() {
+    setTimeout(function() {
+      $('#myButton').show();
+    }, 100);
+  });
+</script>
+</body>
+</html>
