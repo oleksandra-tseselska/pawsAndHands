@@ -24,17 +24,7 @@
 </head>
 <body>
 <header>
-<!--    <h1>Paws & Hands Social Network</h1>-->
-<!--    <nav>-->
-<!--        <ul>-->
-<!--            <li><a href="/">Main</a></li>-->
-<!--            <li><a href="/create-pet">Create Pet</a></li>-->
-<!--            <li><a href="/all-pets">See All Pets</a></li>-->
-<!--            <li><a href="/edit-profile">Edit profile</a></li>-->
-<!--            <li><a href="/all-users">Users</a></li>-->
-<!--        </ul>-->
 
-<!--    </nav>-->
 </header>
 
 <main>
@@ -44,6 +34,11 @@
         <div class="row justify-content-end">
             <div class="col col-md-5 col-lg-4 card p-4">
                 <form action="/logInStartPage" method="post">
+
+<!--                    <div th:if ="${message1.equals('login_failed')}" class="alert alert-warning alert-dismissible fade show" role="alert">-->
+<!--                        <strong>Oh No!</strong> There is no such combination of email and password, try again or create new account.-->
+<!--                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<!--                    </div>-->
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email address</label>
@@ -60,6 +55,8 @@
                     </div>
 
                 </form>
+
+
 
                 <a href="/registration" class="btn btn-outline-primary d-grid gap-2 mt-2">Create new account</a>
 

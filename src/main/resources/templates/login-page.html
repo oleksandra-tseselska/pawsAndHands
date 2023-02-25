@@ -32,19 +32,21 @@
 
     <div class="row justify-content-end">
       <div class="col col-md-5 col-lg-4 card p-4">
-        <form action="/registration-approval" method="post">
+        <form action="/login-page" method="post">
 
-          <div th:if ="${message.equals('signup_failed')}" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <div th:if ="${message != null && message.equals('signup_failed')}" class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Something went wrong.</strong> Your account was not created.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
 
-          <div th:if ="${message.equals('login_failed')}" class="alert alert-warning alert-dismissible fade show" role="alert">
+
+
+          <div th:if ="${message == null ||  message.equals('login_failed')}" class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Oh No!</strong> There is no such combination of email and password, try again or create new account.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
 
-          <div th:if ="${message.equals('signup_success')}" class="alert alert-success alert-dismissible fade show" role="alert">
+          <div th:if ="${message != null && message.equals('signup_success')}" class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>You've been successfully registered!</strong> Please log in to proceed.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>

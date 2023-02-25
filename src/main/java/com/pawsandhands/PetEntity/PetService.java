@@ -20,27 +20,98 @@ public class PetService {
         this.petRepository.save(pet);
     }
 
-    public void updatePet(Pet petNew, Long id) throws Exception{
-        Pet petOld = findPetById(id);
-        petNew.setId(petOld.getId());
-        petNew.setCreatedAt(petOld.getCreatedAt());
-        petNew.setPhoto(petOld.getPhoto());
-        petNew.setPhotoPath(petOld.getPhotoPath());
-        if(petNew.getBreed().equals("empty") && !(petOld.getBreed().equals("empty"))){
-            petNew.setBreed(petOld.getBreed());
-        }
+    public void updatePet(Pet petNew, Long id)
+//            throws Exception
+    {
+        try {
+            Pet petOld = petRepository.findPetById(id);
+            petNew.setId(petOld.getId());
+            petNew.setCreatedAt(petOld.getCreatedAt());
+            petNew.setPhoto(petOld.getPhoto());
+            petNew.setPhotoPath(petOld.getPhotoPath());
 
-        if(petNew.getCountry().equals("--") && !(petOld.getCountry().equals("--"))){
-            petNew.setCountry(petOld.getCountry());
-        }
 
-        if((petNew.getPetOwners() == null) && (petOld.getPetOwners() != null)){
-            petNew.setPetOwners(petOld.getPetOwners());
-        }
+            if(petNew.getBreed().equals("empty") && !(petOld.getBreed().equals("empty"))){
+                petNew.setBreed(petOld.getBreed());
+            }
 
-        this.petRepository.save(petNew);
+            if((petOld.getCountry() != null) && (petNew.getCountry() == null)) {
+                petNew.setCountry(petOld.getCountry());
+            }
+
+            if((petOld.getCountry() != null) && (petNew.getCountry() != null)) {
+                if (petNew.getCountry().equals("--") && !(petOld.getCountry().equals("--"))) {
+                    petNew.setCountry(petOld.getCountry());
+                }
+            }
+
+//            System.out.println("old getCountry: " + petOld.getCountry() + " new breed NOW: " + petNew.getCountry());
+
+
+            if((petNew.getPetOwners() == null) && (petOld.getPetOwners() != null)){
+                petNew.setPetOwners(petOld.getPetOwners());
+            }
+//            System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
+
+
+            if((petNew.getPhoto() == null) && (petOld.getPhoto() != null)){
+                petNew.setPhoto(petOld.getPhoto());
+            }
+//            System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
+
+
+            if((petNew.getPhotoPath() == null) && (petOld.getPhotoPath() != null)){
+                petNew.setPhotoPath(petOld.getPhotoPath());
+            }
+//            System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
+
+
+            this.petRepository.save(petNew);
+//            System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
+        }
+        catch (Exception e){
+            System.out.println(e);
+
+        }
+//        Pet petOld = findPetById(id);
+//        petNew.setId(petOld.getId());
+//        System.out.println(petNew);
+//        System.out.println(petOld);
+//
+//        petNew.setCreatedAt(petOld.getCreatedAt());
+//        if(petNew.getBreed().equals("empty") && !(petOld.getBreed().equals("empty"))){
+//            petNew.setBreed(petOld.getBreed());
+//        }
+//        System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
+//
+//        if(petNew.getCountry().equals("--") && !(petOld.getCountry().equals("--"))){
+//            petNew.setCountry(petOld.getCountry());
+//        }
+//        System.out.println("old getCountry: " + petOld.getCountry() + " new breed NOW: " + petNew.getCountry());
+//
+//
+//        if((petNew.getPetOwners() == null) && (petOld.getPetOwners() != null)){
+//            petNew.setPetOwners(petOld.getPetOwners());
+//        }
+//        System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
+//
+//
+//        if((petNew.getPhoto() == null) && (petOld.getPhoto() != null)){
+//            petNew.setPhoto(petOld.getPhoto());
+//        }
+//        System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
+//
+//
+//        if((petNew.getPhotoPath() == null) && (petOld.getPhotoPath() != null)){
+//            petNew.setPhotoPath(petOld.getPhotoPath());
+//        }
+//        System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
+//
+//
+//        this.petRepository.save(petNew);
+//        System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
+
     }
-
     public Pet save(Pet pet){
         return this.petRepository.save(pet);
     }

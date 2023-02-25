@@ -52,12 +52,25 @@ public class UserController{
 
     }
 
+
+//
+//    @GetMapping("/")
+//        public String showMainPage(Model model){
+//            return "index";
+//        }
+
+
+
+    // TO CHECK HERE
+
     @PostMapping ("/logInStartPage")                                           //NEW  index.html + Btn"Login"
-    public String handleUserLogin2(User user, HttpServletResponse response){             // first cookie save
+    public String handleUserLogin2(User user, Model model, HttpServletResponse response){
+
+        //model.addAttribute("message1", "login_success");
 
         try{
             User loggedInUser = userService.verifyUser(user);
-            setCookie(loggedInUser, response);
+            setCookie(loggedInUser, response);                     // first cookie save
 
 //            Add ADMIN rights to UserID == 1
 
@@ -69,8 +82,8 @@ public class UserController{
             return "redirect:profile-page/" + loggedInUser.getId();
 
         }catch(Exception e){
-
-            return "redirect:/?message=login_failed&error=" + e.getMessage();
+            model.addAttribute("message",  "login_failed");
+            return "redirect:/login-page";
         }
     }
 
@@ -107,6 +120,7 @@ public class UserController{
             return "profile-page";
 
         }catch (Exception e){
+            model.addAttribute("message",  "login_failed");
             return "redirect:/?message=user_not_found";
         }
     }
@@ -247,23 +261,24 @@ public class UserController{
             model.addAttribute("user", user);
             return "registration";
         }
-        return ("redirect:registration-approval?message=signup_success");
+        return ("redirect:login-page?message=signup_success");
     }
 
-    @GetMapping("/registration-approval")                                      //OK 3
+    @GetMapping("/login-page")                                      //OK 3
     public String showRegistrationApprovalLoginPage(
             @RequestParam(name = "message", required = false) String message,
             Model model
     ){
-        if(message == null){
-            return "redirect:registration";
-        }
+//        if(message == null){
+//            return "redirect:registration";
+//        }
+
         model.addAttribute("message", message);
-        return "registration-approval";
+        return "login-page";
     }
 
 
-    @PostMapping ("/registration-approval")                               //OK 4
+    @PostMapping ("/login-page")                               //OK 4
     public String handleUserLogin(User user, HttpServletResponse response){
 
         try{
@@ -273,7 +288,7 @@ public class UserController{
             return "redirect:profile-page/" + loggedInUser.getId();
 
         }catch(Exception e){
-            return "redirect:registration-approval?message=login_failed&error=" + e.getMessage();
+            return "redirect:login-page?message=login_failed&error=" + e.getMessage();
 
         }
     }
@@ -320,7 +335,6 @@ public class UserController{
 
     @PostMapping("/grantAdminRights")
     public String grantAdminRights(
-            Model model,
             @RequestParam(name = "userIdToBeAdmin", required = false) Long userIdToBeAdmin,
             @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
             @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser

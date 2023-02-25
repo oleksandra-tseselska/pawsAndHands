@@ -61,7 +61,7 @@
                                     <span th:text="${userData.status}"></span>
                                 </div>
                             </li>
-                            <li class="row" th:if="${!userData.country.isBlank() || !userData.city.isBlank()}">
+                            <li class="row" th:if="${(userData.country != null) && (!userData.country.isBlank() || !userData.city.isBlank())}">
                                 <div class="col-3">
                                     <span class="text-muted">Location:</span>
                                 </div>

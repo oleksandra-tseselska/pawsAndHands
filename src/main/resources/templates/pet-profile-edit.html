@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!--    this block has all needed initial bootstrap and google fonts imports-->
-  <th:block th:insert="~{fragments/head.html :: head}"> </th:block>
+    <!--    this block has all needed initial bootstrap and google fonts imports-->
+    <th:block th:insert="~{fragments/head.html :: head}"> </th:block>
 
-  <!--    add all your additional styles files add below this line-->
+    <!--    add all your additional styles files add below this line-->
 
 
-  <!--    customize title of your page-->
-  <title th:text="${pet.getNickname()} + ' page'"></title>
+    <!--    customize title of your page-->
+    <title th:text="${pet.getNickname()} + ' page'"></title>
 </head>
 <body>
 <!-- this is fragment for header to display -->
@@ -16,383 +16,385 @@
 
 <!-- insert all your code below this line -->
 <div class="container">
-  <div class="row">
-    <div class="col-3">
-    </div>
-
-<!--    PICTURE COLUMN -->
-
-    <div class="col-2">
-      <img th:src="${pet.photoPath}" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;" id="frame" class="img-fluid"/>
-
-<!--      <div class="mb-3">-->
-<!--        <label for="image" class="form-label">Upload another picture</label>-->
-<!--        <input class="form-control" type="file" id="image" accept="image/png, image/jpeg" onchange="preview()">-->
-<!--        <i class="bi bi-x-lg" onclick="clearImage()"></i>-->
-<!--      </div>-->
-
-      <!--      <div class="mb-3">-->
-<!--        <label for="formFile" class="form-label">Default file input example</label>-->
-<!--        <input class="form-control" type="file" id="formFile">-->
-<!--      </div>-->
-    </div>
-
-<!--    INFORMATION EDIT COLUMN -->
-
-    <div class="col-5">
-        <div th:if ="${!(message == null) && message.equals('update_success')}" class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Hooray!</strong> Profile was successfully updated!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="row">
+        <div class="col-3">
         </div>
 
-        <div th:if ="${!(message == null) && message.equals('pet_profile_update_failed')}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Oh no!</strong> Something went wrong!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!--    PICTURE COLUMN -->
+
+        <div class="col-2">
+            <img th:src="${pet.photoPath}" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;" id="frame" class="img-fluid"/>
+
+            <!--      <div class="mb-3">-->
+            <!--        <label for="image" class="form-label">Upload another picture</label>-->
+            <!--        <input class="form-control" type="file" id="image" accept="image/png, image/jpeg" onchange="preview()">-->
+            <!--        <i class="bi bi-x-lg" onclick="clearImage()"></i>-->
+            <!--      </div>-->
+
+            <!--      <div class="mb-3">-->
+            <!--        <label for="formFile" class="form-label">Default file input example</label>-->
+            <!--        <input class="form-control" type="file" id="formFile">-->
+            <!--      </div>-->
         </div>
 
+        <!--    INFORMATION EDIT COLUMN -->
 
-        <!--    OWNERS INFORMATION -->
-
-        <div class="mb-3" id="ownersContainer">
-            <label for="birthdate" class="form-label" th:text="${'Edit ' + pet.getNickname() + ' Owners'}"></label>
-            <div class="row mb-2" id="owners" th:each="user : ${petOwners}">
-                <div class="col" th:id="'owner' + ${user.getId()}">
-                    <a th:href="@{'/profile-page/' + ${user.getId()}}" th:text="${user.getName()} + ' ' + ${user.getSurname()}"></a>
-                    <a th:href="${'/pet-profile/' + pet.getId() + '/edit/deleteOwner/' + user.getId()}" class="link-danger"><i class="bi bi-trash3"></i></a>
-                </div>
-            </div>
-
-<!--            <div class="row container1">-->
-<!--                <div class="col">-->
-
-<!--                        <button type="button" class="btn btn-outline-success btn-sm add_form_field mb-2">Add another owner</button>-->
-<!--                </div>-->
-<!--            </div>-->
-
-            <div th:if ="${!(message == null) && message.equals('pet_profile_update_with_owner_failed')}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Something went wrong.</strong> We are not sure what happened.
+        <div class="col-5">
+            <div th:if ="${message != null && message.equals('update_success')}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Hooray!</strong> Profile was successfully updated!
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-            <div th:if ="${!(message == null) && message.equals('success_owner_deleted')}" class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Well, you know it better! </strong>User was deleted as owner.
+            <div th:if ="${message != null && message.equals('pet_profile_update_failed')}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Oh no!</strong> Something went wrong!
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-            <div th:if ="${!(message == null) && message.equals('no_user_with_such_id')}" class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Oh No!</strong> There is no user with such id. Please make sure this is a correct id and try again.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
 
-            <div th:if ="${!(message == null) && message.equals('success_owners_updated')}" class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Hooray!</strong> New owner was successfully added!
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            <!--    OWNERS INFORMATION -->
 
-            <form th:action="${'/pet-profile/' + pet.getId() + '/edit/addOwner'}" method="post">
-                <div class="row">
-                    <label for="newOwner" class="form-label">Add new owner (select new owner and click "Add")</label>
-                </div>
-
-<!--                <div class="row my-1">-->
-<!--&lt;!&ndash;                    <div class="col-10">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <input  type="text" class="form-control" name="owner" minlength="1" maxlength="60">&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;                    <div class="col-2">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <button type="submit" class="btn btn-success">Add</button>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;                    <div class="col-2">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <button type="button" class="btn btn-outline-danger btn-sm delete">Remove</button>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--                </div>-->
-
-                <div class="row my-1">
-                    <div class="col-10">
-                        <select class="form-select" id="newOwner" name="owner" aria-label="All users select">
-                            <option th:each="user : ${allUsers}" th:value="${user.getId()}" th:text="${user.getId + ' ' + user.getName() + ' ' + user.getSurname()}"></option>
-                        </select>
-                    </div>
-                    <div class="col-2">
-                        <button type="submit" class="btn btn-success">Add</button>
+            <div class="mb-3" id="ownersContainer">
+                <label for="birthdate" class="form-label" th:text="${'Edit ' + pet.getNickname() + ' Owners'}"></label>
+                <div class="row mb-2" id="owners" th:each="user : ${petOwners}">
+                    <div class="col" th:id="'owner' + ${user.getId()}">
+                        <a th:href="@{'/profile-page/' + ${user.getId()}}" th:text="${user.getName()} + ' ' + ${user.getSurname()}"></a>
+                        <a th:href="${'/pet-profile/' + pet.getId() + '/edit/deleteOwner/' + user.getId()}" class="link-danger"><i class="bi bi-trash3"></i></a>
                     </div>
                 </div>
 
+                <!--            <div class="row container1">-->
+                <!--                <div class="col">-->
 
-            </form>
+                <!--                        <button type="button" class="btn btn-outline-success btn-sm add_form_field mb-2">Add another owner</button>-->
+                <!--                </div>-->
+                <!--            </div>-->
 
-        </div>
+                <div th:if ="${!(message == null) && message.equals('pet_profile_update_with_owner_failed')}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Something went wrong.</strong> We are not sure what happened.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div th:if ="${!(message == null) && message.equals('success_owner_deleted')}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Well, you know it better! </strong>User was deleted as owner.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div th:if ="${!(message == null) && message.equals('no_user_with_such_id')}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Oh No!</strong> There is no user with such id. Please make sure this is a correct id and try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div th:if ="${!(message == null) && message.equals('success_owners_updated')}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Hooray!</strong> New owner was successfully added!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <form th:action="${'/pet-profile/' + pet.getId() + '/edit/addOwner'}" method="post" novalidate>
+                    <div class="row">
+                        <label for="newOwner" class="form-label">Add new owner (select new owner and click "Add")</label>
+                    </div>
+
+                    <!--                <div class="row my-1">-->
+                    <!--&lt;!&ndash;                    <div class="col-10">&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <input  type="text" class="form-control" name="owner" minlength="1" maxlength="60">&ndash;&gt;-->
+                    <!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+                    <!--&lt;!&ndash;                    <div class="col-2">&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <button type="submit" class="btn btn-success">Add</button>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+                    <!--&lt;!&ndash;                    <div class="col-2">&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <button type="button" class="btn btn-outline-danger btn-sm delete">Remove</button>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+                    <!--                </div>-->
+
+                    <div class="row my-1">
+                        <div class="col-10">
+                            <select class="form-select" id="newOwner" name="owner" aria-label="All users select">
+                                <option th:each="user : ${allUsers}" th:value="${user.getId()}" th:text="${user.getId + ' ' + user.getName() + ' ' + user.getSurname()}"></option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-success">Add</button>
+                        </div>
+                    </div>
 
 
+                </form>
 
-        <form th:action="${'/pet-profile/' + pet.getId() + '/edit/update'}" method="post" id="update-pet" >
-
-<!--    NICKNAME INFORMATION -->
-
-            <div class="mb-3">
-                <label for="nickname" class="form-label">Nickname</label>
-                <input type="text" class="form-control" id="nickname" name="nickname" minlength="3" th:value="${pet.getNickname()}" required>
             </div>
 
-<!--    SEX INFORMATION -->
 
-            <div class="mb-3">
-                <label for="sex" class="form-label">Is it a good boy or a good girl?</label><br>
 
-                <div class="btn-group" role="group" id="sex" th:if="${(pet.getSex() != null) && pet.getSex().equals('male')}">
-                  <input type="radio" class="btn-check form-control" value="male" name="sex" id="male" autocomplete="off" checked required>
-                  <label class="btn btn-outline-primary" for="male">Good boy</label>
+            <form th:action="${'/pet-profile/' + pet.getId() + '/edit/update'}" method="post" id="update-pet" >
 
-                  <input type="radio" class="btn-check form-control" value="female" name="sex" id="female" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="female">Good girl</label>
+                <!--    NICKNAME INFORMATION -->
+
+                <div class="mb-3">
+                    <label for="nickname" class="form-label">Nickname</label>
+                    <input type="text" class="form-control" id="nickname" name="nickname" minlength="3" th:value="${pet.getNickname()}" required>
                 </div>
 
-                <div class="btn-group" role="group" id="sex" th:if="${(pet.getSex() != null) && pet.getSex().equals('female')}">
-                    <input type="radio" class="btn-check form-control" value="male" name="sex" id="male" autocomplete="off" required>
-                    <label class="btn btn-outline-primary" for="male">Good boy</label>
+                <!--    SEX INFORMATION -->
 
-                    <input type="radio" class="btn-check form-control" value="female" name="sex" id="female" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" for="female">Good girl</label>
-                </div>
-            </div>
+                <div class="mb-3">
+                    <label for="sex" class="form-label">Is it a good boy or a good girl?</label><br>
 
-<!--    PET TYPE INFORMATION -->
+                    <div class="btn-group" role="group" id="sex" th:if="${(pet.getSex() != null) && pet.getSex().equals('male')}">
+                        <input type="radio" class="btn-check form-control" value="male" name="sex" id="male" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="male">Good boy</label>
 
-            <div class="mb-3">
-                <label for="types" class="form-label">Is it a cat or a dog?</label><br>
-                <div class="btn-group" role="group" id="types" th:if="${(pet.getType() != null) && pet.getType().equals('cat')}">
-                    <input type="radio" class="btn-check" name="type" id="cat" value="cat" autocomplete="off" checked required>
-                    <label class="btn btn-outline-primary" for="cat">Cat</label>
+                        <input type="radio" class="btn-check form-control" value="female" name="sex" id="female" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="female">Good girl</label>
+                    </div>
 
-                    <input type="radio" class="btn-check" name="type" id="dog" value="dog" autocomplete="off" >
-                    <label class="btn btn-outline-primary" for="dog">Dog</label>
-                </div>
+                    <div class="btn-group" role="group" id="sex" th:if="${(pet.getSex() != null) && pet.getSex().equals('female')}">
+                        <input type="radio" class="btn-check form-control" value="male" name="sex" id="male" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="male">Good boy</label>
 
-                <div class="btn-group" role="group" id="types" th:if="${(pet.getType() != null) && pet.getType().equals('dog')}">
-                    <input type="radio" class="btn-check" name="type" id="cat" value="cat" autocomplete="off" required>
-                    <label class="btn btn-outline-primary" for="cat">Cat</label>
-
-                    <input type="radio" class="btn-check" name="type" id="dog" value="dog" autocomplete="off" checked >
-                    <label class="btn btn-outline-primary" for="dog">Dog</label>
+                        <input type="radio" class="btn-check form-control" value="female" name="sex" id="female" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="female">Good girl</label>
+                    </div>
                 </div>
 
-            </div>
+                <!--    PET TYPE INFORMATION -->
 
-<!--    BREED INFORMATION -->
+                <div class="mb-3">
+                    <label for="types" class="form-label">Is it a cat or a dog?</label><br>
+                    <div class="btn-group" role="group" id="types" th:if="${(pet.getType() != null) && pet.getType().equals('cat')}">
+                        <input type="radio" class="btn-check" name="type" id="cat" value="cat" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="cat">Cat</label>
 
-            <div class="mb-3" id="oldBreed" th:if="${(pet.getBreed() != null) && !(pet.getBreed().equals('empty'))}">
-                <div class="row">
+                        <input type="radio" class="btn-check" name="type" id="dog" value="dog" autocomplete="off" >
+                        <label class="btn btn-outline-primary" for="dog">Dog</label>
+                    </div>
+
+                    <div class="btn-group" role="group" id="types" th:if="${(pet.getType() != null) && pet.getType().equals('dog')}">
+                        <input type="radio" class="btn-check" name="type" id="cat" value="cat" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="cat">Cat</label>
+
+                        <input type="radio" class="btn-check" name="type" id="dog" value="dog" autocomplete="off" checked >
+                        <label class="btn btn-outline-primary" for="dog">Dog</label>
+                    </div>
+
+                </div>
+
+                <!--    BREED INFORMATION -->
+
+                <div class="mb-3" id="oldBreed" th:if="${(pet.getBreed() != null) && !(pet.getBreed().equals('empty'))}">
+                    <div class="row">
+                        <label class="form-label" for="breeds">Breed</label>
+                        <div class="col-10">
+                            <input type="text" class="form-select" id="breeds" name="breed" th:value="${pet.getBreed()}" disabled="true">
+                        </div>
+
+                        <div class="col-2 m-auto">
+                            <!--                    <i class="bi bi-x-lg" onclick="clearBreed()"></i>-->
+                            <button type="button" class="btn btn-outline-danger" onclick="clearBreed()">Clear</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3" th:if="${(pet.getBreed() != null) && pet.getBreed().equals('empty')}">
                     <label class="form-label" for="breeds">Breed</label>
-                    <div class="col-10">
-                        <input type="text" class="form-select" id="breeds" name="breed" th:value="${pet.getBreed()}" disabled="true">
-                    </div>
+                    <div th:insert="~{fragments/breeds.html :: breeds}" id="breeds"></div>
+                </div>
 
-                    <div class="col-2 m-auto">
-                    <!--                    <i class="bi bi-x-lg" onclick="clearBreed()"></i>-->
-                        <button type="button" class="btn btn-outline-danger" onclick="clearBreed()">Clear</button>
+                <div class="mb-3" id="newBreed" hidden="true">
+                    <label class="form-label" for="breeds">Breed</label>
+                    <div th:insert="~{fragments/breeds.html :: breeds}" id="breeds"></div>
+                </div>
+
+                <!--    BIRTHDAY INFORMATION -->
+
+                <div class="mb-3">
+                    <label for="birthdate" class="form-label">Birthdate</label>
+                    <input type="date" class="form-control" id="birthdate" name="birthdate" th:value="${pet.getBirthdate()}">
+                </div>
+
+                <!--    COUNTRY INFORMATION -->
+
+                <div class="mb-3" id="oldCountry" th:if="${!(pet.getCountry().equals('--')) && !(pet.getCountry() == null)}">
+                    <div class="row">
+                        <label class="form-label" for="countries">Country of permanent living</label>
+                        <div class="col-10">
+                            <!--                        <input type="text" class="form-select" id="countries" name="countries" th:value="${pet.getCountry()}" disabled="true">-->
+                            <input type="text" class="form-select" id="countries" th:value="${pet.getCountry()}" disabled="true">
+
+                        </div>
+
+                        <div class="col-2 m-auto">
+                            <!--                        <i class="bi bi-x-lg" onclick="clearCountry()"></i>-->
+                            <button type="button" class="btn btn-outline-danger " onclick="clearCountry()">Clear</button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="mb-3" th:if="${(pet.getBreed() != null) && pet.getBreed().equals('empty')}">
-                <label class="form-label" for="breeds">Breed</label>
-                <div th:insert="~{fragments/breeds.html :: breeds}" id="breeds"></div>
-            </div>
-
-            <div class="mb-3" id="newBreed" hidden="true">
-                <label class="form-label" for="breeds">Breed</label>
-                <div th:insert="~{fragments/breeds.html :: breeds}" id="breeds"></div>
-            </div>
-
-<!--    BIRTHDAY INFORMATION -->
-
-            <div class="mb-3">
-                <label for="birthdate" class="form-label">Birthdate</label>
-                <input type="date" class="form-control" id="birthdate" name="birthdate" th:value="${pet.getBirthdate()}">
-            </div>
-
-<!--    COUNTRY INFORMATION -->
-
-            <div class="mb-3" id="oldCountry" th:if="${!(pet.getCountry().equals('--'))}">
-                <div class="row">
+                <div class="mb-3" th:if="${(pet.getCountry().equals('--')) || (pet.getCountry() == null) }">
                     <label class="form-label" for="countries">Country of permanent living</label>
-                    <div class="col-10">
-                        <input type="text" class="form-select" id="countries" name="countries" th:value="${pet.getCountry()}" disabled="true">
+                    <div th:insert="~{fragments/countries.html :: countries}" id="countries"></div>
+                </div>
+
+                <div class="mb-3" id="newCountry" hidden="true">
+                    <label class="form-label" for="countries">Country of permanent living</label>
+                    <div th:insert="~{fragments/countries.html :: countries}" id="countries"></div>
+                </div>
+
+                <!--    CITY INFORMATION -->
+
+                <div class="mb-3">
+                    <label for="city" class="form-label">Specify city of permanent living</label>
+                    <input type="text" class="form-control" id="city" name="city" minlength="3" maxlength="60" th:value="${pet.getCity()}">
+                </div>
+
+                <!--    CHECKBOXES INFORMATION -->
+
+                <div class="mb-3">Select if true:</div>
+
+                <!--    LOOKING FOR A DATE -->
+
+                <div class="mb-3 form-check">
+                    <div th:if="${pet.isLookingForDate()}">
+                        <input class="form-check-input" type="checkbox" value="true" id="lookingForDate" name="lookingForDate" th:checked="${'true'}">
                     </div>
 
-                    <div class="col-2 m-auto">
-<!--                        <i class="bi bi-x-lg" onclick="clearCountry()"></i>-->
-                        <button type="button" class="btn btn-outline-danger " onclick="clearCountry()">Clear</button>
+                    <div th:if="${!(pet.isLookingForDate())}">
+                        <input class="form-check-input" type="checkbox" value="true" id="lookingForDate" name="lookingForDate">
+                    </div>
+                    <label class="form-check-label" for="lookingForDate">Pet is looking for a date</label>
+                </div>
+
+                <!--    NEW HOME -->
+
+                <div class="mb-3 form-check">
+                    <!--            IF USER SELECTED THIS IN THEIR PROFILE -->
+                    <div th:if="${pet.isNewHome()}">
+                        <input class="form-check-input" type="checkbox" value="true" name="newHome" id="newHome" th:checked="${'true'}">
+                    </div>
+
+                    <!--            IF USER LEFT FIELD EMPTY -->
+                    <div th:if="${!(pet.isNewHome())}">
+                        <input class="form-check-input" type="checkbox" value="true" name="newHome" id="newHome">
+                    </div>
+                    <label class="form-check-label" for="newHome">Pet wants to find a new home</label>
+                </div>
+
+                <!--    MEMORIAL PAGE -->
+
+                <div class="mb-3 form-check">
+                    <div th:if="${pet.isDied()}">
+                        <input class="form-check-input" type="checkbox" value="true" name="died" id="died" th:checked="${'true'}">
+                        <label class="form-check-label" for="died">This is a memorial page, date of the death:</label>
+                        <input type="date" name="deathdate" max="2023-02-28" th:value="${pet.getDeathdate()}">
+                    </div>
+
+                    <div th:if="${!pet.isDied()}">
+                        <input class="form-check-input" type="checkbox" value="true" name="died" id="died">
+                        <label class="form-check-label" for="died">This is a memorial page, date of the death:</label>
+                        <input type="date" name="deathdate" max="2023-02-28" th:value="${pet.getDeathdate()}">
                     </div>
                 </div>
-            </div>
 
-            <div class="mb-3" th:if="${pet.getCountry().equals('--')}">
-                <label class="form-label" for="countries">Country of permanent living</label>
-                <div th:insert="~{fragments/countries.html :: countries}" id="countries"></div>
-            </div>
+                <!--    FULL OFFICIAL NAME -->
 
-            <div class="mb-3" id="newCountry" hidden="true">
-                <label class="form-label" for="countries">Country of permanent living</label>
-                <div th:insert="~{fragments/countries.html :: countries}" id="countries"></div>
-            </div>
-
-<!--    CITY INFORMATION -->
-
-            <div class="mb-3">
-                <label for="city" class="form-label">Specify city of permanent living</label>
-                <input type="text" class="form-control" id="city" name="city" minlength="3" maxlength="60" th:value="${pet.getCity()}">
-            </div>
-
-<!--    CHECKBOXES INFORMATION -->
-
-            <div class="mb-3">Select if true:</div>
-
-            <!--    LOOKING FOR A DATE -->
-
-            <div class="mb-3 form-check">
-                <div th:if="${pet.isLookingForDate()}">
-                    <input class="form-check-input" type="checkbox" value="true" id="lookingForDate" name="lookingForDate" th:checked="${'true'}">
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Full Official Name (kennel name)</label>
+                    <input type="text" class="form-control" id="fullName" name="fullName" minlength="3" th:value="${pet.getFullName()}">
                 </div>
 
-                <div th:if="${!(pet.isLookingForDate())}">
-                    <input class="form-check-input" type="checkbox" value="true" id="lookingForDate" name="lookingForDate">
+                <!--    WEIGHT -->
+
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="weight" class="form-label">Weight, kg</label>
+                        <input type="number" class="form-control" id="weight" name="weight" th:value="${pet.getWeight()}">
+                    </div>
+
+                    <!--    HEIGHT -->
+
+                    <div class="col mb-3">
+                        <label for="height" class="form-label">Height, cm</label>
+                        <input type="number" class="form-control" id="height" name="height" aria-describedby="heightHelp" th:value="${pet.getHeight()}">
+                    </div>
+
+                    <div id="heightHelp" class="form-text">Place your measuring tape at the base
+                        of one of your dog's front paws. Extend the tape to the top of your dog's head
+                        and note the measurement. Do this either while your dog is sitting or standing.</div>
+                    <br>
                 </div>
-                <label class="form-check-label" for="lookingForDate">Pet is looking for a date</label>
-            </div>
-
-            <!--    NEW HOME -->
-
-            <div class="mb-3 form-check">
-<!--            IF USER SELECTED THIS IN THEIR PROFILE -->
-                <div th:if="${pet.isNewHome()}">
-                  <input class="form-check-input" type="checkbox" value="true" name="newHome" id="newHome" th:checked="${'true'}">
-                </div>
-
-<!--            IF USER LEFT FIELD EMPTY -->
-                <div th:if="${!(pet.isNewHome())}">
-                  <input class="form-check-input" type="checkbox" value="true" name="newHome" id="newHome">
-                </div>
-                <label class="form-check-label" for="newHome">Pet wants to find a new home</label>
-            </div>
-
-            <!--    MEMORIAL PAGE -->
-
-            <div class="mb-3 form-check">
-                <div th:if="${pet.isDied()}">
-                    <input class="form-check-input" type="checkbox" value="true" name="died" id="died" th:checked="${'true'}">
-                    <label class="form-check-label" for="died">This is a memorial page, date of the death:</label>
-                    <input type="date" name="deathdate" max="2023-02-28" th:value="${pet.getDeathdate()}">
-                </div>
-
-                <div th:if="${!pet.isDied()}">
-                    <input class="form-check-input" type="checkbox" value="true" name="died" id="died">
-                    <label class="form-check-label" for="died">This is a memorial page, date of the death:</label>
-                    <input type="date" name="deathdate" max="2023-02-28" th:value="${pet.getDeathdate()}">
-                </div>
-            </div>
-
-<!--    FULL OFFICIAL NAME -->
-
-            <div class="mb-3">
-                <label for="fullName" class="form-label">Full Official Name (kennel name)</label>
-                <input type="text" class="form-control" id="fullName" name="fullName" minlength="3" th:value="${pet.getFullName()}">
-            </div>
-
-            <!--    WEIGHT -->
-
-            <div class="row">
-                <div class="col mb-3">
-                    <label for="weight" class="form-label">Weight, kg</label>
-                    <input type="number" class="form-control" id="weight" name="weight" th:value="${pet.getWeight()}">
-                </div>
-
-            <!--    HEIGHT -->
-
-                <div class="col mb-3">
-                    <label for="height" class="form-label">Height, cm</label>
-                    <input type="number" class="form-control" id="height" name="height" aria-describedby="heightHelp" th:value="${pet.getHeight()}">
-                </div>
-
-                <div id="heightHelp" class="form-text">Place your measuring tape at the base
-                of one of your dog's front paws. Extend the tape to the top of your dog's head
-                and note the measurement. Do this either while your dog is sitting or standing.</div>
                 <br>
-            </div>
-            <br>
 
                 <!--    FUR COLOR -->
 
-            <div class="row">
-                <div class="col mb-3">
-                    <label for="furColor" class="form-label">Primary fur color</label>
-                    <input type="text" class="form-control" id="furColor" name="furColor" th:value="${pet.getFurColor()}">
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="furColor" class="form-label">Primary fur color</label>
+                        <input type="text" class="form-control" id="furColor" name="furColor" th:value="${pet.getFurColor()}">
+                    </div>
+
+                    <!--    EYE COLOR -->
+
+
+                    <div class="col mb-3">
+                        <label for="eyeColor" class="form-label">Primary eye color</label>
+                        <input type="text" class="form-control" id="eyeColor" name="eyeColor" th:value="${pet.getEyeColor()}">
+                    </div>
                 </div>
 
-                <!--    EYE COLOR -->
 
 
-                <div class="col mb-3">
-                    <label for="eyeColor" class="form-label">Primary eye color</label>
-                    <input type="text" class="form-control" id="eyeColor" name="eyeColor" th:value="${pet.getEyeColor()}">
+                <div class="mb-3">
+                    <label for="mother" class="form-label">Mother</label>
+                    <input type="text" class="form-control" id="mother" name="mother" aria-describedby="motherHelp" th:value="${pet.getMother()}">
+                    <div id="motherHelp" class="form-text">Specify ID of the pet, who is a mother</div>
                 </div>
-            </div>
 
+                <div class="mb-3">
+                    <label for="father" class="form-label">Father</label>
+                    <input type="text" class="form-control" id="father" name="father" aria-describedby="fatherHelp" th:value="${pet.getFather()}">
+                    <div id="fatherHelp" class="form-text">Specify ID of the pet, who is a father</div>
+                </div>
 
+                <div class="mb-3">
+                    <label for="childs" class="form-label">Specify children your pet may have</label>
+                    <textarea class="form-control" id="childs" name="childs" th:text="${pet.getChilds()}"></textarea>
+                </div>
 
-            <div class="mb-3">
-                <label for="mother" class="form-label">Mother</label>
-                <input type="text" class="form-control" id="mother" name="mother" aria-describedby="motherHelp" th:value="${pet.getMother()}">
-                <div id="motherHelp" class="form-text">Specify ID of the pet, who is a mother</div>
-            </div>
+                <div class="mb-3">
+                    <label for="events" class="form-label">Specify the events where pet participated and its titles</label>
+                    <textarea class="form-control" id="events" name="events" th:text="${pet.getEvents()}"></textarea>
+                </div>
 
-            <div class="mb-3">
-                <label for="father" class="form-label">Father</label>
-                <input type="text" class="form-control" id="father" name="father" aria-describedby="fatherHelp" th:value="${pet.getFather()}">
-                <div id="fatherHelp" class="form-text">Specify ID of the pet, who is a father</div>
-            </div>
+                <div class="mb-3">
+                    <label for="medicalInfo" class="form-label">Specify medical issues with the pet, vaccines taken for the puppies etc</label>
+                    <textarea class="form-control" id="medicalInfo" name="medicalInfo" th:text="${pet.getMedicalInfo()}"></textarea>
+                </div>
 
-            <div class="mb-3">
-                <label for="childs" class="form-label">Specify children your pet may have</label>
-                <textarea class="form-control" id="childs" name="childs" th:text="${pet.getChilds()}"></textarea>
-            </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                </div>
+            </form>
 
-            <div class="mb-3">
-                <label for="events" class="form-label">Specify the events where pet participated and its titles</label>
-                <textarea class="form-control" id="events" name="events" th:text="${pet.getEvents()}"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="medicalInfo" class="form-label">Specify medical issues with the pet, vaccines taken for the puppies etc</label>
-                <textarea class="form-control" id="medicalInfo" name="medicalInfo" th:text="${pet.getMedicalInfo()}"></textarea>
-            </div>
-
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button class="btn btn-primary" type="submit">Save Changes</button>
-            </div>
-        </form>
-
-        <div class="row mb-2">
-            <div class="col">
-                <a th:href="${'/pet-profile/' + pet.getId() + '/delete'}" class="link-danger"><i class="bi bi-trash3"></i>Delete profile of the pet</a>
+            <div class="row mb-2">
+                <div class="col">
+                    <a th:href="${'/pet-profile/' + pet.getId() + '/delete'}" class="link-danger"><i class="bi bi-trash3"></i>Delete profile of the pet</a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-lg-3"></div>
-  </div>
+        <div class="col-lg-3"></div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 <script>
     function preview() {
-      frame.src = URL.createObjectURL(event.target.files[0]);
+        frame.src = URL.createObjectURL(event.target.files[0]);
     }
     function clearImage() {
-      document.getElementById('image').value = null;
-      frame.src = "";
+        document.getElementById('image').value = null;
+        frame.src = "";
     }
 
     function clearBreed() {
@@ -409,14 +411,14 @@
         oldCountry.hidden = true;
     }
 
-  </script>
+</script>
 
 
 
 </body>
 
 <footer>
-  <div th:insert="~{fragments/footer.html :: footer}"></div>
+    <div th:insert="~{fragments/footer.html :: footer}"></div>
 </footer>
 
 </html>
