@@ -53,14 +53,6 @@ public class UserController{
     }
 
 
-//
-//    @GetMapping("/")
-//        public String showMainPage(Model model){
-//            return "index";
-//        }
-
-
-
     // TO CHECK HERE
 
     @PostMapping ("/logInStartPage")                                           //NEW  index.html + Btn"Login"
@@ -88,9 +80,15 @@ public class UserController{
     }
 
     @GetMapping ("/profile-page/{userId}")                               //To add e-mail and password check
-    public String showPage(Model model,
+    public String showPage(
+                           @RequestParam(name = "message", required = false) String message,
                            @CookieValue(value = "userId") String userIdFromCookie,
-                           @PathVariable Long userId){
+                           @PathVariable Long userId,
+                           Model model
+    ){
+
+        System.out.println("showPage message atribute1:" + message);
+
         try{
 //            delete temp img
             this.filesStorage.deleteAll();
@@ -103,10 +101,15 @@ public class UserController{
                 this.filesStorage.base64DecodedString(currentUser.getPhoto(), pathFileUser, imgUsersPath);
             }
 
+            model.addAttribute("message", message);
+            System.out.println("showPage message atribute2:" + message);
+
 //          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model, userId);
             modelMap.values();
             modelMap.clear();
+            model.addAttribute("message", message);
+
 
             User user = userService.findUserById(Long.valueOf(userIdFromCookie)); //fining User in our DB
 
@@ -127,6 +130,7 @@ public class UserController{
 
     @GetMapping("/profile")
     public String showMyEvents(Model model,
+           @RequestParam(name = "message", required = false) String message,
            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
     ){
@@ -398,7 +402,9 @@ public class UserController{
     public String updateUserData (@ModelAttribute("userData") User user){
 
         try {
-            this.userService.save(user);
+            this.userService.updateUser(user, user.getId());
+
+//            this.userService.save(user);
         }catch (Exception e){
             return "redirect:user?message=update&error=" + e.getMessage();
         }

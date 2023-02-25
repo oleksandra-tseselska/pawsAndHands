@@ -71,7 +71,14 @@ public class EventController {
 
 
     @GetMapping("/all-events")
-    public String showAllEvents(Model model,  @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie){
+    public String showAllEvents(Model model,
+                                @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie,
+                                @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
+
         ArrayList<Event> eventsAfterNow = findEventsAfterNow();
 
         try {
@@ -132,8 +139,9 @@ public class EventController {
         }
     }
 
-    @PostMapping("/delete-event")
+    @GetMapping("/delete-event/{anotherEventId}")
     public String deleteEvent(
+            @PathVariable String anotherEventId,
             @RequestParam(name = "EventId", required = false) Long eventId,
             @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
     ){
@@ -146,16 +154,17 @@ public class EventController {
             this.eventService.deleteEvent(eventId);
 
         }catch (Exception e){
-            return "redirect:/my-events/" + e.getMessage();
+            return "redirect:/all-events/" + e.getMessage();
         }
-        return "redirect:/my-events";
+        return "redirect:/all-events";
     }
 
 
-    @GetMapping("/update-event")                                        //to get filled in form
+    @GetMapping("/update-event/{eventId}")                                        //to get filled in form
     public String updateEventView(
             Model model,
-            @RequestParam(name = "EventId", required = false) int eventId,
+            @PathVariable String eventId,
+            @RequestParam(name = "EventId", required = false) Integer anotherEventId,
             @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
     ){
         if(userIsLoggedInFromCookie.equals("false")) {
@@ -163,7 +172,8 @@ public class EventController {
         }
 
         try {
-            model.addAttribute("event",eventService.findById(eventId));
+            model.addAttribute("event", eventService.findById(Integer.valueOf(eventId)));
+            model.addAttribute("country1", eventService.findById(Integer.valueOf(eventId)).getCountry());
             System.out.println("Event id to be updated: " + eventId);
 
         }catch (Exception e){
@@ -174,7 +184,9 @@ public class EventController {
 
     @PostMapping("/update-event")
     public String handleEventUpdate(Event event,
+                                    @RequestParam(name = "country", required = false) String country,
                                     @RequestParam(name = "EventId", required = false) int eventId,
+                                    @RequestParam(name = "country1", required = false) String country1,
                                     @CookieValue(value = "userId") String userIdFromCookie
     ){
         try {
@@ -189,12 +201,20 @@ public class EventController {
 
             //Setting again this event id (as it is not done manually by user)
             event.setId(eventId);
+//            if(country == null){
+//                event.setCountry(country1);
+//            } else {
+//                event.setCountry(country);
+//            }
+            if((oldEventData.getCountry() != null) && (event.getCountry() == null)) {
+                event.setCountry(oldEventData.getCountry());
+            }
             this.eventService.createEvent(event);
 
         } catch (Exception e) {
             return "redirect:/my-events/" + e.getMessage();
         }
-        return ("redirect:/my-events");
+        return "redirect:/view-event/" + eventId;
     }
 
     //   Add Photo Start
@@ -268,11 +288,12 @@ public class EventController {
     //   Add Photo End
 
 
-    @GetMapping("/view-event")   //("/view-event/{eventId}")
+    @GetMapping("/view-event/{eventId}")
     public String viewEventInfo(
-//            @PathVariable Integer eventId,
-            @RequestParam(name = "EventId", required = false) int eventId,
-                                Model model)
+            @PathVariable String eventId,
+            @RequestParam(name = "EventId", required = false) String anotherEventId,
+            @CookieValue(value = "userId") String userIdFromCookie,
+            Model model)
     {
         try{
 //            delete temp img
@@ -286,9 +307,17 @@ public class EventController {
                 this.filesStorage.base64DecodedString(event.getPhoto(), pathFileUser, imgEventsPath);
             }
 
-            model.addAttribute("eventData", eventService.findById(eventId));
+            model.addAttribute("eventData", eventService.findById(Integer.valueOf(eventId)));
+            User userWhoCreatedEvents = userService.findUserById(Long.valueOf(userIdFromCookie));
+            ArrayList<Event> myEvents = this.eventService.findEventsByUser(userWhoCreatedEvents);
+            myEvents.forEach((e) -> {
+                if(eventId.equals(String.valueOf(e.getId()))) {
+                    model.addAttribute("userIsEventCreator", true);
+                }
+            });
+            model.addAttribute("myEventsList", myEvents);
         }catch (Exception e){
-            return "redirect:all-events?message=search_filed&error=" + e.getMessage();
+            return "redirect:all-events?message=search_failed&error=" + e.getMessage();
         }
 
         return "view-event";

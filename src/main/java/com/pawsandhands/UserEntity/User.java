@@ -60,24 +60,24 @@ public class User{
         return getOwnedPets().size();
     }
 
-//    @Override
-//    public String toString() {
-//        return "User{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", surname='" + surname + '\'' +
-//                ", email='" + email + '\'' +
-//                ", status='" + status + '\'' +
-//                ", breeder_licence='" + breeder_licence + '\'' +
-//                ", country='" + country + '\'' +
-//                ", city='" + city + '\'' +
-//                ", telephone='" + telephone + '\'' +
-//                ", password='" + password + '\'' +
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", status='" + status + '\'' +
+                ", breeder_licence='" + breeder_licence + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", password='" + password + '\'' +
 //                ", photo=" + Arrays.toString(photo) +
-//                ", photoPath=" + photoPath +
-//                ", createdAt=" + createdAt +
-//                ", updatedAt=" + updatedAt +
-//                ", number of ownedPets=" + getNumberOfPets() +
-//                '}';
-//    }
+                ", photoPath=" + photoPath +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", number of ownedPets=" + getNumberOfPets() +
+                '}';
+    }
 }

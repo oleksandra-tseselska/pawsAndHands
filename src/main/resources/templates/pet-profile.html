@@ -17,50 +17,90 @@
 <!-- insert all your code below this line -->
 <div class="container">
   <div class="row">
-    <div class="col-3">
+    <div class="col-1">
     </div>
 
 <!--    PICTURE SECTION -->
-
-    <div class="col-2">
-      <img th:src="${pet.photoPath}" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;">
+    <div class="col-4">
+      <img class="view-user-img" alt="user photo" th:src="${pet.photoPath}"
+           style="width: 100%;
+                  min-height: 350px;
+                  max-height: 400px;
+                  object-fit: cover;">
+<!--      <a-->
+<!--              th:if="${currentUserIsPetOwner}"-->
+<!--              th:href="@{'/edit-pet-photo/' + ${petId}}"-->
+<!--              type="button"-->
+<!--              class="btn btn-outline-primary mt-2 mb-2"-->
+<!--      >-->
+<!--        Change photo-->
+<!--      </a>-->
     </div>
 
+<!--    <div class="col-2">-->
+<!--      <img th:src="${pet.photoPath}" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;">-->
+<!--      <a-->
+<!--              th:if="${currentUserIsPetOwner}"-->
+<!--              th:href="@{'/edit-pet-photo/' + ${petId}}"-->
+<!--              type="button"-->
+<!--              class="btn btn-outline-primary my-2 ms-3"-->
+<!--      >-->
+<!--        Change photo-->
+<!--      </a>-->
+<!--    </div>-->
 
+    <div class="col-1">
+    </div>
 
     <div class="col-5">
       <div class="row">
 
-        <!--    NAMES SECTION -->
+          <!--    NAMES SECTION -->
 
-        <h2 class="text-capitalize"> <span class="text-truncate" th:text="${pet.getNickname().toLowerCase()}"> </span></h2>
-        <h5 class="text-capitalize text-truncate text-muted" th:if="${!(pet.getFullName().isBlank())}" th:text="'Full official name: ' + ${pet.getFullName().toLowerCase()}"></h5>
+          <div class="col">
+              <h2 class="text-capitalize"> <span th:text="${pet.getNickname().toLowerCase()}"> </span></h2>
+              <h5 class="text-capitalize text-muted" th:if="${!(pet.getFullName().isBlank())}" th:text="${pet.getFullName().toLowerCase()}"></h5>
+              <div th:if="${currentUserIsPetOwner}">
+                <a th:href="@{'/pet-profile/' + ${pet.getId()} + '/edit'}" class="btn btn-outline-primary mb-2" type="button"><i class="bi bi-pencil"></i> Edit pet profile</a>
+              </div>
+          </div>
+
+
+<!--        <a type="button" th:if="${currentUserIsPetOwner}" th:href="@{'/pet-profile/' + ${pet.getId()} + '/edit'}" class="btn btn-outline-primary">Edit pet profile</a>-->
+
       </div>
 
-      <div class="row d-flex">
-        <div class="col-auto align-items-center my-auto">
-            <div class="me-auto my-auto badge rounded-pill bg-success" th:text="${pet.getType().toLowerCase()}"></div>
+      <div class="row">
+        <div class="d-grid gap-2 d-md-block ">
+          <button th:if="${pet.type.equals('dog')}" type="button" class="btn btn-success btn-sm text-capitalize mb-2" th:text="${pet.getType()}" disabled></button>
+          <button th:if="${pet.type.equals('cat')}" type="button" class="btn btn-primary btn-sm text-capitalize mb-2" th:text="${pet.getType()}" disabled></button>
+          <button th:if="${pet.isLookingForDate()}" type="button" class="btn btn-warning btn-sm mb-2" disabled>Ready for a date</button>
+          <button th:if="${pet.isDied()}" type="button" class="btn btn-dark btn-sm mb-2" disabled>Memorial page</button>
+          <button th:if="${pet.isNewHome()}" type="button" class="btn btn-info btn-sm mb-2" disabled>Looking for a new home</button>
         </div>
+<!--        <div class="col-auto align-items-center my-auto">-->
+<!--            <div class="me-auto my-auto badge rounded-pill bg-success" th:text="${pet.getType().toLowerCase()}"></div>-->
+<!--        </div>-->
       </div>
 
 <!--      STATUSES SECTION -->
 
-      <div class="row" th:if="${(pet.isLookingForDate()) || pet.isDied() || pet.isNewHome() }">
-        <div class="col" th:if="${pet.isLookingForDate()}">
-          <span class="badge bg-warning text-dark">ready for a date</span>
-        </div>
+<!--      <div class="row" th:if="${(pet.isLookingForDate()) || pet.isDied() || pet.isNewHome() }">-->
+<!--        <div class="col" th:if="${pet.isLookingForDate()}">-->
+<!--          <span class="badge bg-warning text-dark">ready for a date</span>-->
+<!--        </div>-->
 
-        <div class="col" th:if="${pet.isDied()}">
-          <span class="badge bg-dark text-white">memorial page</span>
-        </div>
+<!--        <div class="col" th:if="${pet.isDied()}">-->
+<!--          <span class="badge bg-dark text-white">memorial page</span>-->
+<!--        </div>-->
 
-        <div class="col" th:if="${pet.isNewHome()}">
-          <span class="badge bg-info text-dark" >looking for a new home</span>
-        </div>
+<!--        <div class="col" th:if="${pet.isNewHome()}">-->
+<!--          <span class="badge bg-info text-dark" >looking for a new home</span>-->
+<!--        </div>-->
 
-        <br><br>
+<!--        <br><br>-->
 
-      </div>
+<!--      </div>-->
 
 <!--      PRIMARY INFO SECTION -->
 
@@ -123,10 +163,10 @@
 
 <!--      OWNERS SECTION -->
 
-      <div class="row align-items-center mt-4">
+      <div class="row align-items-center mt-4" th:if="!${petOwners.isEmpty()}">
         <div class="col-2"><hr></div>
         <div class="col-2">
-          <span class="text-muted">owners</span>
+          <h6 class="text-muted">Owners</h6>
         </div>
         <div class="col">
           <hr>
@@ -145,10 +185,10 @@
 
 <!--      FAMILY SECTION -->
 
-      <div class="row align-items-center mt-4" th:if="${!(pet.getMother().isBlank()) && !(pet.getFather().isBlank()) && !(pet.getChilds().isBlank())}">
+      <div class="row align-items-center mt-4" th:if="${!(pet.getMother().isBlank() && pet.getFather().isBlank() && pet.getChilds().isBlank())}">
         <div class="col-2"><hr></div>
         <div class="col-2">
-          <span class="text-muted">family</span>
+          <h6 class="text-muted">Family</h6>
         </div>
         <div class="col">
           <hr>
@@ -184,10 +224,10 @@
 
 <!--      APPEARANCE SECTION-->
 
-      <div class="row align-items-center mt-4" th:if="${!(pet.getEyeColor().isBlank()) && !(pet.getFurColor().isBlank()) && (pet.getHeight()>0) && (pet.getWeight() > 0)}">
+      <div class="row align-items-center mt-4" th:if="${!(pet.getEyeColor().isBlank() && pet.getFurColor().isBlank() && (pet.getHeight() == null) && (pet.getWeight() == null))}">
         <div class="col-2"><hr></div>
         <div class="col-3">
-          <span class="text-muted">appearance</span>
+          <h6 class="text-muted">Appearance</h6>
         </div>
         <div class="col">
           <hr>
@@ -212,7 +252,7 @@
         </div>
       </div>
 
-      <div class="row" th:if="${(pet.getHeight() > 0)}">
+      <div class="row" th:if="${(pet.getHeight() != null)}">
         <div class="col-3">
           <span class="text-muted">Height:</span>
         </div>
@@ -221,7 +261,7 @@
         </div>
       </div>
 
-      <div class="row" th:if="${(pet.getWeight() > 0)}">
+      <div class="row" th:if="${(pet.getWeight() != null )}">
         <div class="col-3">
           <span class="text-muted">Weight:</span>
         </div>
@@ -236,7 +276,7 @@
       <div class="row align-items-center mt-4" th:if="${!(pet.getEvents().isBlank())}">
         <div class="col-2"><hr></div>
         <div class="col-2">
-          <span class="text-muted">events</span>
+          <h6 class="text-muted">Events</h6>
         </div>
         <div class="col">
           <hr>
@@ -257,7 +297,7 @@
       <div class="row align-items-center mt-4" th:if="${!(pet.getMedicalInfo().isBlank())}">
         <div class="col-2"><hr></div>
         <div class="col-4">
-          <span class="text-muted">medical information</span>
+          <h6 class="text-muted">Medical information</h6>
         </div>
         <div class="col">
           <hr>
@@ -275,8 +315,8 @@
 
     </div>
 
-    <div class="col-2">
-      <a type="button" th:if="${currentUserIsPetOwner}" th:href="@{'/pet-profile/' + ${pet.getId()} + '/edit'}" class="btn btn-outline-primary">Edit pet profile</a>
+    <div class="col-1">
+<!--      <a type="button" th:if="${currentUserIsPetOwner}" th:href="@{'/pet-profile/' + ${pet.getId()} + '/edit'}" class="btn btn-outline-primary">Edit pet profile</a>-->
     </div>
   </div>
 </div>

@@ -27,189 +27,305 @@
                     Change photo
                 </a>
             </div>
+<!--            <div class="col-md-7 col-lg-5 ms-auto me-auto d-flex flex-column justify-content-center align-self-start">-->
             <div class="col-md-7 col-lg-5 ms-auto me-auto d-flex flex-column justify-content-center align-self-start">
+
                 <div th:if ="${(message != null) && message.equals('pet_was_deleted')}" class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong>Your pet was deleted. </strong>You could always add another one.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
+                <div th:if ="${(message != null) && message.equals('pet_deletion_failed')}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Something went wrong. </strong>Pet was not deleted.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div th:if ="${(currentUserIsAdmin)}" class="d-grid gap-2 d-md-block">
+<!--                    <div class="d-grid gap-2 d-md-block">-->
+                        <button type="button" class="btn btn-success btn-sm mb-2" disabled>Admin</button>
+
+<!--                        <strong>currentUserIsAdmin. </strong>You could always add another one.-->
+<!--                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+                </div>
+
+
+
                 <!--            USER NAME  -->
 
-                <h2 class="row text-center">
-                    <span class="text-capitalize" th:text="${userData?.name} + ' ' + ${userData?.surname}"> </span>
-                </h2>
-                <ul class="row mt-4 mt-md-0 ps-0 ps-md-4">
+                <div class="row">
+                    <h2 class="text-capitalize" th:text="${userData?.name} + ' ' + ${userData?.surname}"> </h2>
+                </div>
+<!--                <div class="row mt-4 mt-md-0 ps-0 ps-md-4">-->
+                <div class="row">
+
 
                     <!--            USER INFO  -->
 
-                    <li class="row pb-4">
-                        <div class="row">
-                            <div class="col-2"><hr></div>
-                            <div class="col-4 text-center">
-                                <span class="text-muted">about me</span>
-                            </div>
-                            <div class="col">
-                                <hr>
-                            </div>
-                        </div>
-                        <ul class="list-group list-group-flush ms-2">
-                            <li class="row" th:if="${!userData.status.isBlank()}">
+                    <div class="row pb-4 mt-2">
+<!--                        <div class="row">-->
+<!--                            <div class="col-2"><hr></div>-->
+<!--                            <div class="col-3">-->
+<!--                                <span class="text-muted">about me</span>-->
+<!--                            </div>-->
+<!--                            <div class="col-2">-->
+<!--                                <hr>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="list-group list-group-flush ms-2">-->
+                        <div class="col">
+
+                            <div class="row" th:if="${!userData.status.isBlank()}">
                                 <div class="col-3">
-                                    <span class="text-muted">Status:</span>
+                                    <span class="text-muted">Type:</span>
                                 </div>
                                 <div class="col">
                                     <span th:text="${userData.status}"></span>
                                 </div>
-                            </li>
-                            <li class="row" th:if="${(userData.country != null) && (!userData.country.isBlank() || !userData.city.isBlank())}">
+                            </div>
+
+                            <div class="row" th:if="${(userData.country != null) && (!userData.country.isBlank() || !userData.city.isBlank())}">
                                 <div class="col-3">
                                     <span class="text-muted">Location:</span>
                                 </div>
                                 <div class="col">
                                     <span th:text="${userData?.country}+', '+${userData?.city}"></span>
                                 </div>
-                            </li>
-                            <!--                    create switcher user wont show it or not-->
-                            <li class="row" th:if="${!userData.telephone.isBlank()}">
+                            </div>
+
+                            <div class="row" th:if="${!userData.telephone.isBlank()}">
                                 <div class="col-3">
                                     <span class="text-muted">Phone:</span>
                                 </div>
                                 <div class="col">
                                     <span th:text="${userData?.telephone}"></span>
                                 </div>
-                            </li>
-                            <li class="row" th:if="${!userData.email.isBlank()}">
+                            </div>
+
+                            <div class="row" th:if="${!userData.email.isBlank()}">
                                 <div class="col-3">
                                     <span class="text-muted">Email:</span>
                                 </div>
                                 <div class="col">
                                     <span th:text="${userData?.email}"></span>
                                 </div>
-                            </li>
+                            </div>
 
-                            <!--            BUTTON EDIT IF USER LOG IN  -->
+                            <div class="row" th:if="${!userData.breeder_licence.isBlank()}">
+                                <div class="col-3">
+                                    <span class="text-muted">Licence:</span>
+                                </div>
+                                <div class="col">
+                                    <span th:text="${userData?.breeder_licence}"></span>
+                                </div>
+                            </div>
 
-                            <li th:if="${userData.id.equals(userIdFromCookie)}" class="row mt-2 mb-2">
-                                <a th:href="@{'/update-profile'}" class="btn btn-outline-primary">Edit profile</a>
-                            </li>
-                        </ul>
-                    </li>
+                            <div class="row mt-2" th:if="${!(userData.facebookUrl == null &&
+                                 userData.twitterUrl == null    &&
+                                 userData.instagramUrl == null  &&
+                                 userData.youtubeUrl == null    &&
+                                 userData.pinterestUrl == null)}">
+
+                                <h3 class="col-2" th:if="${userData.facebookUrl != null}">
+                                    <a th:href="${userData.facebookUrl}" target="_blank" aria-label="facebook" class="link-secondary">
+                                        <i class="bi bi-facebook"></i>
+                                    </a>
+                                </h3>
+
+                                <h3 class="col-2" th:if="${userData.twitterUrl != null}">
+                                    <a th:href="${userData.twitterUrl}" target="_blank" aria-label="twitter" class="link-secondary">
+                                        <i class="bi bi-twitter"></i>
+                                    </a>
+                                </h3>
+
+                                <h2 class="col-2" th:if="${userData.youtubeUrl != null}">
+                                    <a th:href="${userData.youtubeUrl}" target="_blank" aria-label="youtube" class="link-secondary">
+                                        <i class="bi bi-youtube"></i>
+                                    </a>
+                                </h2>
+
+                                <h3 class="col-2" th:if="${userData.pinterestUrl != null}">
+                                    <a th:href="${userData.pinterestUrl}" target="_blank" aria-label="pinterest" class="link-secondary">
+                                        <i class="bi bi-pinterest"></i>
+                                    </a>
+                                </h3>
+
+                                <h3 class="col-2" th:if="${userData.instagramUrl != null}">
+                                    <a th:href="${userData.instagramUrl}" target="_blank" aria-label="instagram" class="link-secondary">
+                                        <i class="bi bi-instagram"></i>
+                                    </a>
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!--            BUTTON EDIT IF USER LOG IN  -->
+<!--                    <div th:if="${userData.id.equals(userIdFromCookie)}" class="row mx-2 d-grid gap-2 ">-->
+<!--                        <a th:href="@{'/update-profile'}" type="button" class="btn btn-outline-primary px-0 d-md-block">Edit profile</a>-->
+<!--                    </div>-->
+
+                    <div th:if="${userData.id.equals(userIdFromCookie)}" class="d-grid gap-2 d-md-block mb-2">
+                        <a th:href="@{'/update-profile'}" class="btn btn-outline-primary" type="button"><i class="bi bi-pencil"></i> Edit my profile</a>
+                        <a th:href="@{'/create-pet'}" class="btn btn-outline-success" type="button"><i class="bi bi-plus-lg"></i> Add pet</a>
+                    </div>
 
                     <!--            USER PETS INFO  -->
 
-                    <li class="row" th:if="${!userPet.isEmpty()}">
+                    <div class="row mt-2" th:if="${!userPet.isEmpty()}">
                         <div class="row">
                             <div class="col-2"><hr></div>
                             <div class="col-4 text-center">
-                                <span class="text-muted">my paws</span>
+<!--                                <span class="text-muted">my pets</span>-->
+                                <h6 class="text-muted" th:text="${userData?.name} + '\'s pets'"></h6>
                             </div>
                             <div class="col">
                                 <hr>
                             </div>
                         </div>
-                        <ul class="list-group list-group-flush ms-2">
-                            <li class="row pb-4" th:each="petItem: ${userPet}">
 
-                                <h3
-                                        th:if="${petItem.type.equals('dog')}"
-                                        class="badge rounded-pill bg-success text-start"
-                                        style="opacity: 60%; padding-left: 30%"
-                                >
-                                            <span
-                                                    th:text="${petItem.getType().toLowerCase()}"
-                                            ></span>
-                                </h3>
-                                <h3
-                                        th:if="${petItem.type.equals('cat')}"
-                                        class="badge rounded-pill bg-primary text-start"
-                                        style="opacity: 60%; padding-left: 30%"
-                                >
-                                            <span
-                                                    th:text="${petItem.getType().toLowerCase()}"
-                                            ></span>
-                                </h3>
+                        <div class="col">
+                            <div class="row pb-4" th:each="petItem: ${userPet}">
+<!--                                <div class="col">-->
+<!--                                    <div class="row" th:if="${!petItem.nickname.isBlank()}">-->
+<!--                                        <div class="col-3">-->
+<!--                                            <span class="text-muted" th:text="${petItem.type}"></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="col">-->
+<!--                                            <a th:text="${petItem.nickname}" th:href="@{'/pet-profile/' + ${petItem.getId()}}"></a>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+                                <div class="d-grid gap-2 d-md-block">
+                                    <button th:if="${petItem.type.equals('dog')}" type="button" class="btn btn-success btn-sm text-capitalize mb-2" th:text="${petItem.getType()}" disabled></button>
+                                    <button th:if="${petItem.type.equals('cat')}" type="button" class="btn btn-primary btn-sm text-capitalize mb-2" th:text="${petItem.getType()}" disabled></button>
+                                    <button th:if="${petItem.isLookingForDate()}" type="button" class="btn btn-warning btn-sm mb-2" disabled>Ready for a date</button>
+                                    <button th:if="${petItem.isDied()}" type="button" class="btn btn-dark btn-sm mb-2" disabled>Memorial page</button>
+                                    <button th:if="${petItem.isNewHome()}" type="button" class="btn btn-info btn-sm mb-2" disabled>Looking for a new home</button>
+
+                                </div>
 
 
-<!--                                <h3 class="badge rounded-pill bg-success text-start" style="opacity: 60%; padding-left: 30%" th:text="${petItem.type.toLowerCase()}"></h3>-->
-                                <ul class="list-group list-group-flush ms-2">
-                                    <li class="row">
-                                        <div class="col">
-                                            <span
-                                                    class="badge bg-warning text-dark"
-                                                    style="opacity: 80%;"
-                                                    th:if="${petItem.isLookingForDate()}"
-                                            >
-                                                ready for a date
-                                            </span>
-                                        </div>
+                                    <!--                                <h3-->
+<!--                                        th:if="${petItem.type.equals('dog')}"-->
+<!--                                        class="badge rounded-pill bg-success text-start"-->
+<!--                                        style="opacity: 60%; padding-left: 30%; width:25px;"-->
+<!--                                >-->
+<!--                                            <span-->
+<!--                                                    th:text="${petItem.getType().toLowerCase()}"-->
+<!--                                            ></span>-->
+<!--                                </h3>-->
 
-                                        <div class="col">
-                                            <span
-                                                    class="badge bg-dark text-white"
-                                                    style="opacity: 80%;"
-                                                    th:if="${petItem.isDied()}"
-                                            >
-                                                memorial page
-                                            </span>
-                                        </div>
 
-                                        <div class="col">
-                                            <span
-                                                    class="badge bg-info text-dark"
-                                                    style="opacity: 80%;"
-                                                    th:if="${(petItem.isNewHome())}"
-                                            >
-                                                looking for a new home
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li class="row" th:if="${!petItem.nickname.isBlank()}">
+
+<!--                                <h3-->
+<!--                                        th:if="${petItem.type.equals('cat')}"-->
+<!--                                        class="badge rounded-pill bg-primary text-start"-->
+<!--                                        style="opacity: 60%; padding-left: 30%"-->
+<!--                                >-->
+<!--                                            <span-->
+<!--                                                    th:text="${petItem.getType().toLowerCase()}"-->
+<!--                                            ></span>-->
+<!--                                </h3>-->
+
+
+
+    <!--                                    OPTION WITH LABELS AND INFO START-->
+
+
+                                <!--                                <h3 class="badge rounded-pill bg-success text-start" style="opacity: 60%; padding-left: 30%" th:text="${petItem.type.toLowerCase()}"></h3>-->
+
+
+
+                                <div class="col">
+<!--                                    <div class="row">-->
+<!--                                        <div class="col">-->
+<!--                                            <span-->
+<!--                                                    class="badge bg-warning text-dark"-->
+<!--                                                    style="opacity: 80%;"-->
+<!--                                                    th:if="${petItem.isLookingForDate()}"-->
+<!--                                            >-->
+<!--                                                ready for a date-->
+<!--                                            </span>-->
+<!--                                        </div>-->
+
+<!--                                        <div class="col">-->
+<!--                                            <span-->
+<!--                                                    class="badge bg-dark text-white"-->
+<!--                                                    style="opacity: 80%;"-->
+<!--                                                    th:if="${petItem.isDied()}"-->
+<!--                                            >-->
+<!--                                                memorial page-->
+<!--                                            </span>-->
+<!--                                        </div>-->
+
+<!--                                        <div class="col">-->
+<!--                                            <span-->
+<!--                                                    class="badge bg-info text-dark"-->
+<!--                                                    style="opacity: 80%;"-->
+<!--                                                    th:if="${(petItem.isNewHome())}"-->
+<!--                                            >-->
+<!--                                                looking for a new home-->
+<!--                                            </span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+
+                                    <div class="row" th:if="${!petItem.nickname.isBlank()}">
                                         <div class="col-3">
                                             <span class="text-muted">Nickname:</span>
                                         </div>
                                         <div class="col">
                                             <a th:text="${petItem.nickname}" th:href="@{'/pet-profile/' + ${petItem.getId()}}"></a>
                                         </div>
-                                    </li>
-                                    <li class="row" th:if="${!petItem.breed.isBlank()}">
+                                    </div>
+
+                                    <div class="row" th:if="${!petItem.breed.isBlank()}">
                                         <div class="col-3">
                                             <span class="text-muted">Breed:</span>
                                         </div>
                                         <div class="col">
                                             <span th:text="${petItem.breed}"></span>
                                         </div>
-                                    </li>
+                                    </div>
 
-                                    <li class="row" th:if="${!petItem.sex.isBlank()}">
+                                    <div class="row" th:if="${!petItem.sex.isBlank()}">
                                         <div class="col-3">
                                             <span class="text-muted">Sex:</span>
                                         </div>
                                         <div class="col">
                                             <span th:text="${petItem.sex}"></span>
                                         </div>
-                                    </li>
-                                    <li class="row" th:if="${!petItem.birthdate.isBlank()}">
+                                    </div>
+                                    <div class="row" th:if="${!petItem.birthdate.isBlank()}">
                                         <div class="col-3">
                                             <span class="text-muted">Birthday:</span>
                                         </div>
                                         <div class="col">
                                             <span th:text="${petItem.birthdate}"></span>
                                         </div>
-                                    </li>
+                                    </div>
+
 
                                     <!--                EDIT USER LOGIN PET PROFILE-->
 
-                                    <li th:if="${userData.id.equals(userIdFromCookie)}" class="row">
-                                        <a type="button"
-                                           th:href="@{'/pet-profile/' + ${petItem.id} + '/edit'}"
-                                           class="btn btn-outline-primary mt-2 mb-2">Edit pet profile
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+<!--                                    <div th:if="${userData.id.equals(userIdFromCookie)}" class="row">-->
+<!--                                        <a type="button"-->
+<!--                                           th:href="@{'/pet-profile/' + ${petItem.id} + '/edit'}"-->
+<!--                                           class="btn btn-outline-primary mt-2 mb-2">Edit pet profile-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+                                </div>
+
+    <!--                                    OPTION WITH LABELS AND INFO END-->
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

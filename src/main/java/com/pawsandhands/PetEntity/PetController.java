@@ -152,7 +152,7 @@ public class PetController {
 
         }catch (Exception e){
 
-            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+            return "redirect:pet-profile/" + petId + "?message=edit_photo_error";          //Endpoint can be changed !!!
         }
     }
 
@@ -181,7 +181,7 @@ public class PetController {
 //            send data to DB
             pet.setPhoto(encodedString);
             pet.setPhotoPath(pathUserPhoto);
-            this.petService.save(pet);
+            this.petService.updatePet(pet, pet.getId());
 
 //            Cookie pet
             Cookie cookie = new Cookie("petId", pet.getId().toString());
@@ -321,8 +321,11 @@ public class PetController {
     ) {
         try {
             Pet petToUpdate = petService.findPetById(Long.valueOf(petId));
-//            this.petService.deleteOwnerFromPet(petToUpdate, Long.valueOf(ownerId));
+            this.petService.deleteOwnerFromPet(petToUpdate, Long.valueOf(ownerId));
+
             this.userService.deletePetFromUser(Long.valueOf(ownerId), petToUpdate);
+
+            System.out.println("handleDeleteOwnerUpdate" + this.userService.findUserById(Long.valueOf(ownerId)));
 
             model.addAttribute("pet", petService.findPetById(Long.valueOf(petId)));
             model.addAttribute("petOwners", petService.findPetById(Long.valueOf(petId)).getPetOwners());
@@ -352,12 +355,13 @@ public class PetController {
             this.petService.deletePet(Long.valueOf(petId));
             model.addAttribute("message", "pet_was_deleted");
 
-            return "redirect:/profile";
+            return "redirect:/profile-page/" + userIdFromCookie + "?message=pet_was_deleted";
+
         } catch (Exception e) {
             model.addAttribute("message", "pet_deletion_failed");
             model.addAttribute("error", e.getMessage());
-            System.out.println(e.getMessage());
-            return "redirect:/profile?message=pet_deletion_failed/";
+            System.out.println("handlePetDeletion" + e.getMessage());
+            return "redirect:/profile-page/" + userIdFromCookie + "?message=pet_deletion_failed";
 
         }
     }
