@@ -39,10 +39,12 @@
 <!--                >-->
 
                 <article class="card-body d-flex flex-column border rounded p-0">
+                    <img class="col-md-5 pb-2" th:src="${myEventItem.photoPath}" style="object-fit: cover; width: 100%; max-height: 200px">
                     <p th:text="${myEventItem.getDate()}" class="align-self-end p-2"></p>
                     <h5 th:text="${myEventItem.getName()}" class="card-title border-bottom p-2 text-center"></h5>
                     <p th:text="${myEventItem.getDescription()}" class="card-text mb-4 p-2" style="text-align: justify"></p>
                     <div class="d-flex mt-auto justify-content-around">
+
 <!--                        <a th:href="'view-event/'+${myEventItem.getId()}" class="btn btn-primary text-white m-3"> See my event</a>-->
 <!--                        <a th:href="'update-event/'+${myEventItem.getId()}" class="btn btn-primary text-white m-3">Update event</a>-->
 <!--                        <a th:href="'delete-event/'+${myEventItem.getId()}" class="btn btn-primary text-white m-3">Delete event</a>-->
@@ -62,6 +64,7 @@
                             <button type="submit" class="btn btn-primary">Delete event</button>
                         </form>
 
+                        <br><br>
 
                     </div>
                 </article>

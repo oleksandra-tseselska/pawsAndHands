@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 @Controller
@@ -14,6 +16,8 @@ public class AdoptionController {
 
     private AdoptionService adoptionService;
     private UserService userService;
+
+    private final Path adoptions = Paths.get("src/main/resources/static/img/adoptions-photo");
 
     public AdoptionController(AdoptionService adoptionService, UserService userService) {
         this.adoptionService = adoptionService;
@@ -122,6 +126,8 @@ public class AdoptionController {
     }
 
 
+    //I AM HERE
+
     @GetMapping("/adoption")
     public String showAllPetsForAdoption(
             Model model,
@@ -210,6 +216,42 @@ public class AdoptionController {
             return "redirect:/adoption" + e.getMessage();          //Endpoint can be changed !!!
         }
     }
+
+
+    //UNRESERVE PET
+
+
+    @GetMapping("/takeOffReservation")
+    public String unreservePetPage(){
+        return "reservation-takeoff";
+    }
+
+    @PostMapping("/takeOffReservation")
+    public String unreservePet(
+            Model model,
+            @RequestParam(name = "petIdToBeUnreserved", required = false) Long petId,
+            @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
+            @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
+    ){
+        if(userIsLoggedInFromCookie.equals("false")) {
+            return "not-logged-in";
+        }
+
+        try {
+            Adoption reservedPet = adoptionService.findAdoptionPetById(petId);
+
+            reservedPet.setUser(null);
+            reservedPet.setReserved(false);
+            adoptionService.createPetForAdoption(reservedPet);
+            } catch (Exception e){
+            return "redirect:reservation-takeoff" + e.getMessage();          //Endpoint can be changed !!!
+        }
+
+        return "reservation-takeoff";
+    }
+
+
+
 
 
 }

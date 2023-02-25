@@ -9,7 +9,8 @@
   <header th:insert="~{fragments/header.html :: header}"></header>
   <main>
     <div class="container">
-      <form action="/add-photo" method="post" enctype="multipart/form-data">
+<!--       onsubmit="return false;"-->
+      <form action="/add-photo" method="post" enctype="multipart/form-data" id="formLoad">
         <div class="row align-items-center">
           <div class="col-md-5">
             <img
@@ -20,20 +21,20 @@
             />
           </div>
           <div class="col-md-7 col-lg-5 ms-auto me-auto">
-            <label for="image" class="form-label">Choose new photo and hit the button below:</label>
-<!--            <input type="file" class="form-control" id="image" accept="image/png, image/jpeg" name="photo" onchange="preview()">-->
+            <label for="fileinput" class="form-label">Choose new photo and hit the button below:</label>
             <div>
+<!--              Max-size do not help-->
               <input
                       type="file"
+                      total-max-size="1024"
                       class="form-control"
                       aria-label="file example"
-                      id="image"
+                      id='fileinput'
                       accept="image/png, image/jpeg"
                       name="photo"
                       onchange="preview()"
                       required
               >
-              <div class="invalid-feedback">Example invalid form file feedback</div>
             </div>
             <div class="mt-4 d-flex ms-auto justify-content-end">
               <a
@@ -42,7 +43,8 @@
               >
                 Back
               </a>
-              <button type="submit" class="btn btn-primary mx-2">Add Photo</button>
+<!--              <input type='submit' id='btnLoad' value='Load'>-->
+              <button type="submit" class="btn btn-primary mx-2" id='btnLoad'>Add Photo</button>
             </div>
 
           </div>
@@ -57,10 +59,47 @@
     frame.src = URL.createObjectURL(event.target.files[0]);
   }
 
-  function clearImage() {
-    document.getElementById('image').value = null;
-    frame.src = "";
-  }
+  // document.getElementById("btnLoad").addEventListener("click", function showFileSize() {
+  //   // (Can't use `typeof FileReader === "function"` because apparently it
+  //   // comes back as "object" on some browsers. So just see if it's there
+  //   // at all.)
+  //   // if (!window.FileReader) { // This is VERY unlikely, browser support is near-universal
+  //   //   console.log("The file API isn't supported on this browser yet.");
+  //   //   return;
+  //   // }
+  //
+  //   var input = document.getElementById('fileinput');
+  //   if (!input.files) { // This is VERY unlikely, browser support is near-universal
+  //     console.error("This browser doesn't seem to support the `files` property of file inputs.");
+  //   } else if (!input.files[0]) {
+  //     addPara("Please select a file before clicking 'Load'");
+  //   } else {
+  //     var file = input.files[0];
+  //     if(file.size > 1048575){
+  //       addPara("File " + file.name + " is " + returnFileSize(file.size) + " bytes in size. Limit 1MB");
+  //     }else {
+  //       const form = document.getElementById('formLoad');
+  //       form.onsubmit.caller(true);
+  //     }
+  //
+  //   }
+  // });
+  //
+  // function addPara(text) {
+  //   var p = document.createElement("p");
+  //   p.textContent = text;
+  //   document.body.appendChild(p);
+  // }
+  //
+  // function returnFileSize(number) {
+  //   if (number < 1024) {
+  //     return `${number} bytes`;
+  //   } else if (number >= 1024 && number < 1048576) {
+  //     return `${(number / 1024).toFixed(1)} KB`;
+  //   } else if (number >= 1048576) {
+  //     return `${(number / 1048576).toFixed(1)} MB`;
+  //   }
+  // }
 </script>
 </body>
 </html>

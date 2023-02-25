@@ -40,11 +40,11 @@
             <label class="btn btn-outline-primary" for="dog">Dog</label>
           </div>
 
-          <div class="btn-group" role="group" id="types1" th:if="${(pet.getType() != null) && pet.getType().equals('dog')}">
-            <input type="radio" class="btn-check" name="type" id="cat1" value="cat" autocomplete="off" required>
+          <div class="btn-group" role="group" id="types" th:if="${(pet.getType() != null) && pet.getType().equals('dog')}">
+            <input type="radio" class="btn-check" name="type" id="cat" value="cat" autocomplete="off" required>
             <label class="btn btn-outline-primary" for="cat">Cat</label>
 
-            <input type="radio" class="btn-check" name="type" id="dog1" value="dog" autocomplete="off" checked >
+            <input type="radio" class="btn-check" name="type" id="dog" value="dog" autocomplete="off" checked >
             <label class="btn btn-outline-primary" for="dog">Dog</label>
           </div>
 
@@ -59,19 +59,19 @@
 
         <div class="mb-3">
           <label for="sex" class="form-label">Please select sex:</label><br>
-          <div class="btn-group" th:if="${(pet.getSex() != null) && pet.getSex().equals('male')}"  role="group" id="sex">
-            <input type="radio" class="btn-check form-control" value="male" name="sex" id="male" autocomplete="off" required checked>
+          <div class="btn-group" role="group" id="sex" th:if="${(pet.getSex() != null) && pet.getSex().equals('male')}">
+            <input type="radio" class="btn-check form-control" value="male" name="sex" id="male" autocomplete="off" checked required>
             <label class="btn btn-outline-primary" for="male">Male</label>
 
             <input type="radio" class="btn-check form-control" value="female" name="sex" id="female" autocomplete="off">
             <label class="btn btn-outline-primary" for="female">Female</label>
           </div>
 
-          <div class="btn-group" th:if="${(pet.getSex() != null) && pet.getSex().equals('female')}"  role="group" id="sex1">
-            <input type="radio" class="btn-check form-control" value="male" name="sex1" id="male1" autocomplete="off" required>
+          <div class="btn-group" role="group" id="sex" th:if="${(pet.getSex() != null) && pet.getSex().equals('female')}">
+            <input type="radio" class="btn-check form-control" value="male" name="sex" id="male" autocomplete="off" required>
             <label class="btn btn-outline-primary" for="male">Male</label>
 
-            <input type="radio" class="btn-check form-control" value="female" name="sex1" id="female1" autocomplete="off" checked>
+            <input type="radio" class="btn-check form-control" value="female" name="sex" id="female" autocomplete="off" checked>
             <label class="btn btn-outline-primary" for="female">Female</label>
           </div>
 
@@ -112,10 +112,10 @@
 
           <div class="btn-group" th:if="${(pet.isReserved() != null) && pet.isReserved()==false}" role="group" id="reservation1">
 
-            <input type="radio" class="btn-check" name="reserved" id="reserved1" value="true" autocomplete="off" required>
+            <input type="radio" class="btn-check" name="reserved" id="reserved" value="true" autocomplete="off" required>
             <label class="btn btn-outline-primary" for="reserved">Yes</label>
 
-            <input type="radio" class="btn-check" name="reserved" id="notReserved1" value="false" autocomplete="off" required checked>
+            <input type="radio" class="btn-check" name="reserved" id="notReserved" value="false" autocomplete="off" required checked>
             <label class="btn btn-outline-primary" for="notReserved">No</label>
           </div>
 

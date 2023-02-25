@@ -1,19 +1,21 @@
 package com.pawsandhands.UserEntity;
 
+import com.pawsandhands.FileStorage.FilesStorageServiceImpl;
 import com.pawsandhands.PetEntity.Pet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.Value;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.util.Base64;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Set;
 
 @Controller
@@ -21,11 +23,15 @@ public class UserController{
 
     private final UserService userService;
 
+    private final FilesStorageServiceImpl filesStorage;
     private CustomMap<String, Value> modelUser = new CustomMap<>();
 
+    private final Path imgUsersPath = Paths.get("src/main/resources/static/img/users-photo");
+
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService, FilesStorageServiceImpl filesStorage){
         this.userService=userService;
+        this.filesStorage = filesStorage;
     }
 
 
@@ -46,12 +52,25 @@ public class UserController{
 
     }
 
+
+//
+//    @GetMapping("/")
+//        public String showMainPage(Model model){
+//            return "index";
+//        }
+
+
+
+    // TO CHECK HERE
+
     @PostMapping ("/logInStartPage")                                           //NEW  index.html + Btn"Login"
-    public String handleUserLogin2(User user, HttpServletResponse response){             // first cookie save
+    public String handleUserLogin2(User user, Model model, HttpServletResponse response){
+
+        //model.addAttribute("message1", "login_success");
 
         try{
             User loggedInUser = userService.verifyUser(user);
-            setCookie(loggedInUser, response);
+            setCookie(loggedInUser, response);                     // first cookie save
 
 //            Add ADMIN rights to UserID == 1
 
@@ -60,12 +79,11 @@ public class UserController{
                 this.userService.save(loggedInUser);
             }
 
-
             return "redirect:profile-page/" + loggedInUser.getId();
 
         }catch(Exception e){
-
-            return "redirect:/?message=login_failed&error=" + e.getMessage();
+            model.addAttribute("message",  "login_failed");
+            return "redirect:/login-page";
         }
     }
 
@@ -74,13 +92,25 @@ public class UserController{
                            @CookieValue(value = "userId") String userIdFromCookie,
                            @PathVariable Long userId){
         try{
-            System.out.println(userIdFromCookie);
+//            delete temp img
+            this.filesStorage.deleteAll();
+
+//          get photo from DB
+            User currentUser = this.userService.findUserById(userId);
+
+            if(currentUser.getPhoto() != null){
+                String pathFileUser = "profile_photo_" +currentUser.getId().toString()+ ".png";
+                this.filesStorage.base64DecodedString(currentUser.getPhoto(), pathFileUser, imgUsersPath);
+            }
+
+//          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model, userId);
             modelMap.values();
             modelMap.clear();
 
             User user = userService.findUserById(Long.valueOf(userIdFromCookie)); //fining User in our DB
 
+//            check admin
             if (user.isAdmin) {
                 model.addAttribute("currentUserIsAdmin", true);
             }else{
@@ -90,6 +120,7 @@ public class UserController{
             return "profile-page";
 
         }catch (Exception e){
+            model.addAttribute("message",  "login_failed");
             return "redirect:/?message=user_not_found";
         }
     }
@@ -103,6 +134,18 @@ public class UserController{
             return "not-logged-in";
         }
         try {
+//            delete temp img
+            this.filesStorage.deleteAll();
+
+//          get photo from DB
+            User user = findUserByCookieId(userIdFromCookie);
+
+            if(user.getPhoto() != null){
+                String pathFileUser = "profile_photo_" +user.getId().toString()+ ".png";
+                this.filesStorage.base64DecodedString(user.getPhoto(), pathFileUser, imgUsersPath);
+            }
+
+//          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
             modelMap.values();
             modelMap.clear();
@@ -119,7 +162,10 @@ public class UserController{
                                    @CookieValue(value = "userId") String userIdFromCookie
     ){
         try {
+//            delete temp img
+            this.filesStorage.deleteAll();
 
+//          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
             modelMap.get("userData");
             modelMap.clear();
@@ -135,47 +181,41 @@ public class UserController{
     public String editProfilePhoto(@RequestParam("photo") MultipartFile multipartFile,
                                    @CookieValue(value = "userId") String userIdFromCookie){
         try{
+//            add folder for temp photos
+            this.filesStorage.init();
 
-            if(!multipartFile.isEmpty()
-                    && multipartFile.getSize() < 1048576
-                    && (multipartFile.getContentType() != "image/png" || multipartFile.getContentType() != "image/jpeg")){
+            User user = findUserByCookieId(userIdFromCookie);
+            String pathFileUser;
+            String pathUserPhoto;
+            Path userPhotoPath;
 
-                Long userId = Long.valueOf(userIdFromCookie);
-                User user = this.userService.findUserById(userId);
-                String pathFileUser =
-                        "src/main/resources/static/img/users-photo/profile_photo_"
-                                +user.getId().toString()+
-                                ".png";
+                pathFileUser = "profile_photo_" +user.getId().toString()+ ".png";
+                pathUserPhoto = "/img/users-photo/profile_photo_"+user.getId()+ ".png";
 
-                String pathUserPhoto = "/img/users-photo/profile_photo_"+user.getId()+".png";
-                byte[] photoByte = multipartFile.getBytes();
-                String encodedString = Base64.getEncoder().encodeToString(photoByte);
+//            file to Base64 and save
+            userPhotoPath = this.imgUsersPath.resolve(Paths.get(pathFileUser));
+            String encodedString = this.filesStorage.base64EncodedString(multipartFile);
+            this.filesStorage.save(multipartFile, userPhotoPath, pathFileUser);
 
-                FileUtils.writeByteArrayToFile(new File(pathFileUser), multipartFile.getBytes());
+//            send data to DB
+            user.setPhoto(encodedString);
+            user.setPhotoPath(pathUserPhoto);
 
-                user.setPhoto(encodedString);
-                user.setPhotoPath(pathUserPhoto);
+            this.userService.save(user);
+            this.filesStorage.deleteAll();
 
-                this.userService.save(user);
-
-                return "redirect:spinner-user";
-            }else {
-                return "redirect:error-img-page";
-            }
-
-
+            return "redirect:spinner-user";
 
         }catch (Exception e){
+
             return "redirect:error-img-page";
         }
-
-//        return "redirect:edit-user-photo";
     }
 
     @GetMapping ("/error-img-page")
     public String errorEditProfilePhoto(@CookieValue(value = "userId") String userIdFromCookie, Model model){
         try {
-
+//          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
             modelMap.get("userData");
             modelMap.clear();
@@ -187,77 +227,58 @@ public class UserController{
             return "redirect:error-img-page?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
         }
     }
-    @GetMapping ("/spinner")
+    @GetMapping ("/spinner-user")
     public String showSpinnerUser(@CookieValue(value = "userId") String userIdFromCookie,
                                    Model model){
         try {
-
+//          send data to html
             CustomMap<String, Value> modelMap = getUserModelData(userIdFromCookie, model);
             modelMap.values();
             modelMap.clear();
-
-//            CHECK IF PHOTO CHANGED
-
-
-//            Long userId = Long.valueOf(userIdFromCookie);
-//            User user = this.userService.findUserById(userId);
-//            String inputFilePath = "profile_photo_"+userId+".png";
-//            ClassLoader classLoader = getClass().getClassLoader();
-//
-//            File inputFile = new File(classLoader
-//                    .getResource(inputFilePath)
-//                    .getFile());
-//            byte[] fileContent = FileUtils.readFileToByteArray(inputFile);
-//            String encodedString = Base64
-//                    .getEncoder()
-//                    .encodeToString(fileContent);
-//
-//            if(user.getPhoto().equals(encodedString)){
-//                return "redirect:profile";
-//            }
 
             return "spinner-user";
 
         }catch (Exception e){
 
-            return "redirect:index?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+            return "redirect:index?message=update_error" + e.getMessage();          //Endpoint can be changed !!!
         }
     }
 
 
     @GetMapping("/registration")                        //OK
-    public String showRegistrationForm(){                  // if press Btn"Create new account" (?only after index.html)
-        return "registration";                             // goes to registration.html
+    public String showRegistrationForm(){
+        return "registration";
     }
 
 
-    @PostMapping("/register")                                                      // after Btn "Register(?change to create)" in registration.html
+    @PostMapping("/register")
     public String handleUserRegistration(User user, Model model) throws Exception {  //OK 2
         try {
             this.userService.createUser(user);
         }catch (Exception e){
-            model.addAttribute("message", "signup_failed");     // ?we really need this in registration.html
+            model.addAttribute("message", "signup_failed");
             model.addAttribute("error", e.getMessage());
             model.addAttribute("user", user);
             return "registration";
         }
-        return ("redirect:registration-approval?message=signup_success");
+        return ("redirect:login-page?message=signup_success");
     }
 
-    @GetMapping("/registration-approval")                                      //OK 3
+    @GetMapping("/login-page")                                      //OK 3
     public String showRegistrationApprovalLoginPage(
             @RequestParam(name = "message", required = false) String message,
             Model model
     ){
-        if(message == null){
-            return "redirect:registration";
-        }
+//        if(message == null){
+//            return "redirect:registration";
+//        }
+
         model.addAttribute("message", message);
-        return "registration-approval";
+        return "login-page";
     }
 
 
-    @PostMapping ("/registration-approval")                               //OK 4
+    @PostMapping ("/login-page")                               //OK 4
     public String handleUserLogin(User user, HttpServletResponse response){
 
         try{
@@ -267,7 +288,7 @@ public class UserController{
             return "redirect:profile-page/" + loggedInUser.getId();
 
         }catch(Exception e){
-            return "redirect:registration-approval?message=login_failed&error=" + e.getMessage();
+            return "redirect:login-page?message=login_failed&error=" + e.getMessage();
 
         }
     }
@@ -281,8 +302,19 @@ public class UserController{
         if(userIsLoggedInFromCookie.equals("false")) {
             return "not-logged-in";
         }
+
+//        get photos of all users
         try{
-            model.addAttribute("usersList", this.userService.findAll());
+            ArrayList<User> users = this.userService.findAll();
+            for(User user: users){
+                if(user.getPhoto() != null){
+                    String pathFileUser = "profile_photo_" +user.getId().toString()+ ".png";
+//                    String pathFileUser = "profile_photo_" +user.getId().toString()+ "." +user.getContentType();
+                    this.filesStorage.base64DecodedString(user.getPhoto(), pathFileUser, imgUsersPath);
+                }
+            }
+
+            model.addAttribute("usersList", users);
             model.addAttribute("userIdFromCookie", Long.valueOf(userIdFromCookie));
 
 
@@ -303,7 +335,6 @@ public class UserController{
 
     @PostMapping("/grantAdminRights")
     public String grantAdminRights(
-            Model model,
             @RequestParam(name = "userIdToBeAdmin", required = false) Long userIdToBeAdmin,
             @CookieValue(value = "userId", defaultValue = "noId") String userIdFromCookie ,
             @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
@@ -375,11 +406,16 @@ public class UserController{
         return "redirect:profile-page/"+ user.getId();
     }
 
+    private User findUserByCookieId(String stringUSERID) throws Exception{
+        Long userIdCookie = Long.valueOf(stringUSERID);
+        User userData = this.userService.findUserById(userIdCookie);
+
+        return userData;
+    }
+
     private CustomMap<String, Value> getUserModelData(String stringUSERID, Model model) {
         try {
-            Long userIdCookie = Long.valueOf(stringUSERID);
-            User userData = this.userService.findUserById(userIdCookie);
-            this.modelUser = putDataToModel(stringUSERID, model, userData);
+            this.modelUser = putDataToModel(stringUSERID, model, findUserByCookieId(stringUSERID));
 
         }catch (Exception e){
             e.getMessage();

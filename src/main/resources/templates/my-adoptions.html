@@ -46,7 +46,7 @@
 
 
 
-                <img src="/logo.png" class="card-img-top" alt="profile-picture]">
+                <img th:src="${pet.photoPath}" class="card-img-top" alt="profile-picture]">
 
                 <div class="card-body">
                     <h5 class="card-title text-truncate">
@@ -68,6 +68,11 @@
 <!--                        <input type="hidden" th:value="${pet.getId()}" id="petId" name="petId">-->
 <!--                        <button type="submit" class="btn btn-primary">Reserve</button>-->
 <!--                    </form>-->
+
+                    <form action="/takeOffReservation" method="post">
+                        <input type="hidden" th:value="${pet.getId()}" id="petIdToBeUnreserved" name="petIdToBeUnreserved">
+                        <button type="submit" class="btn btn-primary" style="background-color: red">Unreserve pet</button>
+                    </form>
 
                 </div>
                 </div>

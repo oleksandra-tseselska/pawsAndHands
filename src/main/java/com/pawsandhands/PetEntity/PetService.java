@@ -30,6 +30,9 @@ public class PetService {
 //            System.out.println(petOld);
 
             petNew.setCreatedAt(petOld.getCreatedAt());
+            petNew.setPhoto(petOld.getPhoto());
+            petNew.setPhotoPath(petOld.getPhotoPath());
+
 
             if(petNew.getBreed().equals("empty") && !(petOld.getBreed().equals("empty"))){
                 petNew.setBreed(petOld.getBreed());
@@ -41,6 +44,15 @@ public class PetService {
 //
 //            if((petOld.getCountry() == null) && (petNew.getCountry() != null)) {
 //            }
+    public void updatePet(Pet petNew, Long id) throws Exception{
+        Pet petOld = findPetById(id);
+        petNew.setId(petOld.getId());
+        petNew.setCreatedAt(petOld.getCreatedAt());
+        petNew.setPhoto(petOld.getPhoto());
+        petNew.setPhotoPath(petOld.getPhotoPath());
+        if(petNew.getBreed().equals("empty") && !(petOld.getBreed().equals("empty"))){
+            petNew.setBreed(petOld.getBreed());
+        }
 
             if((petOld.getCountry() != null) && (petNew.getCountry() == null)) {
                 petNew.setCountry(petOld.getCountry());

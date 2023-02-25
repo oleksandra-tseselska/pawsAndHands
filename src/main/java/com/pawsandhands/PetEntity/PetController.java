@@ -1,7 +1,10 @@
 package com.pawsandhands.PetEntity;
 
+import com.pawsandhands.FileStorage.FilesStorageServiceImpl;
 import com.pawsandhands.UserEntity.User;
 import com.pawsandhands.UserEntity.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,17 +13,24 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Base64;
 
 @Controller
 public class PetController {
     private final PetService petService;
     private final UserService userService;
+    private final FilesStorageServiceImpl filesStorage;
+
+    private final Path imgPetsPath = Paths.get("src/main/resources/static/img/pets-photo");
 
     @Autowired
-    public PetController(PetService petService, UserService userService) {
+    public PetController(PetService petService, UserService userService, FilesStorageServiceImpl filesStorage) {
         this.petService = petService;
         this.userService = userService;
+        this.filesStorage = filesStorage;
     }
 
     @GetMapping("/create-pet")
@@ -100,6 +110,17 @@ public class PetController {
             @CookieValue(value="userIsLoggedIn", defaultValue = "false") String userIsLoggedInFromCookie //extracts cookie value from the browser
     ) {
         try {
+//            delete temp img
+            this.filesStorage.deleteAll();
+
+//            get photo from DB
+            Pet pet = this.petService.findPetById(petId);
+
+            if(pet.getPhoto() != null){
+                String pathFileUser = "profile_photo_" +pet.getId().toString()+ ".png";
+                this.filesStorage.base64DecodedString(pet.getPhoto(), pathFileUser, imgPetsPath);
+            }
+//            set data to html
             model.addAttribute("pet", petService.findPetById(petId));
             model.addAttribute("petOwners", petService.findPetById(petId).getPetOwners());
 
@@ -122,9 +143,10 @@ public class PetController {
                                    @PathVariable Long petId
     ){
         try {
-
+//            delete temp img
+            this.filesStorage.deleteAll();
+//            data from DB
             model.addAttribute("pet", petService.findPetById(petId));
-
 
             return "edit-pet-photo";
 
@@ -136,35 +158,55 @@ public class PetController {
 
     @PostMapping(value = "/add-photo/{petId}")
     public String editPetPhoto(@PathVariable Long petId,
-                               @RequestParam("photo") MultipartFile multipartFile){
+                               @RequestParam("photo") MultipartFile multipartFile,
+                               HttpServletResponse response){
         try{
+//            add folder for temp photos
+            this.filesStorage.init();
+
             Pet pet = this.petService.findPetById(petId);
+            String pathFileUser;
+            String pathUserPhoto;
+            Path userPhotoPath;
 
-                //            Photo Start
-            String pathFilePet =
-                    "src/main/resources/static/img/pets-photo/profile_photo_"
-                            +petId+
-                            ".png";
+            pathFileUser = "profile_photo_" +pet.getId().toString()+ ".png";
+            pathUserPhoto = "/img/pets-photo/profile_photo_"+pet.getId()+ ".png";
 
-            String pathPetPhoto = "/img/pets-photo/profile_photo_"+petId+".png";
-            byte[] photoByte = multipartFile.getBytes();
-            String encodedString = Base64.getEncoder().encodeToString(photoByte);
 
-            FileUtils.writeByteArrayToFile(new File(pathFilePet), multipartFile.getBytes());
+//            file to Base64 and save
+            userPhotoPath = this.imgPetsPath.resolve(Paths.get(pathFileUser));
+            String encodedString = this.filesStorage.base64EncodedString(multipartFile);
+            this.filesStorage.save(multipartFile, userPhotoPath, pathFileUser);
 
+//            send data to DB
             pet.setPhoto(encodedString);
-            pet.setPhotoPath(pathPetPhoto);
-                //            Photo End
-
+            pet.setPhotoPath(pathUserPhoto);
             this.petService.save(pet);
 
-            System.out.println("hi");
+//            Cookie pet
+            Cookie cookie = new Cookie("petId", pet.getId().toString());
+            cookie.setMaxAge(10 * 60);                                     // Сookie expired
+            response.addCookie(cookie);
 
         }catch (Exception e){
             e.getMessage();
         }
 
         return "redirect:/spinner-pet/"+petId.toString();
+    }
+
+    @GetMapping ("/error-img-pet-page")
+    public String errorEditProfilePhoto(@CookieValue(value = "petId") String editPetId, Model model){
+        try {
+//          send data to html
+            model.addAttribute("petId", editPetId);
+
+            return "error-img-pet-page";
+
+        }catch (Exception e){
+
+            return "redirect:error-img-page?message=profile_error" + e.getMessage();          //Endpoint can be changed !!!
+        }
     }
 
     @GetMapping ("/spinner-pet/{petId}")
@@ -331,8 +373,17 @@ public class PetController {
             return "not-logged-in";
         }
 
+//     get photos of all pets from DB
         try {
-            model.addAttribute("petList", petService.findAllByOrderByNickname());
+            ArrayList<Pet> pets = this.petService.findAllByOrderByNickname();
+            for(Pet pet: pets){
+                if(pet.getPhoto() != null){
+                    String pathFileUser = "profile_photo_" +pet.getId().toString()+ ".png";
+                    this.filesStorage.base64DecodedString(pet.getPhoto(), pathFileUser, imgPetsPath);
+                }
+            }
+
+            model.addAttribute("petList", pets);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
