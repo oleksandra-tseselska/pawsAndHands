@@ -300,7 +300,7 @@ public class EventController {
             this.filesStorage.deleteAll();
 
 //            get photo from DB
-            Event event = this.eventService.findById(eventId);
+            Event event = this.eventService.findById(Integer.valueOf(eventId));
 
             if(event.getPhoto() != null){
                 String pathFileUser = "event_photo_" +event.getId()+ ".png";
