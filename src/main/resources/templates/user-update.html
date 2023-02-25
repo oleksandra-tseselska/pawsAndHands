@@ -56,7 +56,7 @@
                 <input type="text" class="form-control" id="breeder_licence" name="breeder_licence" th:value="${userData?.breeder_licence}">
               </div>
 
-              <div class="mb-3" id="oldCountry" th:if="${!(userData.country.equals('--'))}">
+              <div class="mb-3" id="oldCountry" th:if="${(userData.country != null) && !(userData.country.equals('--'))}">
                 <div class="row">
                   <label class="form-label" for="countries">Country of permanent living</label>
                   <div class="col-10">
@@ -70,7 +70,7 @@
                 </div>
               </div>
 
-              <div class="mb-3" th:if="${userData.country.equals('--')}">
+              <div class="mb-3" th:if="${(userData.country == null) || (userData.country.equals('--'))}">
                 <label class="form-label" for="countries">Country of permanent living</label>
                 <div th:insert="~{fragments/countries.html :: countries}" id="countries"></div>
               </div>

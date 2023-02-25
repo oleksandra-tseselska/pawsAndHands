@@ -54,6 +54,9 @@ public class User{
     @ManyToMany(mappedBy = "petOwners")
     private Set<Pet> ownedPets;
 
+    //    @OneToMany(mappedBy="userId")
+//    private Set<Message> messagesSent;
+
     public int getNumberOfPets(){
         return getOwnedPets().size();
     }
