@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <th:block th:include="~{fragments/head.html :: head}"> </th:block>
+    <th:block th:insert="~{fragments/head.html :: head}"> </th:block>
     <title>Registration form</title>
     <style>
         body {
@@ -14,27 +14,29 @@
 
 <body>
 <main>
-    <section class="container">
+    <section class="container mb-2">
         <div class="row justify-content-end">
             <div class="row" style="height: 2rem;"></div>
 
             <div class="col col-md-5 col-lg-4 card p-4">
                 <form action="/register" method="post" class="row g-3 needs-validation" novalidate>
-                    <h3 class="text-center"> Registration form: </h3>
+<!--                    <h3 class="text-center"> Registration form: </h3>-->
+                    <h3>Create new profile</h3>
+
                     <div class="mb-1">
                         <input
                                 type="text"
                                 name="name"
                                 class="form-control"
                                 required
-                                placeholder="First Name"
+                                placeholder="First name"
                                 maxlength="255"
                         >
                         <div class="valid-feedback">
                             Looks good!
                         </div>
                         <div class="invalid-feedback">
-                            Please enter your name.
+                            Please provide your first name.
                         </div>
                     </div>
 
@@ -43,16 +45,15 @@
                                 type="text"
                                 name="surname"
                                 class="form-control"
-                                placeholder="Surname"
+                                placeholder="Last name"
                                 maxlength="255"
-
                                 required
                         >
                         <div class="valid-feedback">
                             Looks good!
                         </div>
                         <div class="invalid-feedback">
-                            Please enter your surname.
+                            Please provide your last name.
                         </div>
                     </div>
 
@@ -61,16 +62,15 @@
                                 type="email"
                                 name="email"
                                 class="form-control"
-                                required
-                                placeholder="example@email.com"
+                                placeholder="email.address@email.com"
                                 maxlength="255"
-
+                                required
                         >
                         <div class="valid-feedback">
                             Looks good!
                         </div>
                         <div class="invalid-feedback">
-                            Please enter your email in a format example@email.com
+                            Please enter your email in a format email.address@email.com.
                         </div>
                     </div>
 
@@ -79,9 +79,9 @@
                                 type="tel"
                                 name="telephone"
                                 class="form-control"
-                                required
-                                placeholder="Phone"
+                                placeholder="Phone number"
                                 maxlength="60"
+                                required
                         >
                         <div class="valid-feedback">
                             Looks good!
@@ -96,11 +96,11 @@
                                 type="password"
                                 name="password"
                                 class="form-control"
-                                required
                                 placeholder="Password"
                                 minlength="8"
                                 maxlength="16"
                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$"
+                                required
                         >
                         <div class="valid-feedback">
                             Looks good!
@@ -114,7 +114,7 @@
                     <div class="mb-1">
                         <div th:insert="~{fragments/countries.html :: countries}" name="country"></div>
                         <div class="invalid-feedback">
-                            Select country
+                            Select country.
                         </div>
                     </div>
 
@@ -151,7 +151,7 @@
                             Looks good!
                         </div>
                         <div class="invalid-feedback">
-                            Please provide a valid state.
+                            Please select user type.
                         </div>
                     </div>
 
@@ -186,9 +186,12 @@
 
 
                     <div class="d-grid gap-2">
-                        <button class="btn btn-success" type="submit">Register</button>
+                        <button class="btn btn-success" type="submit">Create new profile</button>
                     </div>
                 </form>
+
+                <a href="/login-page" class="btn btn-outline-primary d-grid gap-2 mt-2">Back to login</a>
+
 
             </div>
         </div>

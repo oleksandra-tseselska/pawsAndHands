@@ -17,13 +17,30 @@
 <!-- insert all your code below this line -->
 <div class="container">
     <div class="row">
-        <div class="col-3">
-        </div>
+        <div class="col-1"></div>
 
         <!--    PICTURE COLUMN -->
 
-        <div class="col-2">
-            <img th:src="${pet.photoPath}" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;" id="frame" class="img-fluid"/>
+        <div class="col-4">
+            <div class="mb-3">
+                <a th:href="@{'/pet-profile/' + ${pet.getId()}}">< Back to profile</a>
+            </div>
+
+            <img class="view-user-img" alt="user photo" th:src="${pet.photoPath}"
+                 style="width: 100%;
+              min-height: 350px;
+              max-height: 400px;
+              object-fit: cover;">
+            <a
+                    th:if="${currentUserIsPetOwner}"
+                    th:href="@{'/edit-pet-photo/' + ${petId}}"
+                    type="button"
+                    class="btn btn-outline-primary mt-2 mb-2"
+            >
+                Change photo
+            </a>
+        </div>
+<!--            <img th:src="${pet.photoPath}" alt="default profile logo" style="object-fit: cover; width: 150px; height: 150px; border-radius: 50%;" id="frame" class="img-fluid"/>-->
 
             <!--      <div class="mb-3">-->
             <!--        <label for="image" class="form-label">Upload another picture</label>-->
@@ -35,9 +52,10 @@
             <!--        <label for="formFile" class="form-label">Default file input example</label>-->
             <!--        <input class="form-control" type="file" id="formFile">-->
             <!--      </div>-->
-        </div>
+<!--    </div>-->
 
         <!--    INFORMATION EDIT COLUMN -->
+        <div class="col-1"></div>
 
         <div class="col-5">
             <div th:if ="${message != null && message.equals('update_success')}" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -51,10 +69,11 @@
             </div>
 
 
+
             <!--    OWNERS INFORMATION -->
 
             <div class="mb-3" id="ownersContainer">
-                <label for="birthdate" class="form-label" th:text="${'Edit ' + pet.getNickname() + ' Owners'}"></label>
+                <label for="birthdate" class="form-label">Owners</label>
                 <div class="row mb-2" id="owners" th:each="user : ${petOwners}">
                     <div class="col" th:id="'owner' + ${user.getId()}">
                         <a th:href="@{'/profile-page/' + ${user.getId()}}" th:text="${user.getName()} + ' ' + ${user.getSurname()}"></a>
@@ -111,7 +130,7 @@
                     <div class="row my-1">
                         <div class="col-10">
                             <select class="form-select" id="newOwner" name="owner" aria-label="All users select">
-                                <option th:each="user : ${allUsers}" th:value="${user.getId()}" th:text="${user.getId + ' ' + user.getName() + ' ' + user.getSurname()}"></option>
+                                <option th:each="user : ${allUsers}" th:value="${user.getId()}" th:text="${user.getName() + ' ' + user.getSurname()}"></option>
                             </select>
                         </div>
                         <div class="col-2">
@@ -214,7 +233,7 @@
 
                 <!--    COUNTRY INFORMATION -->
 
-                <div class="mb-3" id="oldCountry" th:if="${!(pet.getCountry().equals('--')) && !(pet.getCountry() == null)}">
+                <div class="mb-3" id="oldCountry" th:if="${(pet.getCountry() != null) && !(pet.getCountry().equals('--'))}">
                     <div class="row">
                         <label class="form-label" for="countries">Country of permanent living</label>
                         <div class="col-10">
@@ -230,7 +249,7 @@
                     </div>
                 </div>
 
-                <div class="mb-3" th:if="${(pet.getCountry().equals('--')) || (pet.getCountry() == null) }">
+                <div class="mb-3" th:if="${ (pet.getCountry() == null) || (pet.getCountry().equals('--'))}">
                     <label class="form-label" for="countries">Country of permanent living</label>
                     <div th:insert="~{fragments/countries.html :: countries}" id="countries"></div>
                 </div>
@@ -382,7 +401,7 @@
             </div>
         </div>
 
-        <div class="col-lg-3"></div>
+        <div class="col-1"></div>
     </div>
 </div>
 
@@ -416,6 +435,8 @@
 
 
 </body>
+
+
 
 <footer>
     <div th:insert="~{fragments/footer.html :: footer}"></div>

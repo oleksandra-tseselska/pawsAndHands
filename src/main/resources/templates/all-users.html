@@ -74,31 +74,31 @@
 
                     <!--     BUTTON FOR ADMIN MODE WITH POST FUNC  -->
 
-                    <div style="text-align: center" th:if="${currentUserIsAdmin}">
+                    <div th:if="${currentUserIsAdmin}" class="my-2 text-center">
 
                         <span th:if="${!userItem.isAdmin()}">
                             <form action="/grantAdminRights" method="post">
                                 <input  type="hidden" th:value="${userItem.getId()}" id="userIdToBeAdmin" name="userIdToBeAdmin">
-                                <button style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Grant Admin rights</button>
+<!--                                <button style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Grant Admin rights</button>-->
+                                <button type="submit" class="btn btn-success">Grant Admin rights</button>
+
                             </form>
                         </span>
 
-                        <span th:if="${userItem.isAdmin() && userItem.id != 1}">
+                        <span th:if="${userItem.isAdmin() && userItem.id != 1}" class="mx-auto">
 <!--                        <div style="text-align: center" th:if="${currentUserIsAdmin} && ${!userItem.IsAdmin}">-->
                             <form action="/takeOffAdminRights" method="post">
                                 <input  type="hidden" th:value="${userItem.getId()}" id="userIdNotToBeAdmin" name="userIdNotToBeAdmin">
-                                <button style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Take off Admin rights</button>
+<!--                                <button style="font-style: revert; background-color: forestgreen; color: #FAFAFA; border-color: forestgreen; align-content: center" type="submit" class="btn btn-primary">Take off Admin rights</button>-->
+                                <button type="submit" class="btn btn-outline-success">Take off Admin rights</button>
+
                             </form>
                         </span>
 
 <!--                        ADMIN FOREVER -->
 
                         <span th:if="${userItem.id == 1}">
-                            <h4
-                                    class="badge rounded-pill bg-success d-inline-block py-1 mt-2"
-                            >
-                                ADMIN
-                            </h4>
+                            <button type="button" class="btn btn-success" disabled>Super Admin</button>
                         </span>
 
                     </div>
@@ -147,8 +147,8 @@
                                          userItem.instagramUrl == null  &&
                                          userItem.youtubeUrl == null    &&
                                          userItem.pinterestUrl == null}"
-                        >
-                            No social links yet
+                        ><h6>
+                            No social links yet</h6>
                         </li>
                         <li class="card-link d-flex" th:if="${userItem.facebookUrl != null}">
                             <a

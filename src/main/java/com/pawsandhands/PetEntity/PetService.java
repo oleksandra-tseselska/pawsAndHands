@@ -45,71 +45,24 @@ public class PetService {
                 }
             }
 
-//            System.out.println("old getCountry: " + petOld.getCountry() + " new breed NOW: " + petNew.getCountry());
-
-
             if((petNew.getPetOwners() == null) && (petOld.getPetOwners() != null)){
                 petNew.setPetOwners(petOld.getPetOwners());
             }
-//            System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
-
 
             if((petNew.getPhoto() == null) && (petOld.getPhoto() != null)){
                 petNew.setPhoto(petOld.getPhoto());
             }
-//            System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
-
 
             if((petNew.getPhotoPath() == null) && (petOld.getPhotoPath() != null)){
                 petNew.setPhotoPath(petOld.getPhotoPath());
             }
-//            System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
-
 
             this.petRepository.save(petNew);
-//            System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
         }
         catch (Exception e){
             System.out.println(e);
 
         }
-//        Pet petOld = findPetById(id);
-//        petNew.setId(petOld.getId());
-//        System.out.println(petNew);
-//        System.out.println(petOld);
-//
-//        petNew.setCreatedAt(petOld.getCreatedAt());
-//        if(petNew.getBreed().equals("empty") && !(petOld.getBreed().equals("empty"))){
-//            petNew.setBreed(petOld.getBreed());
-//        }
-//        System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
-//
-//        if(petNew.getCountry().equals("--") && !(petOld.getCountry().equals("--"))){
-//            petNew.setCountry(petOld.getCountry());
-//        }
-//        System.out.println("old getCountry: " + petOld.getCountry() + " new breed NOW: " + petNew.getCountry());
-//
-//
-//        if((petNew.getPetOwners() == null) && (petOld.getPetOwners() != null)){
-//            petNew.setPetOwners(petOld.getPetOwners());
-//        }
-//        System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
-//
-//
-//        if((petNew.getPhoto() == null) && (petOld.getPhoto() != null)){
-//            petNew.setPhoto(petOld.getPhoto());
-//        }
-//        System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
-//
-//
-//        if((petNew.getPhotoPath() == null) && (petOld.getPhotoPath() != null)){
-//            petNew.setPhotoPath(petOld.getPhotoPath());
-//        }
-//        System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
-//
-//
-//        this.petRepository.save(petNew);
-//        System.out.println("old breed: " + petOld.getBreed() + "new breed NOW: " + petNew.getBreed());
 
     }
     public Pet save(Pet pet){
@@ -133,7 +86,7 @@ public class PetService {
             petFromDb.setPetOwners(setOfOwners);
             this.petRepository.save(petFromDb);
         } catch (Exception e){
-            System.out.println(e);
+            System.out.println("updatePetWithOwner" + e);
         }
     }
 
@@ -157,6 +110,24 @@ public class PetService {
         this.petRepository.delete(petToDelete);
         System.out.println("pet was deleted");
 
+
+    }
+
+    public void deleteOwnerFromPet(Pet petToUpdate, Long userIoDelete) {
+            try {
+                Pet petFromDb = petRepository.findPetById(petToUpdate.getId());
+                User userFromDb = userRepository.findUserById(userIoDelete);
+                Set<User> setOfUsers = new HashSet<>();
+                setOfUsers.addAll(petFromDb.getPetOwners());
+                setOfUsers.remove(userFromDb);
+                petFromDb.setPetOwners(setOfUsers);
+                System.out.println("deleteOwnerFromPet0" + setOfUsers);
+                this.userRepository.save(userFromDb);
+                System.out.println("deleteOwnerFromPet1" + userRepository.findUserById(userIoDelete));
+
+            } catch (Exception e){
+                System.out.println("deleteOwnerFromPet2" + e);
+            }
 
     }
 }

@@ -81,13 +81,12 @@ public class UserService {
 
             setOfPets.add(petFromDb);
 
-
             userFromDb.setOwnedPets(setOfPets);
             this.userRepository.save(userFromDb);
-            System.out.println(userRepository.findUserById(userId));
+            System.out.println("updateOwnerWithPet1" + userRepository.findUserById(userId));
 
         } catch (Exception e){
-            System.out.println(e);
+            System.out.println("updateOwnerWithPet2" + e);
         }
     }
 
@@ -98,15 +97,59 @@ public class UserService {
             User userFromDb = userRepository.findUserById(userId);
             Set<Pet> setOfPets = new HashSet<>();
             setOfPets.addAll(userFromDb.getOwnedPets());
+
             setOfPets.remove(petFromDb);
 
             userFromDb.setOwnedPets(setOfPets);
+            System.out.println("deletePetFromUser0" + setOfPets);
             this.userRepository.save(userFromDb);
-            System.out.println(userRepository.findUserById(userId));
+            System.out.println("deletePetFromUser1" + userRepository.findUserById(userId));
 
         } catch (Exception e){
-            System.out.println(e);
+            System.out.println("deletePetFromUser2" + e);
         }
     }
 
+    public void updateUser(User userNew, Long id) {
+        {
+            try {
+                User userOld = userRepository.findUserById(id);
+                userNew.setId(userOld.getId());
+                userNew.setCreatedAt(userOld.getCreatedAt());
+//                userNew.setPhoto(userOld.getPhoto());
+//                userNew.setPhotoPath(userOld.getPhotoPath());
+
+                if((userOld.getCountry() != null) && (userNew.getCountry() == null)) {
+                    userNew.setCountry(userOld.getCountry());
+                }
+
+                if((userOld.getCountry() != null) && (userNew.getCountry() != null)) {
+                    if (userNew.getCountry().equals("--") && !(userOld.getCountry().equals("--"))) {
+                        userNew.setCountry(userOld.getCountry());
+                    }
+                }
+
+                if((userNew.getOwnedPets() == null) && (userOld.getOwnedPets() != null)){
+                    userNew.setOwnedPets(userOld.getOwnedPets());
+                }
+
+                if((userNew.getPhoto() == null) && (userOld.getPhoto() != null)){
+                    userNew.setPhoto(userOld.getPhoto());
+                }
+
+                if((userNew.getPhotoPath() == null) && (userOld.getPhotoPath() != null)){
+                    userNew.setPhotoPath(userOld.getPhotoPath());
+                }
+
+
+                this.userRepository.save(userNew);
+            }
+            catch (Exception e){
+                System.out.println("updateUser" + e);
+
+            }
+//
+        }
+
+    }
 }
