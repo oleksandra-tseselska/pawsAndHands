@@ -32,7 +32,7 @@
                     <div class="card-body">
                         <h5 class="card-title text-truncate" th:text="${eventItem.name}"></h5>
                         <h6 th:text="'on ' + ${eventItem.date}"></h6>
-                        <p class="card-text" th:text="${eventItem.description}" style="max-height: 100px; overflow: hidden;">
+                        <p class="card-text" th:text="${eventItem.description}" style="max-height: 100px; min-height: 100px; overflow: hidden;">
                         <!--                       style="text-align: justify"-->
                         </p>
 
@@ -49,6 +49,9 @@
                 <div>
                     <a type="button" class="btn btn-outline-danger col-md-auto m-3 mt-0" th:href="'/delete-event/' + ${eventItem.id}" th:if="${currentUserIsAdmin}"><i class="bi bi-trash"></i> Delete event</a>
                 </div>
+
+                <br>
+
             </div>
 
         </div>
