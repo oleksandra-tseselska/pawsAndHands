@@ -116,6 +116,9 @@ public class AdoptionController {
 
             //Setting creation date info (as it is not done manually by user)
             adoption.setCreatedAt(oldAdoptionData.getCreatedAt());
+            adoption.setPhoto(oldAdoptionData.getPhoto());
+            adoption.setPhotoPath(oldAdoptionData.getPhotoPath());
+
 
 //          //Setting again this adoption id (as it is not done manually by user)
             adoption.setId(petId);
