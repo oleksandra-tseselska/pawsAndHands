@@ -20,9 +20,14 @@
 
         <div class="row justify-content-between" th:if="${!(eventList.isEmpty())}" >
 
-            <div th:each="eventItem: ${eventList}" class="card me-3 mb-3" style="width: 30%;" >
+            <div th:each="eventItem: ${eventList}" class="card me-3 mb-3 justify-content-between" style="width: 30%;" >
                 <a th:href="'/view-event/' + ${eventItem.getId()}" class="text-decoration-none text-dark">
-                    <img class="card-img-top" alt="event_photo" th:src="${eventItem.photoPath}" style="object-fit: cover; width: 100%; max-height: 200px">
+                    <img
+                            class="card-img-top"
+                            alt="event_photo"
+                            th:src="${eventItem.photoPath}"
+                            style="object-fit: cover; width: 100%; max-height: 200px"
+                    >
 
                     <div class="card-body">
                         <h5 class="card-title text-truncate" th:text="${eventItem.name}"></h5>
@@ -34,9 +39,12 @@
                         <!--                    <a href="#" class="btn btn-primary">Go somewhere</a>-->
                     </div>
                 </a>
-<!--                <form th:if="${currentUserIsAdmin}" action="/delete-event" method="post" class="m-3 mt-0">-->
+<!--                <form th:if="${currentUserIsAdmin}" action="/delete-event" method="post">-->
 <!--                    <input type="hidden" th:value="${eventItem.getId()}" id="EventIdForDeleting" name="EventId">-->
-<!--                    <button type="submit" class="btn btn-sm btn-danger">Delete event</button>-->
+<!--                    <button type="submit"class="btn btn-outline-danger col-md-auto m-3 mt-0">-->
+<!--                        <i class="bi bi-trash"></i>-->
+<!--                        Delete event-->
+<!--                    </button>-->
 <!--                </form>-->
                 <div>
                     <a type="button" class="btn btn-outline-danger col-md-auto m-3 mt-0" th:href="'/delete-event/' + ${eventItem.id}" th:if="${currentUserIsAdmin}"><i class="bi bi-trash"></i> Delete event</a>

@@ -150,8 +150,8 @@ public class EventController {
         }
 
         try {
-            System.out.println("Event with following id was deleted: " + eventId);
-            this.eventService.deleteEvent(eventId);
+            System.out.println("Event with following id was deleted: " + anotherEventId);
+            this.eventService.deleteEvent(Long.valueOf(anotherEventId));
 
         }catch (Exception e){
             return "redirect:/all-events/" + e.getMessage();
